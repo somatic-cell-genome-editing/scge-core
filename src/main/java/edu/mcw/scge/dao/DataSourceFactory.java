@@ -15,7 +15,7 @@ public class DataSourceFactory {
         return getDataSource("postgress");
     }
     public DataSource getDataSource(String domain) throws Exception{
-        System.out.println("DOMAIN:"+ domain);
+
         try{
             if (System.getProperty("spring.config") != null && !System.getProperty("spring.config").equals("")) {
                 return (DataSource) (XmlBeanFactoryManager.getInstance().getBean(domain+"DataSource"));
