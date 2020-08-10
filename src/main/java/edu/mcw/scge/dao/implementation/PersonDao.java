@@ -16,7 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +29,7 @@ import java.util.List;
 public class PersonDao extends AbstractDAO {
         GroupDAO gdao=new GroupDAO();
     public void insert(Person p) throws Exception{
-        String sql="insert into person values(?,?,?,?,?,?,?,?,?,?,?,current_date,current_date,?)";
+        String sql="insert into person values(?,?,?,?,?,?,?,?,?,?,?,current_date,current_date,?,?,?,?)";
         update(sql,
                 p.getId(), p.getName(),p.getName().toLowerCase(),
                 p.getInstitution(),
@@ -37,12 +37,14 @@ public class PersonDao extends AbstractDAO {
                 p.getPhone(), p.getAddress(), p.getGoogleSub(),
                 p.getStatus(),
                 p.getGrantId(),
-                p.getModifiedBy()
+                p.getModifiedBy(),
+                p.getOtherId(),
+                p.getFirstName(),p.getLastName()
         );
 
     }
     public int generateNewPersonKey() throws Exception {
-          return getNextKey("PERSON_ID_SEQ");
+          return getNextKey("PERSON_SEQ");
     }
     public List<Person> getPerson(Person p) throws Exception{
         String sql="select * from person where name_lc=? and email_lc=?";
@@ -54,15 +56,26 @@ public class PersonDao extends AbstractDAO {
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query,id);
     }
+    public List<Person> getPersonByGoogleId(String id) throws Exception{
+        String sql="select * from person where google_id=?";
+        PersonQuery query=new PersonQuery(this.getDataSource(), sql);
+        return execute(query,id);
+    }
+    public List<Person> getPersonByLastName(String lastName) throws Exception{
+        String sql="select * from person where name like '%"+lastName+"%'";
+        PersonQuery query=new PersonQuery(this.getDataSource(), sql);
+        return execute(query);
+    }
     public String getPersonStatus(String subject) throws Exception{
-        String sql="select status from person where google_sub=?";
+        String sql="select status from person where google_id=?";
+       // String sql="select status from person where email=?";
         StringListQuery query= new StringListQuery(this.getDataSource(), sql);
         return (String) execute(query, subject).get(0);
     }
     public List<Person> getPersonByEmail(String email) throws Exception{
-        String sql="select * from person where email=?";
+        String sql="select * from person where email_lc=? or other_id=? or email=?";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
-        return execute(query,email);
+        return execute(query, email.toLowerCase(), email, email);
     }
     public List<Person> getAllMembers() throws Exception{
         String sql="select * from person where status='approved'";
@@ -70,20 +83,20 @@ public class PersonDao extends AbstractDAO {
         return query.execute();
     }
     public List<String> getPersonGroups(Person p) throws Exception {
-        String sql="select g.group_name from scge_groups g, person_group_access r, person p " +
-                "where g.group_key=r.group_key " +
+        String sql="select g.group_name from scge_group g, person_info r, person p " +
+                "where g.group_id=r.group_id " +
                 "and r.person_id=p.person_id " +
                 "and p.person_id=?";
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q,p.getId());
     }
     public List<String> getGroups(Person p) throws Exception {
-        String sql="select g.group_name from scge_groups g , person_group_access pg where " +
-                "g.group_key=pg.group_key and person_id=?";
+        String sql="select g.group_name from scge_group g , person_info pg where " +
+                "g.group_id=pg.group_id and person_id=?";
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q, p.getId());
     }
-    public List<String> getGroupAccessLevel(Person p, String group) throws Exception {
+    /*public List<String> getGroupAccessLevel(Person p, String group) throws Exception {
         String sql="select a.access_level from person_group_access pga, accesses a where " +
                  " pga.person_id=? and " +
                 "a.access_id = pga.access_id " +
@@ -91,8 +104,8 @@ public class PersonDao extends AbstractDAO {
 
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q, p.getId(),group);
-    }
-    public void addMemberToGroup(int person_id, int group_key, int access_id) throws Exception {
+    }*/
+  /*  public void addMemberToGroup(int person_id, int group_key, int access_id) throws Exception {
         String sql="insert into person_group_access(person_id, group_key, access_id) values(" +
                 "?,?,?)";
         update(sql, person_id, group_key, access_id);
@@ -104,6 +117,7 @@ public class PersonDao extends AbstractDAO {
         PersonQuery q=new PersonQuery(this.getDataSource(), sql);
         return execute(q, group_key);
     }
+    */
     public List<Person> getAllUnauthorizedUsers() throws Exception {
         String sql="select * from person where status='processing'";
         PersonQuery q=new PersonQuery(this.getDataSource(), sql);
@@ -113,6 +127,14 @@ public class PersonDao extends AbstractDAO {
     public void updateStatus(Person person) throws Exception {
         String sql="update person set status=? where email=?";
             update(sql, person.getStatus(), person.getEmail());
+    }
+    public void updateGoogleId(String googleId, int personId) throws Exception {
+        String sql="update person set google_id=? where person_id=? ";
+        update(sql, googleId, personId);
+    }
+    public void updatePersonNewAttributes(Person person) throws Exception {
+        String sql="update person set first_name=?, last_name=?, google_id=?, other_id=? where email=? or email_lc=?";
+        update(sql,  person.getFirstName(), person.getLastName(), person.getGoogleSub(), person.getOtherId() ,person.getEmail(),person.getEmail().toLowerCase());
     }
     public int insertOrUpdateGrant(String grantTitle) throws Exception {
         String sql="select grant_id from scge_grants where grant_title=?";
@@ -127,8 +149,21 @@ public class PersonDao extends AbstractDAO {
         }
         return id;
     }
+    public List<String> getRolesByPersonId(int personId, String groupName) throws Exception {
+        String sql="select r.role from scge_roles r, person p, person_info pi, scge_group g where " +
+                "r.role_key=pi.role_key " +
+                "and p.person_id=pi.person_id " +
+                "and g.group_id=pi.group_id " +
+                "and p.person_id=? " +
+                "and g.group_name=?"
+                ;
+        StringListQuery query=new StringListQuery(this.getDataSource(), sql);
+        return execute(query, personId, groupName);
 
-    public void insertSubgroup(int subgroup_id,String subgroupName) throws Exception {
+    }
+
+
+ /*   public void insertSubgroup(int subgroup_id,String subgroupName) throws Exception {
 
         String sql="insert into subgroups values(?,?)";
         try{
@@ -138,7 +173,7 @@ public class PersonDao extends AbstractDAO {
         }
 
 
-    }
+    }*/
     public void insertInstitution(int id,String name) throws Exception {
 
         String sql="insert into institution values(?,?,?)";
@@ -264,9 +299,7 @@ public class PersonDao extends AbstractDAO {
                         }
                     }
                     if (colIndex == 3) {
-                        if(name.equalsIgnoreCase("larry bechtel")){
-                            System.out.println("STATUS"+ cell.getStringCellValue());
-                        }
+
                         if (cell.getStringCellValue().equalsIgnoreCase("x"))
                             p.setStatus("approved");
                         else p.setStatus("processing");
@@ -316,7 +349,7 @@ public class PersonDao extends AbstractDAO {
 
 
                 }
-          
+
                 p.setRoles(roles);
              //   persons.add(p);
             //   if(name.equalsIgnoreCase("Dianna Malvey")) {
@@ -325,13 +358,13 @@ public class PersonDao extends AbstractDAO {
 
           //      System.out.println("default Group: "+ defaultGoupId+"\tgroup: "+ groupId+"\tsubgroup:"+subgroupId);
                 gdao.makeAssociations(defaultGoupId, groupId);
-                insertOrUpdatePersonInfo(personId,Arrays.asList(1), defaultGoupId); //person added to default group as 'member'
+                insertPersonInfo(personId,Arrays.asList(1), defaultGoupId); //person added to default group as 'member'
                 List<Integer> roleIds = getRolesIds(roles);
                 if(groupId!=0 && personId!=0) {
-                    insertOrUpdatePersonInfo(personId, Arrays.asList(1), groupId);
+                    insertPersonInfo(personId, Arrays.asList(1), groupId);
                 }
                 if(subgroupId!=0 && personId!=0)
-                    insertOrUpdatePersonInfo(personId, roleIds, subgroupId);
+                    insertPersonInfo(personId, roleIds, subgroupId);
                 gdao.makeAssociations(groupId, subgroupId);
             }
 
@@ -369,7 +402,7 @@ public class PersonDao extends AbstractDAO {
         }
         return id;
     }
-    public int getDefaultSubgroupId(String defaultSubgroupName) throws Exception {
+ /*   public int getDefaultSubgroupId(String defaultSubgroupName) throws Exception {
         String sql="select subgroup_id from subgroups where subgroup_name=?";
         IntListQuery query=new IntListQuery(this.getDataSource(), sql);
         List<Integer> ids=execute(query, defaultSubgroupName);
@@ -381,7 +414,7 @@ public class PersonDao extends AbstractDAO {
             insertSubgroup(id,defaultSubgroupName);
         }
         return id;
-    }
+    }*/
     public void insertPersonDetails(int personId, List<Integer> roleIds,int groupId, int subgroupId ) throws Exception {
         for(int roleId:roleIds){
             String sql="insert into person_role_group values(?,?,?,?)";
@@ -393,7 +426,7 @@ public class PersonDao extends AbstractDAO {
             }
         }
     }
-    public void insertOrUpdatePersonInfo(int personId, List<Integer> roleIds,int groupId ) throws Exception {
+    public void insertPersonInfo(int personId, List<Integer> roleIds,int groupId ) throws Exception {
        for(int role:roleIds){
            if(!isPersonInfoExists(personId, role, groupId)){
                insertPersonInfo(personId, role, groupId);
@@ -443,6 +476,16 @@ public class PersonDao extends AbstractDAO {
             id=members.get(0).getId();
         }
         return id;
+    }
+    public String getInstitutionName(int id) throws Exception {
+        String sql="select institution_name from institution where institution_id=?";
+        StringListQuery query= new StringListQuery(this.getDataSource(), sql);
+        List<String> names=execute(query, id);
+        if(names!=null || names.size()>0){
+            return names.get(0);
+        }else{
+            return "";
+        }
     }
     public static void main(String[] args) throws Exception {
        PersonDao dao=new PersonDao();

@@ -2,7 +2,9 @@ group 'edu.mcw.scge'
 version '1.0'
 
 apply plugin: 'java'
-
+apply plugin: 'application'
+mainClassName="edu.mcw.scge.dao.impementation.PersonDao"
+String myAppName="scge-core"
 sourceCompatibility = 1.8
 
 repositories {
@@ -33,3 +35,5 @@ dependencies {
 
 
 }
+
+

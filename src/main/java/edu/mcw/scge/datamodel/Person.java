@@ -10,8 +10,11 @@ public class Person {
     private String name_lc;
     private String name;
     private int institution;
+    private String institutionName;
     private String email;
     private String email_lc;
+    private String otherId;
+
     private String address;
     private String phone;
     private int grantId;
@@ -24,12 +27,16 @@ public class Person {
     private List<String> groups;
     private List<String> roles;
     private String pi;
+    private String firstName;
+    private String lastName;
 
     private Person(Builder builder){
         this.id=builder.id;
         this.name=builder.name;
         this.institution=builder.institution;
+        this.institutionName=builder.institutionName;
         this.email=builder.email;
+        this.otherId=builder.otherId;
         this.address=builder.address;
         this.phone=builder.phone;
         this.googleSub=builder.googleSub;
@@ -44,13 +51,17 @@ public class Person {
         this.grantId=builder.grantId;
         this.name_lc=builder.name_lc;
         this.email_lc=builder.email_lc;
+        this.firstName=builder.firstName;
+        this.lastName=builder.lastName;
     }
     public static class Builder{
         private int id;
         private String name;
         private String name_lc;
         private int institution;
+        private String institutionName;
          private String email;
+        private String otherId;
         private String email_lc;
         private String address;
         private int grantId;
@@ -64,8 +75,18 @@ public class Person {
         private List<String> groups;
         private List<String> roles;
         private String pi;
+        private String firstName;
+        private String lastName;
         public Builder id(int id){
             this.id=id;
+            return this;
+        }
+        public Builder   firstName(String firstName){
+            this.firstName=firstName;
+            return this;
+        }
+        public Builder   lastName(String lastName){
+            this.lastName=lastName;
             return this;
         }
         public Builder   name(String name){
@@ -80,12 +101,20 @@ public class Person {
             this.institution=institution;
             return this;
         }
+        public Builder   institutionName(String institutionName){
+            this.institutionName=institutionName;
+            return this;
+        }
         public Builder   email(String email){
             this.email=email;
             return this;
         }
         public Builder   email_lc(String email_lc){
             this.email_lc=email_lc;
+            return this;
+        }
+        public Builder   otherId(String otherId){
+            this.otherId=otherId;
             return this;
         }
         public Builder address(String address){
@@ -141,6 +170,38 @@ public class Person {
         public Person build(){
             return new Person(this);
         }
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getOtherId() {
+        return otherId;
+    }
+
+    public void setOtherId(String otherId) {
+        this.otherId = otherId;
+    }
+
+    public String getInstitutionName() {
+        return institutionName;
+    }
+
+    public void setInstitutionName(String institutionName) {
+        this.institutionName = institutionName;
     }
 
     public String getName_lc() {
