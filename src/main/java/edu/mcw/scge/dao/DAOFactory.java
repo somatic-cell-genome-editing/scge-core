@@ -17,7 +17,7 @@ public class DAOFactory {
 
     /**
      *  Returns a data access object based on the key passed in.  Key must be the class name.  This
-     *  method will attempt find the class in edu.mcw.rgd.dao.impl and return an instance.
+     *  method will attempt find the class in edu.mcw.scge.dao.impl and return an instance.
      * @param key
      * @return
      * @throws Exception
