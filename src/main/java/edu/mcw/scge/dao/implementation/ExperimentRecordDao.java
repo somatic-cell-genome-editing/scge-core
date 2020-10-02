@@ -21,4 +21,23 @@ public class ExperimentRecordDao extends AbstractDAO {
         ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
         return execute(q);
     }
+    public List<ExperimentRecord> getExperimentRecordsByLabId(int labId) throws Exception {
+        String sql="select x.experiment_id,e.subtype, g.guide,g.detection_method, m.name, t.locus_id,t.locus_symbol, t.specificity_ratio " +
+                "from experiment_record x, " +
+                "experiment exp, " +
+                " study s, " +
+                " editor e, " +
+                "guide g, " +
+                "model m, " +
+                "target t "+
+                " where s.study_id=exp.study_id" +
+                " and x.experiment_id=exp.experiment_id" +
+                " and e.editor_id=x.editor_id " +
+                " and x.guide_id=g.guide_id " +
+                " and x.target_id=t.target_id " +
+                " and x.model_id=m.model_id " +
+                " and s.lab_id=?";
+        ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
+        return execute(q, labId);
+    }
 }
