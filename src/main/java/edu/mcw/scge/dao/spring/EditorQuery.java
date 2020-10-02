@@ -24,7 +24,7 @@ public class EditorQuery extends MappingSqlQuery {
         e.setSpecies(rs.getString("species"));
         e.setPamPreference(rs.getString("pam_preference"));
         e.setEditorVariant(rs.getString("editor_variant"));
-        e.setFusion(rs.getString("fustion"));
+        e.setFusion(rs.getString("fusion"));
         e.setActivity(rs.getString("activity"));
         e.setDsbCleavageType(rs.getString("dsb_cleavage_type"));
         e.setTarget_sequence(rs.getString("target_sequence"));
