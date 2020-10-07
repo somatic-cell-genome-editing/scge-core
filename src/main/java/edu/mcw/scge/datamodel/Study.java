@@ -5,6 +5,7 @@ public class Study {
     private int studyId;
     private String study;
     private int labId;
+    private String labName;
 
     public int getStudyId() {
         return studyId;
@@ -28,5 +29,13 @@ public class Study {
 
     public void setLabId(int labId) {
         this.labId = labId;
+    }
+
+    public String getLabName() {
+        return labName;
+    }
+
+    public void setLabName(String labName) {
+        this.labName = labName;
     }
 }

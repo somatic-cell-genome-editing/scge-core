@@ -14,7 +14,7 @@ public class StudyDao extends AbstractDAO {
     }
 
     public List<Study> getStudies() throws Exception{
-        String sql="select * from study";
+        String sql="select * from study s, institution i where s.lab_id=i.institution_id";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q);
     }
