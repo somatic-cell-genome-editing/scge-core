@@ -6,6 +6,7 @@ public class Study {
     private String study;
     private int labId;
     private String labName;
+    private int tier;
 
     public int getStudyId() {
         return studyId;
@@ -37,5 +38,13 @@ public class Study {
 
     public void setLabName(String labName) {
         this.labName = labName;
+    }
+
+    public int getTier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
     }
 }
