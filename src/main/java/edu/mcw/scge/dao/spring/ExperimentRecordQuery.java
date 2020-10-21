@@ -30,6 +30,7 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         record.setTargetLocus(rs.getString("locus_symbol"));
         record.setTargetLocusSymbol(rs.getString("target_site"));
         record.setSamplePrep(rs.getString("sample_prep"));
+        record.setApplicationMethodId(rs.getInt("application_method_id"));
         return record;
     }
 }

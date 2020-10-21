@@ -22,6 +22,7 @@ public class ExperimentRecord {
     private String guideDetectionMethod;
     private double specificity;
     private String samplePrep;
+    private int applicationMethodId;
 
     public int getExperimentRecId() {
         return experimentRecId;
@@ -191,7 +192,11 @@ public class ExperimentRecord {
         this.samplePrep = samplePrep;
     }
 
+    public int getApplicationMethodId() {
+        return applicationMethodId;
+    }
 
-
-
+    public void setApplicationMethodId(int applicationMethodId) {
+        this.applicationMethodId = applicationMethodId;
+    }
 }
