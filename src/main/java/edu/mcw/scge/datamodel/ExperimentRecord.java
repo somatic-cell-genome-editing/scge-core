@@ -3,18 +3,25 @@ package edu.mcw.scge.datamodel;
 public class ExperimentRecord {
     private int experimentRecId;
     private int experimentId;
+    private String experimentName;
+    private int editorId;
     private String editorType;
     private String editorName;
+    private int deliveryId;
     private String deliveryType;
     private String deliveyName;
+    private int modelId;
     private String model;
+    private int guideId;
     private String guide;
     private String guideSequence;
+    private int targetId;
     private String targetLocusSymbol;
     private String targetLocus;
     private String targetSequence;
     private String guideDetectionMethod;
     private double specificity;
+    private String samplePrep;
 
     public int getExperimentRecId() {
         return experimentRecId;
@@ -127,4 +134,64 @@ public class ExperimentRecord {
     public void setSpecificity(double specificity) {
         this.specificity = specificity;
     }
+
+    public String getExperimentName() {
+        return experimentName;
+    }
+
+    public void setExperimentName(String experimentName) {
+        this.experimentName = experimentName;
+    }
+
+    public int getEditorId() {
+        return editorId;
+    }
+
+    public void setEditorId(int editorId) {
+        this.editorId = editorId;
+    }
+
+    public int getDeliveryId() {
+        return deliveryId;
+    }
+
+    public void setDeliveryId(int deliveryId) {
+        this.deliveryId = deliveryId;
+    }
+
+    public int getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(int modelId) {
+        this.modelId = modelId;
+    }
+
+    public int getGuideId() {
+        return guideId;
+    }
+
+    public void setGuideId(int guideId) {
+        this.guideId = guideId;
+    }
+
+    public int getTargetId() {
+        return targetId;
+    }
+
+    public void setTargetId(int targetId) {
+        this.targetId = targetId;
+    }
+
+    public String getSamplePrep() {
+        return samplePrep;
+    }
+
+    public void setSamplePrep(String samplePrep) {
+        this.samplePrep = samplePrep;
+    }
+
+
+
+
 }

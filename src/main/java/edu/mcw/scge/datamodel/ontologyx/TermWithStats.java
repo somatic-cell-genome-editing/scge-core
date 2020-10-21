@@ -28,7 +28,7 @@ public class TermWithStats extends Term {
         this.setOntologyId(term.getOntologyId());
         this.setTerm(term.getTerm());
         this.setCreatedBy(term.getCreatedBy());
-        this.setCreationDate(term.getCreationDate());
+      //  this.setCreationDate(term.getCreationDate());
         this.setDefinition(term.getDefinition());
         this.setObsolete(term.getObsolete());
         this.setComment(term.getComment());

@@ -401,11 +401,11 @@ public class OntologyXDAO extends AbstractDAO {
     public int insertTerm(Term term) throws Exception {
 
         String sql =
-                "insert into ONT_TERMS (ONT_ID,TERM_ACC,TERM,IS_OBSOLETE,TERM_DEFINITION,CREATED_BY,CREATION_DATE,TERM_COMMENT) "+
-                "select ?,?,?,?,?,?,?,? from DUAL where not exists(select 1 from ONT_TERMS where TERM_ACC=?)";
+                "insert into ONT_TERMS (ONT_ID,TERM_ACC,TERM,IS_OBSOLETE,TERM_DEFINITION,CREATED_BY,TERM_COMMENT) "+
+                "values ( ?,?,?,?,?,?,?) ";
 
         return update(sql, term.getOntologyId(), term.getAccId(), term.getTerm(), term.getObsolete(),
-                term.getDefinition(), term.getCreatedBy(), term.getCreationDate(), term.getComment(), term.getAccId());
+                term.getDefinition(), term.getCreatedBy(), term.getComment());
     }
 
     /**
@@ -417,11 +417,11 @@ public class OntologyXDAO extends AbstractDAO {
     public int updateTerm(Term term) throws Exception {
 
         String sql =
-                "update ONT_TERMS set TERM=?,IS_OBSOLETE=?,TERM_DEFINITION=?,CREATED_BY=?,CREATION_DATE=?" +
-                ",MODIFICATION_DATE=SYSDATE,TERM_COMMENT=? where TERM_ACC=?";
+                "update ONT_TERMS set TERM=?,IS_OBSOLETE=?,TERM_DEFINITION=?,CREATED_BY=?" +
+                ",TERM_COMMENT=? where TERM_ACC=?";
 
         return update(sql, term.getTerm(), term.getObsolete(), term.getDefinition(),
-                term.getCreatedBy(), term.getCreationDate(), term.getComment(), term.getAccId());
+                term.getCreatedBy(), term.getComment(), term.getAccId());
     }
 
     /**
@@ -618,12 +618,20 @@ public class OntologyXDAO extends AbstractDAO {
      * @throws Exception if something wrong happens in spring framework
      */
     public List<Term> getAllActiveTermDescendants(String termAcc) throws Exception {
-        String sql = "SELECT t.* FROM ont_terms t "+
+     /*   String sql = "SELECT t.* FROM ont_terms t "+
                 "WHERE term_acc IN( "+
                 "  SELECT child_term_acc FROM ont_dag "+
                 "  START WITH parent_term_acc=? "+
                 "  CONNECT BY PRIOR child_term_acc=parent_term_acc "+
-                ") AND is_obsolete=0";
+                ") AND is_obsolete=0";*/
+     String sql="  select * from ont_terms where is_obsolete=0 and " +
+             "                term_acc in (" +
+             "                with recursive cte as (select child_term_acc   from ont_dag where parent_term_acc=?" +
+             "                union all select d.child_term_acc from cte c join ont_dag d on d.parent_term_acc=c.child_term_acc" +
+             "                " +
+             "                 )" +
+             "                 select child_term_acc from cte" +
+             "                )";
         return executeTermQuery(sql, termAcc);
     }
 
@@ -963,7 +971,7 @@ public class OntologyXDAO extends AbstractDAO {
             throw new OntologyXDAOException("You cannot insert a dag edge where both parent and child term accession id are the same: "+childTermAcc);
         }
 
-        String sql = "UPDATE ont_dag SET last_modified_date=SYSDATE,ont_rel_id=? "+
+        String sql = "UPDATE ont_dag SET ont_rel_id=? "+
                 "WHERE parent_term_acc=? AND child_term_acc=?";
         int rowsAffected = update(sql, relId, parentTermAcc, childTermAcc);
         if( rowsAffected!=0 ) {
@@ -971,8 +979,8 @@ public class OntologyXDAO extends AbstractDAO {
             return 0;
         }
 
-        sql = "INSERT INTO ont_dag (parent_term_acc,child_term_acc,ont_rel_id,created_date,last_modified_date) " +
-            "VALUES (?,?,?,SYSDATE,SYSDATE)";
+        sql = "INSERT INTO ont_dag (parent_term_acc,child_term_acc,ont_rel_id) " +
+            "VALUES (?,?,?)";
 
         return update(sql, parentTermAcc, childTermAcc, relId);
     }
@@ -1102,11 +1110,11 @@ public class OntologyXDAO extends AbstractDAO {
      * @return synonym key of newly inserted synonym
      * @throws Exception if something wrong happens in spring framework
      */
-    public int insertTermSynonym(TermSynonym synonym) throws Exception {
+    public int insertTermSynonymOLD(TermSynonym synonym) throws Exception {
 
         String sql = "BEGIN INSERT INTO ont_synonyms (term_acc, synonym_name, synonym_type, dbxrefs, " +
-                " source, created_date, last_modified_date, syn_key)" +
-                "VALUES(?,?,?,?,?,?,?,ont_synonyms_seq.NEXTVAL) "+
+                " source,  syn_key)" +
+                "VALUES(?,?,?,?,?,ont_synonyms_seq.NEXTVAL) "+
                 "RETURNING syn_key INTO ?; END;";
 
         try (Connection conn = this.getConnection() ){
@@ -1119,7 +1127,7 @@ public class OntologyXDAO extends AbstractDAO {
             //setTimestamp(cs, 6, synonym.getCreatedDate());
          //   setTimestamp(cs, 7, synonym.getLastModifiedDate());
 
-            cs.registerOutParameter(8, Types.INTEGER); // syn_key
+            cs.registerOutParameter(6, Types.INTEGER); // syn_key
 
             cs.execute();
 
@@ -1143,7 +1151,13 @@ public class OntologyXDAO extends AbstractDAO {
         return update(sql, syn.getTermAcc(), syn.getName(), syn.getType(), syn.getDbXrefs(),
                 syn.getSource(), syn.getKey());
     }
-
+    public int insertTermSynonym(TermSynonym synonym) throws Exception {
+        int seqKey=getNextKey("ont_synonyms_seq");
+        String sql = "INSERT INTO ont_synonyms (term_acc, synonym_name, synonym_type, dbxrefs, " +
+                " source,  syn_key)" +
+                "VALUES(?,?,?,?,?,?) ";
+       return update(sql,synonym.getTermAcc(), synonym.getName(),synonym.getType(),synonym.getDbXrefs(),synonym.getSource(),seqKey );
+    }
     /**
      * update existing synonym for given term
      * @param synOriginal original OntTermSynonym object to be updated
@@ -1655,5 +1669,16 @@ public class OntologyXDAO extends AbstractDAO {
     public List<Term> executeTermQuery(String query, Object ... params) throws Exception {
         TermQuery q = new TermQuery(this.getDataSource(), query);
         return execute(q, params);
+    }
+    public String getTermAccByOntId(String term, String ontId) throws Exception {
+        String sql="select term_acc from ont_terms where term =? and ont_id=?";
+        StringListQuery query=new StringListQuery(this.getDataSource(), sql);
+        List<String> ids=execute(query, term, ontId);
+        if(ids!=null && ids.size()>0){
+            return ids.get(0);
+        }
+        else{
+            return "";
+        }
     }
 }

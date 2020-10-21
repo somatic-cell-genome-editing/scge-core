@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class TermWithStatsQuery extends TermQuery {
 
-    final String STATS_SQL_WITH_FILTER = "SELECT * FROM ont_term_stats2 WHERE term_acc=? AND filter=?";
+    final String STATS_SQL_WITH_FILTER = "SELECT * FROM .scge. WHERE term_acc=? AND filter=?";
     final String STATS_SQL_NO_FILTER = "SELECT * FROM ont_term_stats2 WHERE term_acc=? AND filter IS NULL";
 
     private DataSource ds;
