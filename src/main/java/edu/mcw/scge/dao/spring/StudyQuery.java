@@ -17,6 +17,13 @@ public class StudyQuery extends MappingSqlQuery {
         s.setLabId(rs.getInt("lab_id"));
         s.setStudyId(rs.getInt("study_id"));
         s.setStudy(rs.getString("study"));
+        s.setTier(rs.getInt("tier"));
+
+        try {
+            s.setLabName(rs.getString("institution_name"));
+        }catch (Exception ignored) {
+
+        }
         return s;
     }
 }

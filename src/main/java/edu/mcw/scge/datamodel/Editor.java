@@ -5,13 +5,21 @@ package edu.mcw.scge.datamodel;
  */
 public class Editor {
     private int id;
-    private String subType;
     private String type;
+    private String subType;
+    private String symbol;
+    private String alias;
     private String species;
-    private String pamPreference;
     private String editorVariant;
-    private String fusion;
+    private String accession;
+    private String pamPreference;
+    private String substrateTarget;
     private String activity;
+    private String overhang;
+    private String note;
+    private String reference;
+    private String addGeneLink;
+    private String fusion;
     private String dsbCleavageType;
     private String target_sequence;
     private String proteinFormat;
@@ -111,5 +119,69 @@ public class Editor {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public String getAccession() {
+        return accession;
+    }
+
+    public void setAccession(String accession) {
+        this.accession = accession;
+    }
+
+    public String getSubstrateTarget() {
+        return substrateTarget;
+    }
+
+    public void setSubstrateTarget(String substrateTarget) {
+        this.substrateTarget = substrateTarget;
+    }
+
+    public String getOverhang() {
+        return overhang;
+    }
+
+    public void setOverhang(String overhang) {
+        this.overhang = overhang;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public String getAddGeneLink() {
+        return addGeneLink;
+    }
+
+    public void setAddGeneLink(String addGeneLink) {
+        this.addGeneLink = addGeneLink;
     }
 }
