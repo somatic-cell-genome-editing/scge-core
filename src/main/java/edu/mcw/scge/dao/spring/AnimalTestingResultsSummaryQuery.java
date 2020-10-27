@@ -27,7 +27,7 @@ public class AnimalTestingResultsSummaryQuery extends MappingSqlQuery {
         s.setPercentCellsInROIWithSginal(rs.getString("percent_cells_in_roi_with_sginal"));
         s.setRoi(rs.getString("roi"));
         s.setROICoordinates(rs.getString("roi_coordinates"));
-        s.setTissueTerm(rs.getString("tissue_term"));
+        s.setTissueTerm(rs.getString("tissue_term").trim());
         s.setParentTissueTerm(rs.getString("parent_tissue_term"));
         s.setSystem(rs.getString("tissue_system"));
 

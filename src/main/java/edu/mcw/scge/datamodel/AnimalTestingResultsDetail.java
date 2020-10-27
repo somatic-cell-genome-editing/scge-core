@@ -2,9 +2,9 @@ package edu.mcw.scge.datamodel;
 
 import java.util.List;
 
-public class AnimalTestingResultsSummary {
+public class AnimalTestingResultsDetail {
     private int summaryResultsId;
-     private int       expRecId;
+    private int       expRecId;
     private int numberOfSamples;
     private int maleSamples;
     private int femaleSamples;
@@ -17,30 +17,10 @@ public class AnimalTestingResultsSummary {
     private String signalPresent;
     private String signalDescription;
     private String imageLink;
-      private String      percentCellsInROIWithSginal;
+    private String      percentCellsInROIWithSginal;
     private String roi;
     private String ROICoordinates;
     private List<Sample> samples;
-
-    public List<Sample> getSamples() {
-        return samples;
-    }
-
-    public void setSamples(List<Sample> samples) {
-        this.samples = samples;
-    }
-
-    public int getMaleSamples() {
-        return maleSamples;
-    }
-
-    public void setMaleSamples(int maleSamples) {
-        this.maleSamples = maleSamples;
-    }
-
-    public int getFemaleSamples() {
-        return femaleSamples;
-    }
 
     public int getSummaryResultsId() {
         return summaryResultsId;
@@ -66,6 +46,18 @@ public class AnimalTestingResultsSummary {
         this.numberOfSamples = numberOfSamples;
     }
 
+    public int getMaleSamples() {
+        return maleSamples;
+    }
+
+    public void setMaleSamples(int maleSamples) {
+        this.maleSamples = maleSamples;
+    }
+
+    public int getFemaleSamples() {
+        return femaleSamples;
+    }
+
     public void setFemaleSamples(int femaleSamples) {
         this.femaleSamples = femaleSamples;
     }
@@ -76,6 +68,14 @@ public class AnimalTestingResultsSummary {
 
     public void setTissueId(int tissueId) {
         this.tissueId = tissueId;
+    }
+
+    public String getTissueAccId() {
+        return tissueAccId;
+    }
+
+    public void setTissueAccId(String tissueAccId) {
+        this.tissueAccId = tissueAccId;
     }
 
     public String getTissueTerm() {
@@ -158,11 +158,11 @@ public class AnimalTestingResultsSummary {
         this.ROICoordinates = ROICoordinates;
     }
 
-    public String getTissueAccId() {
-        return tissueAccId;
+    public List<Sample> getSamples() {
+        return samples;
     }
 
-    public void setTissueAccId(String tissueAccId) {
-        this.tissueAccId = tissueAccId;
+    public void setSamples(List<Sample> samples) {
+        this.samples = samples;
     }
 }

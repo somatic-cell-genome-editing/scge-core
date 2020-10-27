@@ -2,8 +2,10 @@ package edu.mcw.scge.dao.implementation;
 
 
 import edu.mcw.scge.dao.AbstractDAO;
+import edu.mcw.scge.dao.spring.AnimalTestingResultsDetailsQuery;
 import edu.mcw.scge.dao.spring.AnimalTestingResultsSummaryQuery;
 import edu.mcw.scge.datamodel.AnimalTestingResultsSummary;
+import edu.mcw.scge.datamodel.Sample;
 
 import java.util.List;
 
@@ -14,4 +16,9 @@ public class AnimalTestingResultsDAO extends AbstractDAO {
       AnimalTestingResultsSummaryQuery  q=new AnimalTestingResultsSummaryQuery(this.getDataSource(), sql);
       return execute(q, expRecId);
   }
+    public List<Sample> getSampleDetailsByResultId(int summaryResultsId, int experimentRecordId) throws Exception {
+        String sql="Select * from satc_results_detail d where summary_results_id=? and exp_rec_id=? ";
+        AnimalTestingResultsDetailsQuery q=new AnimalTestingResultsDetailsQuery(this.getDataSource(), sql);
+        return execute(q, summaryResultsId, experimentRecordId);
+    }
 }
