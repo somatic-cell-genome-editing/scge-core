@@ -7,6 +7,13 @@ import edu.mcw.scge.datamodel.Model;
 import java.util.List;
 
 public class ModelDao extends AbstractDAO {
+    public List<Model> getModels() throws Exception {
+        String sql="select * from model";
+        ModelQuery q=new ModelQuery(this.getDataSource(), sql);
+        List<Model> models=execute(q);
+        return models;
+    }
+
     public Model getModelById(int modelId) throws Exception {
         String sql="select * from model where model_id=?";
         ModelQuery q=new ModelQuery(this.getDataSource(), sql);
