@@ -191,6 +191,13 @@ public class GroupDAO extends AbstractDAO {
         StringListQuery query= new StringListQuery(this.getDataSource(), sql);
         return execute(query, groupName, groupName);
     }
+    public List<SCGEGroup> getSubGroupsByGroupId(int groupId) throws Exception {
+        String sql="select sg.* from  scge_group g , scge_group sg where " +
+                "g.group_id in (select group_id from scge_group where group_id=? ) " +
+                "and sg.group_id in (select subgroup_id from group_associations where group_id in (select group_id from scge_group where group_id=? ))";
+        GroupQuery query= new GroupQuery(this.getDataSource(), sql);
+        return execute(query, groupId, groupId);
+    }
 
 public List<Person> getGroupMembers(String groupName) throws Exception {
     String sql="select p.* from person p , person_info pi, scge_group g " +
@@ -200,6 +207,14 @@ public List<Person> getGroupMembers(String groupName) throws Exception {
     PersonQuery q=new PersonQuery(this.getDataSource(), sql);
     return execute(q, groupName);
 }
+    public List<Person> getGroupMembersByGroupId(int groupId) throws Exception {
+        String sql="select p.* from person p , person_info pi, scge_group g " +
+                "where p.person_id=pi.person_id " +
+                "and g.group_id=pi.group_id " +
+                "and g.group_id=? order by p.name";
+        PersonQuery q=new PersonQuery(this.getDataSource(), sql);
+        return execute(q, groupId);
+    }
     public static void main(String[] args) throws Exception {
         GroupDAO groupDAO=new GroupDAO();
        List<Person> pList= groupDAO.getGroupMembers("consortium group");
