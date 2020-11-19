@@ -25,6 +25,8 @@ public class StudyQuery extends MappingSqlQuery {
         s.setLabName(rs.getString("institution_name"));
         s.setSubmitter(rs.getString("submitterName"));
         s.setPi(rs.getString("piName"));
+        s.setRawData(rs.getString("raw_data"));
+        s.setReference(rs.getString("reference"));
 
         return s;
     }

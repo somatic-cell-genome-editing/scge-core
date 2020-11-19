@@ -15,6 +15,8 @@ public class Study {
     private String submitter;
     private int piId;
     private String pi;
+    private String rawData;
+    private String reference;
 
     public int getStudyId() {
         return studyId;
@@ -102,5 +104,21 @@ public class Study {
 
     public void setPi(String pi) {
         this.pi = pi;
+    }
+
+    public String getRawData() {
+        return rawData;
+    }
+
+    public void setRawData(String rawData) {
+        this.rawData = rawData;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 }
