@@ -11,13 +11,13 @@ import java.util.List;
 
 public class AnimalTestingResultsDAO extends AbstractDAO {
   public List<AnimalTestingResultsSummary> getResultsByExperimentRecId(int expRecId) throws Exception {
-      String sql="select r.*, t.* from satc_results_summary r, tissue t where r.exp_rec_id=? and " +
+      String sql="select r.*, t.* from satc_experiment_record r, tissue t where r.exp_rec_id=? and " +
               " r.tissue_id=t.tissue_id ";
       AnimalTestingResultsSummaryQuery  q=new AnimalTestingResultsSummaryQuery(this.getDataSource(), sql);
       return execute(q, expRecId);
   }
     public List<Sample> getSampleDetailsByResultId(int summaryResultsId, int experimentRecordId) throws Exception {
-        String sql="Select * from satc_results_detail d where summary_results_id=? and exp_rec_id=? ";
+        String sql="Select * from satc_experiment_record_detail d where summary_results_id=? and exp_rec_id=? ";
         AnimalTestingResultsDetailsQuery q=new AnimalTestingResultsDetailsQuery(this.getDataSource(), sql);
         return execute(q, summaryResultsId, experimentRecordId);
     }
