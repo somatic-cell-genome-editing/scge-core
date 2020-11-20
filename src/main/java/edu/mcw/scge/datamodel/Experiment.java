@@ -9,6 +9,8 @@ public class Experiment {
     private int deliverySystemId;
     private int modelId;
     private int guideId;
+    private String samplePrep;
+    private int applicationMethodId;
 
     public int getExperimentId() {
         return experimentId;
@@ -64,5 +66,21 @@ public class Experiment {
 
     public void setGuideId(int guideId) {
         this.guideId = guideId;
+    }
+
+    public String getSamplePrep() {
+        return samplePrep;
+    }
+
+    public void setSamplePrep(String samplePrep) {
+        this.samplePrep = samplePrep;
+    }
+
+    public int getApplicationMethodId() {
+        return applicationMethodId;
+    }
+
+    public void setApplicationMethodId(int applicationMethodId) {
+        this.applicationMethodId = applicationMethodId;
     }
 }
