@@ -21,6 +21,13 @@ public class ExperimentQuery extends MappingSqlQuery<Experiment> {
         e.setDeliverySystemId(rs.getInt("delivery_system_id"));
         e.setModelId(rs.getInt("model_id"));
         e.setEditorId(rs.getInt("editor_id"));
+        e.setEditorSymbol(rs.getString("symbol"));
+        e.setDeliverySystemType(rs.getString("delivery_system_type"));
+        e.setModelName(rs.getString("name"));
+        e.setGuide(rs.getString("guide"));
         return e;
     }
 }
+
+
+

@@ -11,6 +11,14 @@ public class Experiment {
     private int guideId;
     private String samplePrep;
     private int applicationMethodId;
+    private String editorSymbol;
+    private String deliverySystemType;
+    private String guide;
+    private String modelName;
+
+
+
+
 
     public int getExperimentId() {
         return experimentId;
@@ -82,5 +90,37 @@ public class Experiment {
 
     public void setApplicationMethodId(int applicationMethodId) {
         this.applicationMethodId = applicationMethodId;
+    }
+
+    public String getEditorSymbol() {
+        return editorSymbol;
+    }
+
+    public void setEditorSymbol(String editorSymbol) {
+        this.editorSymbol = editorSymbol;
+    }
+
+    public String getDeliverySystemType() {
+        return deliverySystemType;
+    }
+
+    public void setDeliverySystemType(String deliverySystemType) {
+        this.deliverySystemType = deliverySystemType;
+    }
+
+    public String getGuide() {
+        return guide;
+    }
+
+    public void setGuide(String guide) {
+        this.guide = guide;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
     }
 }
