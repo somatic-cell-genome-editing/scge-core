@@ -12,4 +12,10 @@ public class DeliveryDao extends AbstractDAO {
         DeliveryQuery q=new DeliveryQuery(this.getDataSource(), sql);
         return execute(q, deliverySystemId);
     }
+    public List<Delivery> getDeliverySystems() throws  Exception{
+        String sql="select * from delivery_system";
+        DeliveryQuery q=new DeliveryQuery(this.getDataSource(), sql);
+        return execute(q);
+    }
+
 }

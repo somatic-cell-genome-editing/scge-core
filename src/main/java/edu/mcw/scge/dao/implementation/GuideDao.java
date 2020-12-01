@@ -12,4 +12,9 @@ public class GuideDao extends AbstractDAO {
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
         return execute(q, guideId);
     }
+    public List<Guide> getGuides() throws Exception {
+        String sql="select * from guide";
+        GuideQuery q= new GuideQuery(this.getDataSource(), sql);
+        return execute(q);
+    }
 }
