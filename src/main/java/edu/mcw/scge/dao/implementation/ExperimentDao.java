@@ -8,9 +8,9 @@ import java.util.List;
 
 public class ExperimentDao extends AbstractDAO {
     public List<Experiment> getExperimentsByStudy(int studyId) throws Exception {
-        String sql="select ex.*, e.symbol, d.delivery_system_type, m.name, g.guide from experiment ex " +
+        String sql="select ex.*, e.symbol, d.ds_type, m.name, g.guide from experiment ex " +
                 "left outer join editor e on ex.editor_id = e.editor_id " +
-                "left outer join delivery_system d on ex.delivery_system_id = d.delivery_system_id " +
+                "left outer join delivery_system d on ex.delivery_system_id = d.ds_id " +
                 "left outer join model m on ex.model_id = m.model_id " +
                 "left outer join guide g on ex.guide_id = g.guide_id " +
                 "where ex.study_id=?";
@@ -18,9 +18,9 @@ public class ExperimentDao extends AbstractDAO {
         return execute(q, studyId);
     }
     public Experiment getExperiment(int experimentId) throws Exception {
-        String sql="select ex.*, e.symbol, d.delivery_system_type, m.name, g.guide from experiment ex " +
+        String sql="select ex.*, e.symbol, d.ds_type, m.name, g.guide from experiment ex " +
                 "left outer join editor e on ex.editor_id = e.editor_id " +
-                "left outer join delivery_system d on ex.delivery_system_id = d.delivery_system_id " +
+                "left outer join delivery_system d on ex.delivery_system_id = d.ds_id " +
                 "left outer join model m on ex.model_id = m.model_id " +
                 "left outer join guide g on ex.guide_id = g.guide_id " +
                 "where ex.experiment_id=?";
