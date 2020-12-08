@@ -18,10 +18,10 @@ public class DeliveryQuery extends MappingSqlQuery {
         Delivery d=new Delivery();
         d.setId(rs.getInt("ds_id"));
         d.setType(rs.getString("ds_type"));
-        d.setSubtype(rs.getString("ds_sybtype"));
+        d.setSubtype(rs.getString("ds_subtype"));
         d.setName(rs.getString("ds_name"));
         d.setSource(rs.getString("ds_source"));
-        d.setDescription(rs.getString("description"));
+        d.setDescription(rs.getString("ds_description"));
         d.setVvGenomeSerotype(rs.getString("ds_vv_genome_serotype"));
         d.setVvCapsidSerotype(rs.getString("ds_vv_capsid_serotype"));
         d.setLabId(rs.getString("ds_lab_id"));
@@ -29,7 +29,7 @@ public class DeliveryQuery extends MappingSqlQuery {
         d.setAnnotatedMap(rs.getString("ds_annotated_map"));
         d.setTiterMethod(rs.getString("ds_titer_method"));
         d.setRrid(rs.getString("ds_rrid"));
-        d.setNpSize(rs.getString("np_size"));
+        d.setNpSize(rs.getString("ds_np_size"));
         d.setMolTargetingAgent(rs.getString("ds_mol_targeting_agent"));
         return d;
     }

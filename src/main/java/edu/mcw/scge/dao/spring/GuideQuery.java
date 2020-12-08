@@ -22,12 +22,16 @@ public class GuideQuery extends MappingSqlQuery<Guide> {
         g.setPam(rs.getString("pam"));
         g.setAssembly(rs.getString("assembly"));
         g.setChr(rs.getString("chr"));
-        g.setStart(rs.getLong("start"));
-        g.setStop(rs.getLong("stop"));
+
+
+        //g.setStart(rs.getLong("start"));
+        //g.setStop(rs.getLong("stop"));
+
+
         g.setStrand(rs.getString("strand"));
         g.setGrnaLabId(rs.getString("grna_lab_id"));
         g.setgRnaFormat(rs.getString("grna_format"));
-        g.setSpacerSequence(rs.getString("spacerSequence"));
+        g.setSpacerSequence(rs.getString("spacer_sequence"));
         g.setSpacerLength(rs.getString("spacer_length"));
         g.setRepeatSequence(rs.getString("repeat_sequence"));
         g.setGuide(rs.getString("guide"));
