@@ -16,9 +16,9 @@ public class DeliveryQuery extends MappingSqlQuery {
     @Override
     protected Object mapRow(ResultSet rs, int rowNum) throws SQLException {
         Delivery d=new Delivery();
-        d.setDeliverySystemId(rs.getInt("delivery_system_id"));
-        d.setDeliverySystemType(rs.getString("delivery_system_type"));
-        d.setDeliverySystemSubtype(rs.getString("delivery_system_subtype"));
+        d.setDeliverySystemId(rs.getInt("ds_id"));
+        d.setDeliverySystemType(rs.getString("ds_type"));
+        d.setDeliverySystemSubtype(rs.getString("ds_subtype"));
         return d;
     }
 }
