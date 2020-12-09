@@ -43,7 +43,7 @@ public class ExperimentRecordDao extends AbstractDAO {
               "left join delivery_system d on (d.ds_id= x.ds_id) " +
               "left join application_method app on (app.application_method_id= x.application_method_id) " +
 
-              "left join guide g on (r.guide_id=x.guide_id) " +
+              "left join guide g on (g.guide_id=x.guide_id) " +
               "left join target t on (t.target_id=r.target_id) " +
               "left join model m on (m.model_id =x.model_id) " +
               "where s.lab_id=?";
