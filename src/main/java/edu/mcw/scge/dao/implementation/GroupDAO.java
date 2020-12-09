@@ -216,12 +216,7 @@ public List<Person> getGroupMembers(String groupName) throws Exception {
         return execute(q, groupId);
     }
     public static void main(String[] args) throws Exception {
-        GroupDAO groupDAO=new GroupDAO();
-       List<Person> pList= groupDAO.getGroupMembers("consortium group");
-        for(Person p:pList){
-            System.out.println(p.getName());
-        }
-        System.out.println("PERSONS: " + pList.size());
+
     }
 
 }
