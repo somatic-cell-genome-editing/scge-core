@@ -40,7 +40,7 @@ public class ExperimentRecordDao extends AbstractDAO {
       String sql="select * from study s join experiment x on (s.study_id=x.study_id) " +
               "left join experiment_record r on (r.experiment_id=x.experiment_id) " +
               "left join editor e on (e.editor_id= x.editor_id) " +
-              "left join delivery_system d on (d.delivery_system_id= x.delivery_system_id) " +
+              "left join delivery_system d on (d.ds_id= x.ds_id) " +
               "left join application_method app on (app.application_method_id= x.application_method_id) " +
 
               "left join guide g on (r.guide_id=x.guide_id) " +
@@ -69,7 +69,7 @@ public class ExperimentRecordDao extends AbstractDAO {
         String sql="select * from study s join experiment x on (s.study_id=x.study_id) " +
                 "left join experiment_record r on (r.experiment_id=x.experiment_id) " +
                 "left join editor e on (e.editor_id= x.editor_id) " +
-                "left join delivery_system d on (d.delivery_system_id= x.delivery_system_id) " +
+                "left join delivery_system d on (d.ds_id= x.ds_id) " +
                 "left join application_method app on (app.application_method_id= x.application_method_id) " +
 
                 "left join guide g on (x.guide_id=g.guide_id) " +
@@ -83,7 +83,7 @@ public class ExperimentRecordDao extends AbstractDAO {
         String sql="select * from  experiment x  " +
                 "left join experiment_record r on (r.experiment_id=x.experiment_id) " +
                 "left join editor e on (e.editor_id= x.editor_id) " +
-                "left join delivery_system d on (d.delivery_system_id= x.delivery_system_id) " +
+                "left join delivery_system d on (d.ds_id= x.ds_id) " +
                 "left join guide g on (x.guide_id=g.guide_id) " +
                 "left join target t on (t.target_id=r.target_id) " +
                 "left join model m on (m.model_id =x.model_id) " +

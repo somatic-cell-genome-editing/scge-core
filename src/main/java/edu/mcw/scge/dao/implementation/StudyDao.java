@@ -20,25 +20,6 @@ public class StudyDao extends AbstractDAO {
         return execute(q);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public List<Study> getStudiesByEditor(int editorId) throws Exception{
         String sql = "select s.study_id, s.raw_data, s.reference, s.study, s.lab_id, s.tier, s.type, s.submission_date, s.submitter_id as submitterId, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName " +
                 "from study s, institution i, person p, person pi, editor e, experiment ex " +
@@ -50,7 +31,7 @@ public class StudyDao extends AbstractDAO {
     public List<Study> getStudiesByDeliverySystem(int deliveryId) throws Exception{
         String sql = "select s.study_id, s.raw_data, s.reference, s.study, s.lab_id, s.tier, s.type, s.submission_date, s.submitter_id as submitterId, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName " +
                 "from study s, institution i, person p, person pi, delivery_system d, experiment ex " +
-                "where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id and d.ds_id=? and ex.delivery_system_id=d.ds_id and ex.study_id=s.study_id ";
+                "where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id and d.ds_id=? and ex.ds_id=d.ds_id and ex.study_id=s.study_id ";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q, deliveryId);
     }

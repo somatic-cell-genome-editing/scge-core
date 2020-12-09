@@ -23,8 +23,8 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         record.setGuide(rs.getString("guide"));
         record.setModelId(rs.getInt("model_id"));
         record.setModel(rs.getString("name"));
-        record.setDeliveryType(rs.getString("delivery_system_subtype"));
-        record.setDeliveryId(rs.getInt("delivery_system_id"));
+        record.setDeliveryType(rs.getString("ds_subtype"));
+        record.setDeliveryId(rs.getInt("ds_id"));
         record.setGuideDetectionMethod(rs.getString("detection_method"));
         record.setSpecificity(rs.getDouble("specificity_ratio"));
         record.setTargetLocus(rs.getString("locus_symbol"));
