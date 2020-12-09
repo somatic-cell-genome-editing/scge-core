@@ -16,9 +16,21 @@ public class DeliveryQuery extends MappingSqlQuery {
     @Override
     protected Object mapRow(ResultSet rs, int rowNum) throws SQLException {
         Delivery d=new Delivery();
-        d.setDeliverySystemId(rs.getInt("delivery_system_id"));
-        d.setDeliverySystemType(rs.getString("delivery_system_type"));
-        d.setDeliverySystemSubtype(rs.getString("delivery_system_subtype"));
+        d.setId(rs.getInt("ds_id"));
+        d.setType(rs.getString("ds_type"));
+        d.setSubtype(rs.getString("ds_subtype"));
+        d.setName(rs.getString("ds_name"));
+        d.setSource(rs.getString("ds_source"));
+        d.setDescription(rs.getString("ds_description"));
+        d.setVvGenomeSerotype(rs.getString("ds_vv_genome_serotype"));
+        d.setVvCapsidSerotype(rs.getString("ds_vv_capsid_serotype"));
+        d.setLabId(rs.getString("ds_lab_id"));
+        d.setVvCapsidVariant(rs.getString("ds_vv_capsid_variant"));
+        d.setAnnotatedMap(rs.getString("ds_annotated_map"));
+        d.setTiterMethod(rs.getString("ds_titer_method"));
+        d.setRrid(rs.getString("ds_rrid"));
+        d.setNpSize(rs.getString("ds_np_size"));
+        d.setMolTargetingAgent(rs.getString("ds_mol_targeting_agent"));
         return d;
     }
 }
