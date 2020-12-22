@@ -15,10 +15,16 @@ public class Experiment {
     private String deliverySystemType;
     private String guide;
     private String modelName;
+    private String studyName;
 
 
+    public String getStudyName() {
+        return studyName;
+    }
 
-
+    public void setStudyName(String studyName) {
+        this.studyName = studyName;
+    }
 
     public int getExperimentId() {
         return experimentId;

@@ -25,6 +25,13 @@ public class ExperimentQuery extends MappingSqlQuery<Experiment> {
         e.setDeliverySystemType(rs.getString("ds_type"));
         e.setModelName(rs.getString("name"));
         e.setGuide(rs.getString("guide"));
+
+        try {
+            e.setStudyName(rs.getString("study"));
+        }catch (Exception ignored) {
+
+        }
+
         return e;
     }
 }
