@@ -17,4 +17,12 @@ public class GuideDao extends AbstractDAO {
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
         return execute(q);
     }
+    public List<Guide> getGuidesByEditor(int editorId) throws Exception {
+        String sql="select g.* from experiment e, guide g where e.guide_id=g.guide_id and e.editor_id=?";
+        GuideQuery q= new GuideQuery(this.getDataSource(), sql);
+        return execute(q,editorId);
+    }
+
+
+
 }

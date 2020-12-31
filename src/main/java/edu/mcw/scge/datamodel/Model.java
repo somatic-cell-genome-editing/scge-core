@@ -12,6 +12,78 @@ public class Model {
      private String stockNumber;
     private String shortName;
      private String ageRange;
+     private String rrid;
+     private String source;
+     private String transgene;
+     private String subtype;
+     private String annotatedMap;
+     private String transgeneDescription;
+     private String transgeneReporter;
+     private String reporterDbIds;
+
+    public String getRrid() {
+        return rrid;
+    }
+
+    public void setRrid(String rrid) {
+        this.rrid = rrid;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getTransgene() {
+        return transgene;
+    }
+
+    public void setTransgene(String transgene) {
+        this.transgene = transgene;
+    }
+
+    public String getSubtype() {
+        return subtype;
+    }
+
+    public void setSubtype(String subtype) {
+        this.subtype = subtype;
+    }
+
+    public String getAnnotatedMap() {
+        return annotatedMap;
+    }
+
+    public void setAnnotatedMap(String annotatedMap) {
+        this.annotatedMap = annotatedMap;
+    }
+
+    public String getTransgeneDescription() {
+        return transgeneDescription;
+    }
+
+    public void setTransgeneDescription(String transgeneDescription) {
+        this.transgeneDescription = transgeneDescription;
+    }
+
+    public String getTransgeneReporter() {
+        return transgeneReporter;
+    }
+
+    public void setTransgeneReporter(String transgeneReporter) {
+        this.transgeneReporter = transgeneReporter;
+    }
+
+    public String getReporterDbIds() {
+        return reporterDbIds;
+    }
+
+    public void setReporterDbIds(String reporterDbIds) {
+        this.reporterDbIds = reporterDbIds;
+    }
 
     public int getModelId() {
         return modelId;

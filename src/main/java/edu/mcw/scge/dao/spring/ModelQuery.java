@@ -15,15 +15,23 @@ public class ModelQuery extends MappingSqlQuery {
     protected Object mapRow(ResultSet rs, int rowNum) throws SQLException {
         Model m=new Model();
         m.setModelId(rs.getInt("model_id"));
-        m.setName(rs.getString("name"));
-        m.setAge(rs.getString("age"));
-        m.setAgeRange(rs.getString("age_range"));
-        m.setOrganism(rs.getString("organism"));
-        m.setGenotype(rs.getString("genotype"));
-        m.setShortName(rs.getString("shot_name"));
-        m.setSex(rs.getString("sex"));
         m.setType(rs.getString("type"));
+        m.setName(rs.getString("name"));
+        m.setOrganism(rs.getString("organism"));
+        m.setAge(rs.getString("age"));
+        m.setSex(rs.getString("sex"));
+        m.setGenotype(rs.getString("genotype"));
         m.setStockNumber(rs.getString("stock_number"));
+        m.setShortName(rs.getString("shot_name"));
+        m.setAgeRange(rs.getString("age_range"));
+        m.setRrid(rs.getString("rrid"));
+        m.setSource(rs.getString("source"));
+        m.setTransgene(rs.getString("transgene"));
+        m.setSubtype(rs.getString("subtype"));
+        m.setAnnotatedMap(rs.getString("annotated_map"));
+        m.setTransgeneDescription(rs.getString("transgene_description"));
+        m.setTransgeneReporter(rs.getString("transgene_reporter"));
+        m.setReporterDbIds(rs.getString("reporter_db_ids"));
 
         return m;
     }
