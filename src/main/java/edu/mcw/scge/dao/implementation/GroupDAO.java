@@ -215,6 +215,15 @@ public List<Person> getGroupMembers(String groupName) throws Exception {
         PersonQuery q=new PersonQuery(this.getDataSource(), sql);
         return execute(q, groupId);
     }
+    public SCGEGroup getGroupById(int groupId) throws Exception{
+        String sql="select * from scge_group where group_id=?";
+        GroupQuery q=new GroupQuery(getDataSource(), sql);
+        List<SCGEGroup> groups=execute(q, groupId);
+        if(groups!=null){
+            return groups.get(0);
+        }
+        return null;
+    }
     public static void main(String[] args) throws Exception {
 
     }

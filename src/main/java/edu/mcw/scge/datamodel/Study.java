@@ -1,6 +1,7 @@
 package edu.mcw.scge.datamodel;
 
 import java.util.Date;
+import java.util.List;
 
 public class Study {
 
@@ -17,6 +18,7 @@ public class Study {
     private String pi;
     private String rawData;
     private String reference;
+    private List<Integer> associatedGroups;
 
     public int getStudyId() {
         return studyId;
@@ -120,5 +122,13 @@ public class Study {
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public List<Integer> getAssociatedGroups() {
+        return associatedGroups;
+    }
+
+    public void setAssociatedGroups(List<Integer> associatedGroups) {
+        this.associatedGroups = associatedGroups;
     }
 }
