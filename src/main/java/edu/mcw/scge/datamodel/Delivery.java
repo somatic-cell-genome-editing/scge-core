@@ -1,7 +1,7 @@
 package edu.mcw.scge.datamodel;
 
 public class Delivery {
-   private int id;
+    private int id;
     private String  type;
     private String subtype;
     private String name;
