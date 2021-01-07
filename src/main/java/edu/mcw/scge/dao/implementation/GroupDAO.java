@@ -112,6 +112,7 @@ public class GroupDAO extends AbstractDAO {
                 "where p.person_id=i.person_id " +
                 "and g.group_id=i.group_id " +
                 "and r.role_key=i.role_key " +
+              " and p.status='ACTIVE' " +
                 "and p.person_id =? ";
 
         Connection conn=null;
@@ -167,6 +168,7 @@ public class GroupDAO extends AbstractDAO {
                 "                where p.person_id=i.person_id  " +
                 "                and sg.group_id=i.group_id  " +
                 "                and r.role_key=i.role_key  " +
+                "                  and p.status='ACTIVE' " +
                 "               and p.person_id =? " +
                 "               and a.group_id=g.group_id " +
                 "               and a.subgroup_id=sg.group_id";
@@ -202,6 +204,7 @@ public class GroupDAO extends AbstractDAO {
 public List<Person> getGroupMembers(String groupName) throws Exception {
     String sql="select p.* from person p , person_info pi, scge_group g " +
             "where p.person_id=pi.person_id " +
+            "and p.status='ACTIVE' " +
             "and g.group_id=pi.group_id " +
             "and g.group_name=? order by p.name";
     PersonQuery q=new PersonQuery(this.getDataSource(), sql);
@@ -210,6 +213,7 @@ public List<Person> getGroupMembers(String groupName) throws Exception {
     public List<Person> getGroupMembersByGroupId(int groupId) throws Exception {
         String sql="select p.* from person p , person_info pi, scge_group g " +
                 "where p.person_id=pi.person_id " +
+                "AND p.status= 'ACTIVE' " +
                 "and g.group_id=pi.group_id " +
                 "and g.group_id=? order by p.name";
         PersonQuery q=new PersonQuery(this.getDataSource(), sql);
