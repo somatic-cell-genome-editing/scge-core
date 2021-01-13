@@ -9,6 +9,7 @@ public class SCGEGroup {
     private int groupId;
     private String groupName;
     private String groupShortName;
+    private String groupNameLC;
     private String groupType;
     private List<Person> members;
 
@@ -50,5 +51,13 @@ public class SCGEGroup {
 
     public void setMembers(List<Person> members) {
         this.members = members;
+    }
+
+    public String getGroupNameLC() {
+        return groupNameLC;
+    }
+
+    public void setGroupNameLC(String groupNameLC) {
+        this.groupNameLC = groupNameLC;
     }
 }
