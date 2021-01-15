@@ -1,5 +1,6 @@
 package edu.mcw.scge.dao.spring;
 
+import edu.mcw.scge.datamodel.Experiment;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 import org.springframework.jdbc.object.MappingSqlQuery;
 
@@ -13,24 +14,25 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
     }
     @Override
     protected ExperimentRecord mapRow(ResultSet rs, int rowNum) throws SQLException {
-        ExperimentRecord record=new ExperimentRecord();
-        record.setExperimentId(rs.getInt("EXPERIMENT_ID"));
-        record.setExperimentName(rs.getString("EXPERIMENT_NAME"));
-       record.setExperimentRecId(rs.getInt("EXPERIMENT_RECORD_ID"));
-       record.setEditorId(rs.getInt("editor_id"));
-        record.setEditorType(rs.getString("subtype"));
-        record.setGuideId(rs.getInt("guide_id"));
-        record.setGuide(rs.getString("guide"));
-        record.setModelId(rs.getInt("model_id"));
-        record.setModel(rs.getString("name"));
-        record.setDeliveryType(rs.getString("ds_subtype"));
-        record.setDeliveryId(rs.getInt("ds_id"));
-        record.setGuideDetectionMethod(rs.getString("detection_method"));
-        record.setSpecificity(rs.getDouble("specificity_ratio"));
-        record.setTargetLocus(rs.getString("locus_symbol"));
-        record.setTargetLocusSymbol(rs.getString("target_site"));
-        record.setSamplePrep(rs.getString("sample_prep"));
-        record.setApplicationMethodId(rs.getInt("application_method_id"));
-        return record;
+        ExperimentRecord e= new ExperimentRecord();
+        e.setExperimentId(rs.getInt("experiment_id"));
+        e.setExperimentName(rs.getString("experiment_name"));
+        e.setStudyId(rs.getInt("study_id"));
+        e.setGuideId(rs.getInt("guide_id"));
+        e.setDeliverySystemId(rs.getInt("ds_id"));
+        e.setModelId(rs.getInt("model_id"));
+        e.setEditorId(rs.getInt("editor_id"));
+        e.setEditorSymbol(rs.getString("symbol"));
+        e.setDeliverySystemType(rs.getString("ds_type"));
+        e.setModelName(rs.getString("name"));
+        e.setGuide(rs.getString("guide"));
+        e.setExperimentRecordId(rs.getInt("experiment_record_id"));
+
+        return e;
+
+
+
+
+
     }
 }

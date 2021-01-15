@@ -60,13 +60,6 @@ public class Study {
         this.tier = tier;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public Date getSubmissionDate() {
         return submissionDate;
