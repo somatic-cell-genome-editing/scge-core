@@ -21,10 +21,9 @@ import java.util.Map;
 public class GroupDAO extends AbstractDAO {
 
     public void insert(SCGEGroup g) throws Exception{
-        String sql="insert into scge_group values(?,?,?,?)";
+        String sql="insert into scge_group(group_id, group_name, group_short_name,group_type, group_name_lc) values(?,?,?,?,?)";
         update(sql,
-              g.getGroupId(), g.getGroupName(), g.getGroupShortName(),g.getGroupType()
-        );
+              g.getGroupId(), g.getGroupName(), g.getGroupShortName(),g.getGroupType(),g.getGroupNameLC());
 
     }
     public List<SCGEGroup> getAllGroups() throws Exception {
@@ -33,7 +32,7 @@ public class GroupDAO extends AbstractDAO {
         return q.execute();
     }
     public int getGroupId(String groupName) throws Exception {
-        String sql="select group_id from scge_group where group_name=?";
+        String sql="select group_id from scge_group where group_name_lc=?";
         IntListQuery q=new IntListQuery(this.getDataSource(), sql);
         List<Integer> group=execute(q, groupName);
         return group != null && group.size() > 0 ? group.get(0) : 0;
@@ -113,7 +112,8 @@ public class GroupDAO extends AbstractDAO {
                 "and g.group_id=i.group_id " +
                 "and r.role_key=i.role_key " +
               " and p.status='ACTIVE' " +
-                "and p.person_id =? ";
+                "and p.person_id =? " +
+              "and g.group_type='subgroup'";
 
         Connection conn=null;
         PreparedStatement stmt=null;
@@ -227,6 +227,13 @@ public List<Person> getGroupMembers(String groupName) throws Exception {
             return groups.get(0);
         }
         return null;
+    }
+    public List<Integer> getDCCNIHGroupIds() throws Exception {
+        String sql="select * from scge_group where group_id in (select subgroup_id from " +
+                "group_associations where group_id in (select group_id from scge_group where group_name='DCC' or group_name='NIH')\n" +
+                ")" ;
+        IntListQuery q= new IntListQuery(this.getDataSource(), sql);
+        return q.execute();
     }
     public static void main(String[] args) throws Exception {
 

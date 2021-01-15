@@ -23,12 +23,18 @@ public class GrantDao extends AbstractDAO {
     public Grant getGrantById(int id){
         return null;
     }
-    public void insertOrUpdate(Grant grant) throws Exception {
+    public int insertOrUpdate(Grant grant) throws Exception {
+        int grantId=0;
         Grant g=getGrantByTitle(grant.getGrantTitleLc());
+
         if(g==null){
-            int grantId=getNextKey("grant_seq");
+
+             grantId=getNextKey("grant_seq");
             grant.setGrantId(grantId);
             insert(grant);
+        }else{
+            grantId=g.getGrantId();
         }
+        return grantId;
     }
 }
