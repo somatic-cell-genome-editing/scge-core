@@ -22,6 +22,11 @@ public class VectorQuery extends MappingSqlQuery {
         v.setVectorId(rs.getInt("vector_id"));
         v.setType(rs.getString("type"));
         v.setSubtype(rs.getString("subtype"));
+        v.setAlias(rs.getString("alias"));
+        v.setAnnotatedMap(rs.getString("annotated_map"));
+        v.setSource(rs.getString("source"));
+        v.setStockNumber(rs.getString("stock_number"));
+        v.setVariant(rs.getString("variant"));
         return v;
     }
 }
