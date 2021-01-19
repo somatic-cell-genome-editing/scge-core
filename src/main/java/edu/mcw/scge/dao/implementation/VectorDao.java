@@ -14,7 +14,7 @@ public class VectorDao extends AbstractDAO {
     public List<Vector> getAllVectors() throws Exception {
         String sql="select * from vector";
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
-        return (List<Editor>)q.execute();
+        return (List<Vector>)q.execute();
     }
     public List<Vector> getVectorById(int id) throws Exception {
         String sql="select * from vector where vector_id=?";
