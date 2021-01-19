@@ -53,5 +53,10 @@ public class StatsDao extends AbstractDAO {
         return (Integer) q.execute().get(0);
     }
 
+    public Integer getVectorCount() throws Exception {
+        String sql="select count(*) from vector";
+        CountQuery q=new CountQuery(this.getDataSource(), sql);
+        return (Integer) q.execute().get(0);
+    }
 
 }

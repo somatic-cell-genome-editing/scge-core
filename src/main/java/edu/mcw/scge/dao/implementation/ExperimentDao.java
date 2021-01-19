@@ -77,6 +77,18 @@ public class ExperimentDao extends AbstractDAO {
         return execute(q, dsId);
     }
 
+    public List<ExperimentRecord> getExperimentsByVector(int vectorId) throws Exception {
+        String sql="select s.study, ex.*, e.symbol, d.ds_type, m.name as modelName, g.guide from experiment_record ex " +
+                "left outer join editor e on ex.editor_id = e.editor_id " +
+                "left outer join delivery_system d on ex.ds_id = d.ds_id " +
+                "left outer join model m on ex.model_id = m.model_id " +
+                "left outer join guide g on ex.guide_id = g.guide_id " +
+                "left outer join study s on ex.study_id = s.study_id " +
+                "where ex.ds_id=?";
+        ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
+        return execute(q, vectorId);
+    }
+
     public List<ExperimentRecord> getExperimentsByGuide(int guideId) throws Exception {
         String sql="select s.study, ex.*, e.symbol, d.ds_type, m.name as modelName, g.guide from experiment_record ex " +
                 "left outer join editor e on ex.editor_id = e.editor_id " +
