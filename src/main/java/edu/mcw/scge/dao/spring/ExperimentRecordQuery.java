@@ -16,7 +16,7 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
     protected ExperimentRecord mapRow(ResultSet rs, int rowNum) throws SQLException {
         ExperimentRecord e= new ExperimentRecord();
         e.setExperimentId(rs.getInt("experiment_id"));
-        e.setExperimentName(rs.getString("experiment_name"));
+        e.setExperimentName(rs.getString("name"));
         e.setStudyId(rs.getInt("study_id"));
         e.setGuideId(rs.getInt("guide_id"));
         e.setDeliverySystemId(rs.getInt("ds_id"));

@@ -42,8 +42,6 @@ public class StudyDao extends AbstractDAO {
         return execute(q,studyId);
     }
 
-
-
     public List<Study> getStudiesByEditor(int editorId) throws Exception{
         String sql = "select distinct s.study_id, s.raw_data, s.reference, s.study, s.lab_id, s.tier, s.type, s.submission_date, s.submitter_id as submitterId, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName " +
                 "from study s, institution i, person p, person pi, editor e, experiment ex " +
