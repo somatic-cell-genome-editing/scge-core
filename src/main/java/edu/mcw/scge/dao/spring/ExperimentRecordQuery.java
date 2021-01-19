@@ -24,7 +24,7 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         e.setEditorId(rs.getInt("editor_id"));
         e.setEditorSymbol(rs.getString("symbol"));
         e.setDeliverySystemType(rs.getString("ds_type"));
-        e.setModelName(rs.getString("name"));
+        e.setModelName(rs.getString("modelName"));
         e.setGuide(rs.getString("guide"));
         e.setExperimentRecordId(rs.getInt("experiment_record_id"));
 
