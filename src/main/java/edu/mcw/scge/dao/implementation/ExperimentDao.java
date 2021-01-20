@@ -29,7 +29,7 @@ public class ExperimentDao extends AbstractDAO {
         return execute(q, studyId);
     }
     public Experiment getExperiment(int experimentId) throws Exception {
-        String sql="select ex.*, e.symbol, d.ds_type, m.name as modelName, g.guide from experiment ex " +
+        String sql="select ex.*, e.symbol, d.ds_type, m.name as modelName, g.guide, v.name as vectorName from experiment ex " +
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +
                 "left outer join model m on ex.model_id = m.model_id " +
