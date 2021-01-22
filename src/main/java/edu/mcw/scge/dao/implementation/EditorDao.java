@@ -22,7 +22,7 @@ public class EditorDao extends AbstractDAO {
         return execute(q, id);
     }
     public List<Editor> getEditorByGuide(int guideId) throws Exception {
-        String sql="select ed.* from experiment e, editor ed where e.editor_id=ed.editor_id and e.guide_id=?";
+        String sql="select ed.* from experiment_record e, editor ed where e.editor_id=ed.editor_id and e.guide_id=?";
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
         return execute(q, guideId);
     }
