@@ -3,6 +3,7 @@ package edu.mcw.scge.datamodel;
 public class ExperimentRecord {
     private int experimentRecordId;
     private int experimentId;
+    private String experimentType;
     private String experimentName;
     private int studyId;
     private int editorId;
@@ -142,7 +143,16 @@ public class ExperimentRecord {
         return applicationMethodId;
     }
 
+    public String getExperimentType() {
+        return experimentType;
+    }
+
+    public void setExperimentType(String experimentType) {
+        this.experimentType = experimentType;
+    }
+
     public void setApplicationMethodId(int applicationMethodId) {
         this.applicationMethodId = applicationMethodId;
     }
+
 }

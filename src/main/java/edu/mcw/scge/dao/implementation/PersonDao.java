@@ -55,9 +55,16 @@ public class PersonDao extends AbstractDAO {
     }
 
     public List<Person> getPerson(Person p) throws Exception{
-        String sql="select * from person where name_lc=? and email_lc=? and status='ACTIVE' ";
+      //  String sql="select * from person where name_lc=? and email_lc=? and status='ACTIVE' ";
+        String sql="select * from person where email_lc=? and status='ACTIVE' ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
-         return execute(query,p.getName().toLowerCase(), p.getEmail().toLowerCase());
+         return execute(query, p.getEmail().toLowerCase());
+    }
+    public List<Person> getPersonByEmailId(Person p) throws Exception{
+        //  String sql="select * from person where name_lc=? and email_lc=? and status='ACTIVE' ";
+        String sql="select * from person where email_lc=? ";
+        PersonQuery query=new PersonQuery(this.getDataSource(), sql);
+        return execute(query, p.getEmail().toLowerCase());
     }
     public List<Person> getPersonById(int id) throws Exception{
         String sql="select * from person where person_id=? and status='ACTIVE' ";
@@ -136,6 +143,10 @@ public class PersonDao extends AbstractDAO {
     public void updateStatus(Person person) throws Exception {
         String sql="update person set status=? where email=?";
             update(sql, person.getStatus(), person.getEmail());
+    }
+    public void updateStatusToInactive(String status) throws Exception {
+        String sql="update person set status=?";
+        update(sql, status);
     }
     public void updateGoogleId(String googleId, int personId) throws Exception {
         String sql="update person set google_id=? where person_id=? ";
@@ -471,7 +482,7 @@ public class PersonDao extends AbstractDAO {
     }
     public int insertOrUpdate(Person p) throws Exception {
         int id=0;
-        List<Person> members=getPerson(p);
+        List<Person> members=getPersonByEmailId(p);
         if(members==null || members.size()==0 ){
             id= getNextKey("person_seq");
             p.setId(id);
@@ -505,6 +516,7 @@ public class PersonDao extends AbstractDAO {
     public static void main(String[] args) throws Exception {
        PersonDao dao=new PersonDao();
         try {
+            dao.updateStatusToInactive("INACTIVE");
             dao.insertFromFile("data/directory.xlsx");
         } catch (IOException e) {
             e.printStackTrace();

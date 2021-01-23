@@ -10,7 +10,6 @@ public class Study {
     private int labId;
     private String labName;
     private int tier;
-    private String type;
     private Date submissionDate;
     private int submitterId;
     private String submitter;
