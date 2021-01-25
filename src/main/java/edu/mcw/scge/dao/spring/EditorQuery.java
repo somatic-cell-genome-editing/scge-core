@@ -1,5 +1,6 @@
 package edu.mcw.scge.dao.spring;
 
+import edu.mcw.scge.dao.AbstractDAO;
 import edu.mcw.scge.datamodel.Access;
 import edu.mcw.scge.datamodel.Editor;
 import org.springframework.jdbc.object.MappingSqlQuery;
@@ -7,6 +8,7 @@ import org.springframework.jdbc.object.MappingSqlQuery;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by jthota on 9/10/2019.
@@ -38,6 +40,12 @@ public class EditorQuery extends MappingSqlQuery {
         e.setTarget_sequence(rs.getString("target_sequence"));
         e.setProteinFormat(rs.getString("protein_format"));
         e.setSource(rs.getString("source"));
+        e.setProteinSequence(rs.getString("protein_sequence"));
         return e;
+    }
+
+    public static List<Editor> execute(AbstractDAO dao, String sql, Object... params) throws Exception {
+        EditorQuery q = new EditorQuery(dao.getDataSource(), sql);
+        return dao.execute(q, params);
     }
 }

@@ -22,4 +22,21 @@ public class VectorDao extends AbstractDAO {
         VectorQuery q=new VectorQuery(this.getDataSource(), sql);
         return execute(q, id);
     }
+
+    public int insertVector(Vector vector) throws Exception{
+
+        String sql = "insert into vector ( name,vector_id,type,subtype,genome_serotype," +
+                "description,capsid_variant,source,lab_id,annotated_map,titer_method," +
+                "capsid_serotype ) values (?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        int vectorId = this.getNextKeyFromSequence("vector_seq");
+
+
+        update(sql, vector.getName(),vectorId,vector.getType(),vector.getSubtype(),vector.getGenomeSerotype(),
+                vector.getDescription(),vector.getCapsidVariant(),vector.getSource(),vector.getLabId(),vector.getAnnotatedMap(),
+                vector.getTiterMethod(),vector.getCapsidSerotype());
+
+        return vectorId;
+    }
+
 }

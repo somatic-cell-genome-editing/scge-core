@@ -33,4 +33,9 @@ public class DeliveryQuery extends MappingSqlQuery {
         d.setMolTargetingAgent(rs.getString("ds_mol_targeting_agent"));
         return d;
     }
+
+    public static List<Delivery> execute(AbstractDAO dao, String sql, Object... params) throws Exception {
+        DeliveryQuery q = new DeliveryQuery(dao.getDataSource(), sql);
+        return dao.execute(q, params);
+    }
 }

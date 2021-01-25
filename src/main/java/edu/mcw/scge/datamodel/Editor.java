@@ -24,6 +24,7 @@ public class Editor {
     private String target_sequence;
     private String proteinFormat;
     private String source;
+    private String proteinSequence;
 
     public int getId() {
         return id;
@@ -183,5 +184,13 @@ public class Editor {
 
     public void setAddGeneLink(String addGeneLink) {
         this.addGeneLink = addGeneLink;
+    }
+
+    public String getProteinSequence() {
+        return proteinSequence;
+    }
+
+    public void setProteinSequence(String proteinSequence) {
+        this.proteinSequence = proteinSequence;
     }
 }
