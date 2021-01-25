@@ -113,5 +113,15 @@ public class ExperimentDao extends AbstractDAO {
         ExperimentQuery q=new ExperimentQuery(this.getDataSource(), sql);
         return q.execute();
     }
+	
+	public void insertExperiment(Experiment experiment) throws Exception{
+
+        String sql = "insert into experiment (experiment_id,name,study_id, " +
+                "type  ) values (?,?,?,?)";
+
+        int experimentId = this.getNextKeyFromSequence("experiment_seq");
+        
+        update(sql, experimentId,experiment.getName(),experiment.getStudyId(),experiment.getType());
+    }
 
 }

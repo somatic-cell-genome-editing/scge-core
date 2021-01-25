@@ -22,12 +22,8 @@ public class DeliveryQuery extends MappingSqlQuery {
         d.setName(rs.getString("ds_name"));
         d.setSource(rs.getString("ds_source"));
         d.setDescription(rs.getString("ds_description"));
-        d.setVvGenomeSerotype(rs.getString("ds_vv_genome_serotype"));
-        d.setVvCapsidSerotype(rs.getString("ds_vv_capsid_serotype"));
         d.setLabId(rs.getString("ds_lab_id"));
-        d.setVvCapsidVariant(rs.getString("ds_vv_capsid_variant"));
         d.setAnnotatedMap(rs.getString("ds_annotated_map"));
-        d.setTiterMethod(rs.getString("ds_titer_method"));
         d.setRrid(rs.getString("ds_rrid"));
         d.setNpSize(rs.getString("ds_np_size"));
         d.setMolTargetingAgent(rs.getString("ds_mol_targeting_agent"));

@@ -104,5 +104,13 @@ public class StudyDao extends AbstractDAO {
         );
     }
 
-
+	public void insertStudy(Study s) throws Exception{
+        String sql = "insert into study (study_id,study,lab_id,tier,submission_date,\n" +
+                "submitter_id,pi_id,modified_by,last_modified_date,raw_data,\n" +
+                "reference,group_id,initiative ) values (?,?,?,?,?,?,?,?,?,?,?,?)";
+        int studyId = this.getNextKeyFromSequence("study_seq");
+        update(sql, studyId,s.getStudy(),s.getLabId(),s.getTier(),s.getSubmissionDate(),
+                s.getSubmitterId(),s.getPiId(),null,null,s.getRawData(),s.getReference(),
+                null,null);
+    }
 }
