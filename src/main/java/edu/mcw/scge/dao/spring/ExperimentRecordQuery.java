@@ -17,7 +17,6 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         ExperimentRecord e= new ExperimentRecord();
         e.setExperimentId(rs.getInt("experiment_id"));
         e.setExperimentName(rs.getString("name"));
-        e.setExperimentType(rs.getString("type"));
         e.setStudyId(rs.getInt("study_id"));
         e.setGuideId(rs.getInt("guide_id"));
         e.setDeliverySystemId(rs.getInt("ds_id"));
@@ -28,7 +27,7 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         e.setModelName(rs.getString("modelName"));
         e.setGuide(rs.getString("guide"));
         e.setExperimentRecordId(rs.getInt("experiment_record_id"));
-		e.setVectorId(rs.getInt("vector_id"));
+        e.setVectorId(rs.getInt("vector_id"));
         return e;
 
 
