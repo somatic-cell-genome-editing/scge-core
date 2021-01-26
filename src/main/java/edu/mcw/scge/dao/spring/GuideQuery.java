@@ -30,8 +30,8 @@ public class GuideQuery extends MappingSqlQuery<Guide> {
         g.setPam(rs.getString("pam"));
         g.setAssembly(rs.getString("assembly"));
         g.setChr(rs.getString("chr"));
-        g.setStart(rs.getLong("start"));
-        g.setStop(rs.getLong("stop"));
+        g.setStart(rs.getString("start"));
+        g.setStop(rs.getString("stop"));
         g.setStrand(rs.getString("strand"));
         g.setSpacerSequence(rs.getString("spacer_sequence"));
         g.setSpacerLength(rs.getString("spacer_length"));
