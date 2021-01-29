@@ -19,14 +19,15 @@ public class StudyQuery extends MappingSqlQuery {
         s.setStudy(rs.getString("study"));
         s.setTier(rs.getInt("tier"));
         s.setSubmissionDate(rs.getDate("submission_date"));
-        s.setSubmitterId(rs.getInt("submitterId"));
+        s.setSubmitterId(rs.getInt("submitter_id"));
         s.setPiId(rs.getInt("piId"));
         s.setLabName(rs.getString("institution_name"));
         s.setSubmitter(rs.getString("submitterName"));
         s.setPi(rs.getString("piName"));
         s.setRawData(rs.getString("raw_data"));
         s.setReference(rs.getString("reference"));
-
+        s.setGroupId(rs.getInt("group_id"));
+        s.setGrantId(rs.getInt("grant_id"));
         return s;
     }
 }

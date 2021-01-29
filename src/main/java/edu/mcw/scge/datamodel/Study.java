@@ -18,6 +18,8 @@ public class Study {
     private String rawData;
     private String reference;
     private List<Integer> associatedGroups;
+    private int groupId;
+    private int grantId;
 
     public int getStudyId() {
         return studyId;
@@ -122,5 +124,21 @@ public class Study {
 
     public void setAssociatedGroups(List<Integer> associatedGroups) {
         this.associatedGroups = associatedGroups;
+    }
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
+
+    public int getGrantId() {
+        return grantId;
+    }
+
+    public void setGrantId(int grantId) {
+        this.grantId = grantId;
     }
 }

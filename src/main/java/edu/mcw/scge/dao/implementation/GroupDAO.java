@@ -164,14 +164,26 @@ public class GroupDAO extends AbstractDAO {
 
     public List<PersonInfo> getGroupsNRolesByPersonId(int personId) throws Exception {
 
-        String sql="select p.person_id, g.group_name as group_name, sg.group_name as subgroup_name, r.role  from scge_group g , person_info i, person p, scge_roles r, scge_group sg, group_associations a " +
+      /*  String sql="select p.person_id, g.group_name as group_name, sg.group_name as subgroup_name, r.role  from scge_group g , person_info i, person p, scge_roles r, scge_group sg, group_associations a " +
                 "                where p.person_id=i.person_id  " +
                 "                and sg.group_id=i.group_id  " +
                 "                and r.role_key=i.role_key  " +
                 "                  and p.status='ACTIVE' " +
                 "               and p.person_id =? " +
                 "               and a.group_id=g.group_id " +
-                "               and a.subgroup_id=sg.group_id";
+                "               and a.subgroup_id=sg.group_id";(/
+
+       */
+        String sql=" select p.person_id, g.group_name as group_name,g.group_id as group_id, sg.group_name as subgroup_name,sg.group_id as subgroup_id, r.role , grnt.grant_title, grnt.grant_initiative,grnt.grant_id " +
+                " from scge_group g , person_info i, person p, scge_roles r, scge_group sg, group_associations a, scge_grants grnt " +
+                "                               where p.person_id=i.person_id   " +
+                "                                and sg.group_id=i.group_id   " +
+                "                                and r.role_key=i.role_key   " +
+                "                                  and p.status='ACTIVE'  " +
+                "                               and p.person_id =? " +
+                "                               and a.group_id=g.group_id  " +
+                "                               and a.subgroup_id=sg.group_id " +
+                "                               and grnt.grant_id=i.grant_id ";
         PersonInfoQuery q=new PersonInfoQuery(this.getDataSource(), sql);
         return execute(q, personId);
     }

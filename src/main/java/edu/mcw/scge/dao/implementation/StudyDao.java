@@ -3,11 +3,12 @@ package edu.mcw.scge.dao.implementation;
 import edu.mcw.scge.dao.AbstractDAO;
 import edu.mcw.scge.dao.spring.StudyAssociationQuery;
 import edu.mcw.scge.dao.spring.StudyQuery;
+import edu.mcw.scge.datamodel.PersonInfo;
 import edu.mcw.scge.datamodel.Study;
 import edu.mcw.scge.datamodel.StudyAssociation;
 
-import java.util.Date;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 public class StudyDao extends AbstractDAO {
     public List<Study> getStudiesByLab(int labId) throws Exception{
@@ -31,11 +32,17 @@ public class StudyDao extends AbstractDAO {
 
     }
     public List<Study> getStudies() throws Exception{
-        String sql="select s.study_id, s.raw_data, s.reference, s.study, s.lab_id, s.tier, s.submission_date, s.submitter_id as submitterId, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id";
+        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q);
     }
-
+    public List<Study> getStudiesByGrantId(int grantId) throws Exception{
+        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi where s.lab_id=i.institution_id " +
+                "and s.submitter_id=p.person_id and s.pi_id=pi.person_id" +
+                " and s.grant_id=?";
+        StudyQuery q=new StudyQuery(this.getDataSource(), sql);
+        return execute(q, grantId);
+    }
     public List<Study> getStudyById(int studyId) throws Exception{
         String sql="select s.study_id, s.raw_data, s.reference, s.study, s.lab_id, s.tier, s.submission_date, s.submitter_id as submitterId, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi where s.study_id=? and s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
@@ -75,7 +82,7 @@ public class StudyDao extends AbstractDAO {
     }
 
     public List<Study> getStudiesByGuide(int guideId) throws Exception{
-        String sql = "select distinct s.study_id, s.raw_data, s.reference, s.study, s.lab_id, s.tier, s.submission_date, s.submitter_id as submitterId, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName " +
+        String sql = "select distinct s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName " +
                 "from study s, institution i, person p, person pi, guide g, experiment_record ex " +
                 "where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id and g.guide_id=? and ex.guide_id=g.guide_id and ex.study_id=s.study_id ";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
@@ -112,5 +119,47 @@ public class StudyDao extends AbstractDAO {
         update(sql, studyId,s.getStudy(),s.getLabId(),s.getTier(),s.getSubmissionDate(),
                 s.getSubmitterId(),s.getPiId(),null,null,s.getRawData(),s.getReference(),
                 null,null);
+    }
+    public void updateStudyGrantNGroup(int grantId, int groupId, int personId) throws Exception {
+        String sql="update study set grant_id=? , group_id=? where pi_id=?";
+        update(sql, grantId,groupId,personId);
+    }
+    public static void main(String[] args){
+        StudyDao sdao=new StudyDao();
+        PersonDao pdao=new PersonDao();
+        try {
+            List<Study> studies= sdao.getStudies();
+            for(Study s:studies){
+                int piId=s.getPiId();
+                int grantId=0;
+                int groupId=0;
+                List<PersonInfo> infoList=pdao.getPersonInfo(piId);
+                List<Integer> groupIds=new ArrayList<>();
+                List<Integer> grantIds=new ArrayList<>();
+                for(PersonInfo i:infoList){
+                    if(!groupIds.contains(i.getSubGroupId()))
+                    groupIds.add(i.getSubGroupId());
+                    if(!grantIds.contains(i.getGrantId()))
+                    grantIds.add(i.getGrantId());
+                }
+                if(groupIds.size()==1){
+                   groupId= groupIds.get(0);
+                }else{
+                    System.out.println("PERSON ID: "+ piId +"\tGROUPS:"+groupIds.size());
+                }
+                if(grantIds.size()==1){
+                    grantId=grantIds.get(0);
+                }else{
+                    System.out.println("PERSON ID: "+ piId +"\tGRANTS:"+grantIds.size());
+
+                }
+             //   System.out.println("PI_ID: "+ piId+"\tGRANT_ID: "+grantId+"\tGROUP_ID:"+groupId);
+              sdao.updateStudyGrantNGroup(grantId,groupId,piId);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("Done!!");
     }
 }
