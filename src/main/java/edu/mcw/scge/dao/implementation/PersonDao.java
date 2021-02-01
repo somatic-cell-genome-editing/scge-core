@@ -2,11 +2,13 @@ package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
 import edu.mcw.scge.dao.spring.IntListQuery;
+import edu.mcw.scge.dao.spring.PersonInfoQuery;
 import edu.mcw.scge.dao.spring.PersonQuery;
 import edu.mcw.scge.dao.spring.StringListQuery;
 import edu.mcw.scge.datamodel.Grant;
 import edu.mcw.scge.datamodel.Person;
 
+import edu.mcw.scge.datamodel.PersonInfo;
 import edu.mcw.scge.datamodel.SCGEGroup;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -55,9 +57,16 @@ public class PersonDao extends AbstractDAO {
     }
 
     public List<Person> getPerson(Person p) throws Exception{
-        String sql="select * from person where name_lc=? and email_lc=? and status='ACTIVE' ";
+      //  String sql="select * from person where name_lc=? and email_lc=? and status='ACTIVE' ";
+        String sql="select * from person where email_lc=? and status='ACTIVE' ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
-         return execute(query,p.getName().toLowerCase(), p.getEmail().toLowerCase());
+         return execute(query, p.getEmail().toLowerCase());
+    }
+    public List<Person> getPersonByEmailId(Person p) throws Exception{
+        //  String sql="select * from person where name_lc=? and email_lc=? and status='ACTIVE' ";
+        String sql="select * from person where email_lc=? ";
+        PersonQuery query=new PersonQuery(this.getDataSource(), sql);
+        return execute(query, p.getEmail().toLowerCase());
     }
     public List<Person> getPersonById(int id) throws Exception{
         String sql="select * from person where person_id=? and status='ACTIVE' ";
@@ -136,6 +145,10 @@ public class PersonDao extends AbstractDAO {
     public void updateStatus(Person person) throws Exception {
         String sql="update person set status=? where email=?";
             update(sql, person.getStatus(), person.getEmail());
+    }
+    public void updateStatusToInactive(String status) throws Exception {
+        String sql="update person set status=?";
+        update(sql, status);
     }
     public void updateGoogleId(String googleId, int personId) throws Exception {
         String sql="update person set google_id=? where person_id=? ";
@@ -356,10 +369,10 @@ public class PersonDao extends AbstractDAO {
                 if (personId > 0) {
                     int defaultGoupId = getGroupId("consortium", "group");
                     gdao.makeAssociations(defaultGoupId, groupId);
-                    if (groupId != 0 && personId != 0) {
+                    if (groupId != 0 ) {
                         insertPersonInfo(personId, Arrays.asList(1), groupId, grantId);
                     }
-                    if (subgroupId != 0 && personId != 0)
+                    if (subgroupId != 0)
                         insertPersonInfo(personId, roleIds, subgroupId, grantId);
                     gdao.makeAssociations(groupId, subgroupId);
                 }
@@ -471,7 +484,7 @@ public class PersonDao extends AbstractDAO {
     }
     public int insertOrUpdate(Person p) throws Exception {
         int id=0;
-        List<Person> members=getPerson(p);
+        List<Person> members=getPersonByEmailId(p);
         if(members==null || members.size()==0 ){
             id= getNextKey("person_seq");
             p.setId(id);
@@ -502,9 +515,25 @@ public class PersonDao extends AbstractDAO {
             return "";
         }
     }
+    public List<PersonInfo> getPersonInfo(int personId) throws Exception {
+        String sql="select p.person_id, g.group_name as group_name,g.group_id as group_id,sg.group_type, sg.group_name as subgroup_name,sg.group_id as subgroup_id, r.role , grnt.grant_title, grnt.grant_initiative,grnt.grant_id " +
+                " from scge_group g , person_info i, person p, scge_roles r, scge_group sg, group_associations a, scge_grants grnt " +
+                "                               where p.person_id=i.person_id   " +
+                "                                and sg.group_id=i.group_id   " +
+                "                                and r.role_key=i.role_key   " +
+                "                                  and p.status='ACTIVE'  " +
+                "                               and p.person_id =? " +
+                "                               and a.group_id=g.group_id  " +
+                "                               and a.subgroup_id=sg.group_id " +
+                "                               and grnt.grant_id=i.grant_id " +
+                "                               and sg.group_type='subgroup'";
+        PersonInfoQuery q= new PersonInfoQuery(this.getDataSource(), sql);
+        return execute(q,personId);
+    }
     public static void main(String[] args) throws Exception {
        PersonDao dao=new PersonDao();
         try {
+            dao.updateStatusToInactive("INACTIVE");
             dao.insertFromFile("data/directory.xlsx");
         } catch (IOException e) {
             e.printStackTrace();

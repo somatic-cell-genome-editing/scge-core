@@ -5,20 +5,14 @@ public class Vector {
     private String name;
     private String type;
     private String subtype;
-    private String alias;
+    private String genomeSerotype;
+    private String capsidSerotype;
     private String description;
-    private String variant;
+    private String capsidVariant;
     private String source;
-    private String stockNumber;
+    private String labId;
     private String annotatedMap;
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
+    private String titerMethod;
 
     public String getDescription() {
         return description;
@@ -28,28 +22,12 @@ public class Vector {
         this.description = description;
     }
 
-    public String getVariant() {
-        return variant;
-    }
-
-    public void setVariant(String variant) {
-        this.variant = variant;
-    }
-
     public String getSource() {
         return source;
     }
 
     public void setSource(String source) {
         this.source = source;
-    }
-
-    public String getStockNumber() {
-        return stockNumber;
-    }
-
-    public void setStockNumber(String stockNumber) {
-        this.stockNumber = stockNumber;
     }
 
     public String getAnnotatedMap() {
@@ -90,5 +68,45 @@ public class Vector {
 
     public void setSubtype(String subtype) {
         this.subtype = subtype;
+    }
+
+    public String getGenomeSerotype() {
+        return genomeSerotype;
+    }
+
+    public void setGenomeSerotype(String genomeSerotype) {
+        this.genomeSerotype = genomeSerotype;
+    }
+
+    public String getCapsidSerotype() {
+        return capsidSerotype;
+    }
+
+    public void setCapsidSerotype(String capsidSerotype) {
+        this.capsidSerotype = capsidSerotype;
+    }
+
+    public String getCapsidVariant() {
+        return capsidVariant;
+    }
+
+    public void setCapsidVariant(String capsidVariant) {
+        this.capsidVariant = capsidVariant;
+    }
+
+    public String getLabId() {
+        return labId;
+    }
+
+    public void setLabId(String labId) {
+        this.labId = labId;
+    }
+
+    public String getTiterMethod() {
+        return titerMethod;
+    }
+
+    public void setTiterMethod(String titerMethod) {
+        this.titerMethod = titerMethod;
     }
 }

@@ -9,8 +9,8 @@ public class Guide  {
     private String pam;
     private String assembly;
     private String chr;
-    private long start;
-    private long stop;
+    private String start;
+    private String stop;
     private String strand;
     private String grnaLabId;
     private String spacerLength;
@@ -117,19 +117,19 @@ public class Guide  {
         this.chr = chr;
     }
 
-    public long getStart() {
+    public String getStart() {
         return start;
     }
 
-    public void setStart(long start) {
+    public void setStart(String start) {
         this.start = start;
     }
 
-    public long getStop() {
+    public String getStop() {
         return stop;
     }
 
-    public void setStop(long stop) {
+    public void setStop(String stop) {
         this.stop = stop;
     }
 

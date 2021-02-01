@@ -12,10 +12,33 @@ public class DeliveryDao extends AbstractDAO {
         DeliveryQuery q=new DeliveryQuery(this.getDataSource(), sql);
         return execute(q, deliverySystemId);
     }
-    public List<Delivery> getDeliverySystems() throws  Exception{
+	public List<Delivery> getDeliverySystems() throws  Exception{
         String sql="select * from delivery_system";
         DeliveryQuery q=new DeliveryQuery(this.getDataSource(), sql);
         return execute(q);
+	}	
+    public int insertDelivery(Delivery delivery) throws Exception{
+
+        String sql = "insert into delivery_system ( ds_id, ds_type, ds_subtype, ds_name, ds_source, " +
+                "ds_description, ds_lab_id, ds_annotated_map, ds_rrid, " +
+                "ds_np_size, ds_mol_targeting_agent ) values (?,?,?,?,?,?,?,?,?,?,?)";
+
+        int deliveryId = this.getNextKeyFromSequence("delivery_seq");
+
+
+        update(sql, deliveryId,delivery.getType(),delivery.getSubtype(),delivery.getName(),
+                delivery.getSource(),delivery.getDescription(),
+                delivery.getLabId(),delivery.getAnnotatedMap(),
+                delivery.getRrid(),delivery.getNpSize(),delivery.getMolTargetingAgent());
+
+        return deliveryId;
     }
 
+    public int getDeliveryId(Delivery delivery) throws Exception {
+
+        String sql = "select * from delivery_system where ds_type =? and ds_subtype=? and ds_name=?";
+
+        List<Delivery> list = DeliveryQuery.execute(this,sql,delivery.getType(),delivery.getSubtype(),delivery.getName() );
+        return list.isEmpty() ? 0 : list.get(0).getId();
+    }
 }

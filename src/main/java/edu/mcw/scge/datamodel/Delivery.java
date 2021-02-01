@@ -7,12 +7,8 @@ public class Delivery {
     private String name;
     private String source;
     private String description;
-    private String vvGenomeSerotype;
-    private String vvCapsidSerotype;
     private String labId;
-    private String vvCapsidVariant;
     private String annotatedMap;
-    private String titerMethod;
     private String rrid;
     private String npSize;
     private String molTargetingAgent;
@@ -66,22 +62,6 @@ public class Delivery {
         this.description = description;
     }
 
-    public String getVvGenomeSerotype() {
-        return vvGenomeSerotype;
-    }
-
-    public void setVvGenomeSerotype(String vvGenomeSerotype) {
-        this.vvGenomeSerotype = vvGenomeSerotype;
-    }
-
-    public String getVvCapsidSerotype() {
-        return vvCapsidSerotype;
-    }
-
-    public void setVvCapsidSerotype(String vvCapsidSerotype) {
-        this.vvCapsidSerotype = vvCapsidSerotype;
-    }
-
     public String getLabId() {
         return labId;
     }
@@ -90,28 +70,12 @@ public class Delivery {
         this.labId = labId;
     }
 
-    public String getVvCapsidVariant() {
-        return vvCapsidVariant;
-    }
-
-    public void setVvCapsidVariant(String vvCapsidVariant) {
-        this.vvCapsidVariant = vvCapsidVariant;
-    }
-
     public String getAnnotatedMap() {
         return annotatedMap;
     }
 
     public void setAnnotatedMap(String annotatedMap) {
         this.annotatedMap = annotatedMap;
-    }
-
-    public String getTiterMethod() {
-        return titerMethod;
-    }
-
-    public void setTiterMethod(String titerMethod) {
-        this.titerMethod = titerMethod;
     }
 
     public String getRrid() {
