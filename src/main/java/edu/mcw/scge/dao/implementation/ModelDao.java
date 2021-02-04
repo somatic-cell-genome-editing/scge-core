@@ -26,18 +26,17 @@ public class ModelDao extends AbstractDAO {
 
     public int insertModel(Model model) throws Exception{
 
-        String sql = "insert into model ( model_id, type, name, organism, age, sex, genotype, stock_number," +
-                "shot_name, age_range, rrid, source, transgene, subtype, annotated_map," +
-                "transgene_description, transgene_reporter, reporter_db_ids )" +
-                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into model ( model_id, type, name, organism, sex, rrid, source, transgene, subtype, annotated_map," +
+                "transgene_description, transgene_reporter,model_description,parental_origin,strain_code,strain_alias )" +
+                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         int modelId = this.getNextKeyFromSequence("model_seq");
 
 
-        update(sql, modelId, model.getType(), model.getName(), model.getOrganism(),model.getAge(),model.getSex(),
-                model.getGenotype(),model.getStockNumber(),model.getShortName(),model.getAgeRange(),model.getRrid(),
+        update(sql, modelId, model.getType(), model.getName(), model.getOrganism(),model.getSex(), model.getRrid(),
                 model.getSource(),model.getTransgene(),model.getSubtype(),model.getAnnotatedMap(),
-                model.getTransgeneDescription(),model.getTransgeneReporter(),model.getReporterDbIds());
+                model.getTransgeneDescription(),model.getTransgeneReporter(),model.getDescription(),model.getParentalOrigin(),
+                model.getStrainCode(),model.getStrainAlias());
 
         return modelId;
     }

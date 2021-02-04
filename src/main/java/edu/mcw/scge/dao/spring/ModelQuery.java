@@ -18,22 +18,20 @@ public class ModelQuery extends MappingSqlQuery {
         Model m=new Model();
         m.setModelId(rs.getInt("model_id"));
         m.setName(rs.getString("name"));
-        m.setAge(rs.getString("age"));
-        m.setAgeRange(rs.getString("age_range"));
         m.setOrganism(rs.getString("organism"));
-        m.setGenotype(rs.getString("genotype"));
-        m.setShortName(rs.getString("shot_name"));
         m.setSex(rs.getString("sex"));
         m.setType(rs.getString("type"));
-        m.setStockNumber(rs.getString("stock_number"));
         m.setRrid(rs.getString("rrid"));
         m.setSource(rs.getString("source"));
         m.setSubtype(rs.getString("subtype"));
         m.setTransgene(rs.getString("transgene"));
         m.setTransgeneDescription(rs.getString("transgene_description"));
         m.setTransgeneReporter(rs.getString("transgene_reporter"));
-        m.setReporterDbIds(rs.getString("reporter_db_ids"));
         m.setAnnotatedMap(rs.getString("annotated_map"));
+        m.setParentalOrigin(rs.getString("parental_origin"));
+        m.setStrainCode(rs.getString("strain_code"));
+        m.setStrainAlias(rs.getString("starin_alias"));
+        m.setDescription(rs.getString("model_description"));
         return m;
     }
 

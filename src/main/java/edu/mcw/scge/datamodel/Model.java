@@ -6,12 +6,7 @@ public class Model {
    private String type;
     private String name;
     private String  organism;
-    private String age;
      private String sex;
-    private String genotype;
-     private String stockNumber;
-    private String shortName;
-     private String ageRange;
      private String rrid;
      private String source;
      private String transgene;
@@ -19,7 +14,11 @@ public class Model {
      private String annotatedMap;
      private String transgeneDescription;
      private String transgeneReporter;
-     private String reporterDbIds;
+    private String parentalOrigin;
+    private String description;
+    private String strainCode;
+    private String strainAlias;
+
 
     public String getRrid() {
         return rrid;
@@ -77,14 +76,6 @@ public class Model {
         this.transgeneReporter = transgeneReporter;
     }
 
-    public String getReporterDbIds() {
-        return reporterDbIds;
-    }
-
-    public void setReporterDbIds(String reporterDbIds) {
-        this.reporterDbIds = reporterDbIds;
-    }
-
     public int getModelId() {
         return modelId;
     }
@@ -117,14 +108,6 @@ public class Model {
         this.organism = organism;
     }
 
-    public String getAge() {
-        return age;
-    }
-
-    public void setAge(String age) {
-        this.age = age;
-    }
-
     public String getSex() {
         return sex;
     }
@@ -133,35 +116,35 @@ public class Model {
         this.sex = sex;
     }
 
-    public String getGenotype() {
-        return genotype;
+    public String getParentalOrigin() {
+        return parentalOrigin;
     }
 
-    public void setGenotype(String genotype) {
-        this.genotype = genotype;
+    public void setParentalOrigin(String parentalOrigin) {
+        this.parentalOrigin = parentalOrigin;
     }
 
-    public String getStockNumber() {
-        return stockNumber;
+    public String getDescription() {
+        return description;
     }
 
-    public void setStockNumber(String stockNumber) {
-        this.stockNumber = stockNumber;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getShortName() {
-        return shortName;
+    public String getStrainCode() {
+        return strainCode;
     }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
+    public void setStrainCode(String strainCode) {
+        this.strainCode = strainCode;
     }
 
-    public String getAgeRange() {
-        return ageRange;
+    public String getStrainAlias() {
+        return strainAlias;
     }
 
-    public void setAgeRange(String ageRange) {
-        this.ageRange = ageRange;
+    public void setStrainAlias(String strainAlias) {
+        this.strainAlias = strainAlias;
     }
 }
