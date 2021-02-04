@@ -19,7 +19,10 @@ public class ApplicationMethodQuery extends MappingSqlQuery {
         a.setDaysPostInjection(rs.getString("days_post_injection"));
         a.setSiteOfApplication(rs.getString("site_of_application"));
         a.setDosage(rs.getString("dosage"));
-        a.setTimeCourse(rs.getString("time_course"));
+        a.setEditorFormat(rs.getString("editor_format"));
+        a.setInjectionRate(rs.getString("injection_rate"));
+        a.setInjectionFrequency(rs.getString("injection_frequency"));
+        a.setInjectionVolume(rs.getString("injection_volume"));
         return a;
     }
 }

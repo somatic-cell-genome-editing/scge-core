@@ -12,4 +12,18 @@ public class ApplicationMethodDao extends AbstractDAO {
         ApplicationMethodQuery q=new ApplicationMethodQuery(this.getDataSource(), sql);
         return execute(q, applicationId);
     }
+
+    public int insertApplicationMethod(ApplicationMethod method) throws Exception{
+
+        String sql = "insert into application_method ( application_method_id, application_type, site_of_application," +
+                "editor_format, dosage, days_post_injection, injection_rate, injection_frequency, injection_volume ) values (?,?,?,?,?,?,?,?,?)";
+
+        int methodId = this.getNextKeyFromSequence("method_seq");
+
+
+        update(sql, methodId, method.getApplicationType(),method.getSiteOfApplication(),method.getEditorFormat(),
+                method.getDosage(),method.getDaysPostInjection(),method.getInjectionRate(),method.getInjectionFrequency(),method.getInjectionVolume());
+
+        return methodId;
+    }
 }
