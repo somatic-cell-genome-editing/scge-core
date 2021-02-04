@@ -17,7 +17,6 @@ public class Guide  {
     private String spacerSequence;
     private String repeatSequence;
     private String guide;
-    private String detectionMethod;
     private String forwardPrimer;
     private String reversePrimer;
     private String linkerSequence;
@@ -26,7 +25,10 @@ public class Guide  {
     private String stemloop2Sequence;
     private String stemloop3Sequence;
     private String source;
-    private String gRnaFormat;
+    private String guideFormat;
+    private String modifications;
+    private String guideDescription;
+    private String standardScaffoldSequence;
 
 
     public String getSpacerSequence() {
@@ -51,22 +53,6 @@ public class Guide  {
 
     public void setGuide(String guide) {
         this.guide = guide;
-    }
-
-    public String getgRnaFormat() {
-        return gRnaFormat;
-    }
-
-    public void setgRnaFormat(String gRnaFormat) {
-        this.gRnaFormat = gRnaFormat;
-    }
-
-    public String getDetectionMethod() {
-        return detectionMethod;
-    }
-
-    public void setDetectionMethod(String detectionMethod) {
-        this.detectionMethod = detectionMethod;
     }
 
     public String getSpecies() {
@@ -227,5 +213,37 @@ public class Guide  {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getGuideFormat() {
+        return guideFormat;
+    }
+
+    public void setGuideFormat(String guideFormat) {
+        this.guideFormat = guideFormat;
+    }
+
+    public String getModifications() {
+        return modifications;
+    }
+
+    public void setModifications(String modifications) {
+        this.modifications = modifications;
+    }
+
+    public String getGuideDescription() {
+        return guideDescription;
+    }
+
+    public void setGuideDescription(String guideDescription) {
+        this.guideDescription = guideDescription;
+    }
+
+    public String getStandardScaffoldSequence() {
+        return standardScaffoldSequence;
+    }
+
+    public void setStandardScaffoldSequence(String standardScaffoldSequence) {
+        this.standardScaffoldSequence = standardScaffoldSequence;
     }
 }

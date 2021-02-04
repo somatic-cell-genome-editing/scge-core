@@ -26,18 +26,18 @@ public class GuideDao extends AbstractDAO {
     public int insertGuide(Guide guide) throws Exception{
 
         String sql = "insert into guide ( guide_id, species, source, target_locus, target_sequence, pam, assembly, chr," +
-                "start, stop, strand, grna_lab_id , grna_format, spacer_sequence, spacer_length, repeat_sequence, guide," +
-                "detection_method, forward_primer, reverse_primer, linker_sequence, anti_repeat_sequence, " +
-                "stemloop_1_sequence, stemloop_2_sequence, stemloop_3_sequence ) values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?" +
-                ",?,?,?,?,?,?,?,?,?,?)";
+                "start, stop, strand, grna_lab_id , guide_format, spacer_sequence, spacer_length, repeat_sequence, guide," +
+                "guide_description, forward_primer, reverse_primer, linker_sequence, anti_repeat_sequence, " +
+                "stemloop_1_sequence, stemloop_2_sequence, stemloop_3_sequence, standard_scaffold_sequence, modifications ) values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?" +
+                ",?,?,?,?,?,?,?,?,?,?,?,?)";
 
         int guideId = this.getNextKeyFromSequence("guide_seq");
 
 
         update(sql, guideId,guide.getSpecies(), guide.getSource(), guide.getTargetLocus(),guide.getTargetSequence(),
                 guide.getPam(),guide.getAssembly(),guide.getChr(),guide.getStart(),guide.getStop(), guide.getStrand(),
-                guide.getGrnaLabId(),guide.getgRnaFormat(),guide.getSpacerSequence(),guide.getSpacerLength(),guide.getRepeatSequence(),
-                guide.getGuide(),guide.getDetectionMethod(), guide.getForwardPrimer(), guide.getReversePrimer(), guide.getLinkerSequence(),
+                guide.getGrnaLabId(),guide.getGuideFormat(),guide.getSpacerSequence(),guide.getSpacerLength(),guide.getRepeatSequence(),
+                guide.getGuide(),guide.getGuideDescription(), guide.getForwardPrimer(), guide.getReversePrimer(), guide.getLinkerSequence(),
                 guide.getAntiRepeatSequence(),guide.getStemloop1Sequence(),guide.getStemloop2Sequence(),guide.getStemloop3Sequence());
 
         return guideId;

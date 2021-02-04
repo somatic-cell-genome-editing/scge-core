@@ -20,8 +20,8 @@ public class GuideQuery extends MappingSqlQuery<Guide> {
         Guide g = new Guide();
         g.setGuide_id(rs.getInt("guide_id"));
         g.setGuide(rs.getString("guide"));
-        g.setDetectionMethod(rs.getString("detection_method"));
-        g.setgRnaFormat(rs.getString("grna_format"));
+        g.setGuideDescription(rs.getString("guide_description"));
+        g.setGuideFormat(rs.getString("guide_format"));
         g.setSource(rs.getString("source"));
         g.setSpecies(rs.getString("species"));
         g.setGrnaLabId(rs.getString("grna_lab_id"));
@@ -43,6 +43,8 @@ public class GuideQuery extends MappingSqlQuery<Guide> {
         g.setStemloop1Sequence(rs.getString("stemloop_1_sequence"));
         g.setStemloop2Sequence(rs.getString("stemloop_2_sequence"));
         g.setStemloop3Sequence(rs.getString("stemloop_3_sequence"));
+        g.setModifications(rs.getString("modifictaions"));
+        g.setStandardScaffoldSequence(rs.getString("standard_scaffold_sequence"));
         return g;
     }
 
