@@ -29,27 +29,27 @@ public class EditorDao extends AbstractDAO {
     public int insertEditor(Editor editor) throws Exception{
 
         String sql = "insert into editor ( editor_id, subtype, species, pam_preference, editor_variant, \n" +
-                "fusion, activity, dsb_cleavage_type, target_sequence, protein_format,source, \n" +
-                "type, symbol, alias, accession, substrate_target, overhang, note, " +
-                "reference, add_gene_link, protein_sequence ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "fusion, activity, dsb_cleavage_type, target_sequence, source, \n" +
+                "type, symbol, alias,  substrate_target, protein_sequence, editor_description, annotated_map ) " +
+                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         int editorId = this.getNextKeyFromSequence("editor_seq");
 
 
         update(sql, editorId,editor.getSubType(),editor.getSpecies(),editor.getPamPreference(),
                 editor.getEditorVariant(),editor.getFusion(),editor.getActivity(),editor.getDsbCleavageType(),
-                editor.getTarget_sequence(),editor.getProteinFormat(),editor.getSource(),editor.getType(),
-                editor.getSymbol(),editor.getAlias(),editor.getAccession(),editor.getSubstrateTarget(),
-                editor.getOverhang(),editor.getNote(),editor.getReference(),editor.getAddGeneLink(), editor.getProteinSequence());
+                editor.getTarget_sequence(),editor.getSource(),editor.getType(),
+                editor.getSymbol(),editor.getAlias(),editor.getSubstrateTarget(), editor.getProteinSequence(),
+                editor.getEditorDescription(),editor.getAnnotatedMap());
 
         return editorId;
     }
 
     public int getEditorId(Editor editor) throws Exception {
 
-        String sql = "select * from editor where species =? and type=? and subtype=? and symbol = ?  and alias=?";
+        String sql = "select * from editor where species =? and type=? and subtype=? and symbol = ?";
 
-        List<Editor> list = EditorQuery.execute(this,sql,editor.getSpecies(), editor.getType(),editor.getSubType(),editor.getSymbol(),editor.getAlias() );
+        List<Editor> list = EditorQuery.execute(this,sql,editor.getSpecies(), editor.getType(),editor.getSubType(),editor.getSymbol() );
         return list.isEmpty() ? 0 : list.get(0).getId();
     }
 }

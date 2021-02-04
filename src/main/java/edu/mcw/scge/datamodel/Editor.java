@@ -11,20 +11,16 @@ public class Editor {
     private String alias;
     private String species;
     private String editorVariant;
-    private String accession;
     private String pamPreference;
     private String substrateTarget;
     private String activity;
-    private String overhang;
-    private String note;
-    private String reference;
-    private String addGeneLink;
     private String fusion;
     private String dsbCleavageType;
     private String target_sequence;
-    private String proteinFormat;
     private String source;
     private String proteinSequence;
+    private String editorDescription;
+    private String annotatedMap;
 
     public int getId() {
         return id;
@@ -106,14 +102,6 @@ public class Editor {
         this.target_sequence = target_sequence;
     }
 
-    public String getProteinFormat() {
-        return proteinFormat;
-    }
-
-    public void setProteinFormat(String proteinFormat) {
-        this.proteinFormat = proteinFormat;
-    }
-
     public String getSource() {
         return source;
     }
@@ -138,14 +126,6 @@ public class Editor {
         this.alias = alias;
     }
 
-    public String getAccession() {
-        return accession;
-    }
-
-    public void setAccession(String accession) {
-        this.accession = accession;
-    }
-
     public String getSubstrateTarget() {
         return substrateTarget;
     }
@@ -154,43 +134,27 @@ public class Editor {
         this.substrateTarget = substrateTarget;
     }
 
-    public String getOverhang() {
-        return overhang;
-    }
-
-    public void setOverhang(String overhang) {
-        this.overhang = overhang;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public String getReference() {
-        return reference;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
-    public String getAddGeneLink() {
-        return addGeneLink;
-    }
-
-    public void setAddGeneLink(String addGeneLink) {
-        this.addGeneLink = addGeneLink;
-    }
-
     public String getProteinSequence() {
         return proteinSequence;
     }
 
     public void setProteinSequence(String proteinSequence) {
         this.proteinSequence = proteinSequence;
+    }
+
+    public String getEditorDescription() {
+        return editorDescription;
+    }
+
+    public void setEditorDescription(String editorDescription) {
+        this.editorDescription = editorDescription;
+    }
+
+    public String getAnnotatedMap() {
+        return annotatedMap;
+    }
+
+    public void setAnnotatedMap(String annotatedMap) {
+        this.annotatedMap = annotatedMap;
     }
 }

@@ -27,20 +27,16 @@ public class EditorQuery extends MappingSqlQuery {
         e.setAlias(rs.getString("alias"));
         e.setSpecies(rs.getString("species"));
         e.setEditorVariant(rs.getString("editor_variant"));
-        e.setAccession(rs.getString("accession"));
         e.setPamPreference(rs.getString("pam_preference"));
         e.setSubstrateTarget(rs.getString("substrate_target"));
         e.setActivity(rs.getString("activity"));
-        e.setOverhang(rs.getString("overhang"));
-        e.setNote(rs.getString("note"));
-        e.setReference(rs.getString("reference"));
-        e.setAddGeneLink(rs.getString("add_gene_link"));
         e.setFusion(rs.getString("fusion"));
         e.setDsbCleavageType(rs.getString("dsb_cleavage_type"));
         e.setTarget_sequence(rs.getString("target_sequence"));
-        e.setProteinFormat(rs.getString("protein_format"));
         e.setSource(rs.getString("source"));
         e.setProteinSequence(rs.getString("protein_sequence"));
+        e.setAnnotatedMap(rs.getString("annotated_map"));
+        e.setEditorDescription(rs.getString("editor_description"));
         return e;
     }
 
