@@ -14,8 +14,7 @@ public class PersonInfo {
     private String grantTitle;
     private String grantInitiative;
     private String role;
-    private String group;
-    private String subgroup;
+
 
     public int getPersonId() {
         return personId;
@@ -33,21 +32,7 @@ public class PersonInfo {
         this.role = role;
     }
 
-    public String getGroup() {
-        return group;
-    }
 
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
-    public String getSubgroup() {
-        return subgroup;
-    }
-
-    public void setSubgroup(String subgroup) {
-        this.subgroup = subgroup;
-    }
 
     public int getGroupId() {
         return groupId;
