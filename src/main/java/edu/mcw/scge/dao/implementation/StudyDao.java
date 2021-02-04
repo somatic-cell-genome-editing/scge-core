@@ -124,6 +124,16 @@ public class StudyDao extends AbstractDAO {
         String sql="update study set grant_id=? , group_id=? where pi_id=?";
         update(sql, grantId,groupId,personId);
     }
+
+    public List<Study> getStudiesByGroupId(int groupId) throws Exception {
+        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi " +
+                "where s.lab_id=i.institution_id " +
+                "and s.submitter_id=p.person_id " +
+                " and s.pi_id=pi.person_id " +
+                " and s.group_id=?";
+        StudyQuery q=new StudyQuery(this.getDataSource(), sql);
+        return execute(q, groupId);
+    }
     public static void main(String[] args){
         StudyDao sdao=new StudyDao();
         PersonDao pdao=new PersonDao();

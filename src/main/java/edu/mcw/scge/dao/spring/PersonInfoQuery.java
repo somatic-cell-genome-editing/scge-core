@@ -22,7 +22,7 @@ public class PersonInfoQuery extends MappingSqlQuery {
         obj.setPersonId(rs.getInt("person_id"));
         obj.setGroupId(rs.getInt("group_id"));
         obj.setGroup(rs.getString("group_name"));
-       obj.setSubGroupId(rs.getInt("subgroup_id"));
+        obj.setSubGroupId(rs.getInt("subgroup_id"));
         obj.setSubgroup(rs.getString("subgroup_name"));
         obj.setGrantId(rs.getInt("grant_id"));
         obj.setGrantTitle(rs.getString("grant_title"));
