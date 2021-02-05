@@ -1,9 +1,11 @@
 package edu.mcw.scge.datamodel;
 
+import java.io.Serializable;
+
 /**
  * Created by jthota on 10/9/2019.
  */
-public class PersonInfo {
+public class PersonInfo implements Serializable {
     private int personId;
     private int groupId;
     private int subGroupId;

@@ -375,13 +375,38 @@ public class PersonDao extends AbstractDAO {
                     if (subgroupId != 0)
                         insertPersonInfo(personId, roleIds, subgroupId, grantId);
                     gdao.makeAssociations(groupId, subgroupId);
+
+                    insertPersonAuthority(personId);
                 }
             }
+
            // }
         }
     fs.close();
         System.out.println(persons.size());
 
+    }
+    public void insertPersonAuthority(int personId) throws Exception {
+        List<PersonInfo> personInfoList=getPersonInfo(personId);
+        List<String> authorities= new ArrayList<>();
+        for(PersonInfo i:personInfoList){
+            String authroity="ROLE_GROUP"+i.getSubGroupId();
+            if(!authorities.contains(authroity)){
+                authorities.add(authroity);
+                insertAuthority(i.getPersonId(), authroity);
+            }
+        }
+    }
+    public void insertAuthority(int personId, String authority) throws Exception {
+        String sql="insert into person_authorities(person_id, authority) values (?,?)" ;
+
+            update(sql, personId,authority );
+
+    }
+    public List<String> getPersonAuthorities(int personId) throws Exception{
+        String sql="select authority from person_authorities where person_id=?";
+        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+        return execute(q, personId);
     }
     public int getRoleId(String role) throws Exception {
         int roleKey=0;
