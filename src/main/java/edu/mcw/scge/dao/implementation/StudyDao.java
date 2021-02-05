@@ -1,6 +1,7 @@
 package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
+import edu.mcw.scge.dao.spring.CountQuery;
 import edu.mcw.scge.dao.spring.StudyAssociationQuery;
 import edu.mcw.scge.dao.spring.StudyQuery;
 import edu.mcw.scge.datamodel.PersonInfo;
@@ -48,6 +49,16 @@ public class StudyDao extends AbstractDAO {
                 "institution i, person p, person pi where s.study_id=? and s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q,studyId);
+    }
+    public boolean verifyStudyAccessByPesonId(int studyId, int personId) throws Exception {
+        String sql="select count(*) from study s left outer join  scge_group g on s.group_id=g.group_id " +
+                "left outer join person_info i on i.group_id=g.group_id " +
+                "left outer join person p on p.person_id=i.person_id " +
+                "where s.study_id=? " +
+                "and p.person_id=?";
+      //  CountQuery q= new CountQuery(this.getDataSource(), sql);
+
+        return getCount(sql,studyId, personId)>0;
     }
 
     public List<Study> getStudiesByEditor(int editorId) throws Exception{
