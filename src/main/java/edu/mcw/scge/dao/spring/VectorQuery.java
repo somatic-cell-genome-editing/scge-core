@@ -1,5 +1,6 @@
 package edu.mcw.scge.dao.spring;
 
+import edu.mcw.scge.dao.AbstractDAO;
 import edu.mcw.scge.datamodel.Editor;
 import edu.mcw.scge.datamodel.Vector;
 import org.springframework.jdbc.object.MappingSqlQuery;
@@ -7,6 +8,7 @@ import org.springframework.jdbc.object.MappingSqlQuery;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by jthota on 9/10/2019.
@@ -31,5 +33,10 @@ public class VectorQuery extends MappingSqlQuery {
         v.setLabId(rs.getString("lab_id"));
         v.setDescription(rs.getString("description"));
         return v;
+    }
+
+    public static List<Vector> execute(AbstractDAO dao, String sql, Object... params) throws Exception {
+        VectorQuery q = new VectorQuery(dao.getDataSource(), sql);
+        return dao.execute(q, params);
     }
 }
