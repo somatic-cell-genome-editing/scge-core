@@ -30,7 +30,7 @@ public class ModelQuery extends MappingSqlQuery {
         m.setAnnotatedMap(rs.getString("annotated_map"));
         m.setParentalOrigin(rs.getString("parental_origin"));
         m.setStrainCode(rs.getString("strain_code"));
-        m.setStrainAlias(rs.getString("starin_alias"));
+      //  m.setStrainAlias(rs.getString("starin_alias"));
         m.setDescription(rs.getString("model_description"));
         return m;
     }
