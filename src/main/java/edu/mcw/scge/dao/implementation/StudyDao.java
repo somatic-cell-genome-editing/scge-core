@@ -12,6 +12,16 @@ import java.io.IOException;
 import java.util.*;
 
 public class StudyDao extends AbstractDAO {
+    public List<Study> getStudyByExperimentId(int experimentId,int personId ) throws Exception {
+        String sql = "select s.* from study s inner join experiment e on s.study_id=e.study_id " +
+                "                inner join person_info p on p.group_id=s.group_id " +
+                "                where p.person_id=? " +
+                "                and e.experiment_id=? " +
+                "                " ;
+
+        StudyQuery q=new StudyQuery(this.getDataSource(), sql);
+        return execute(q,personId, experimentId);
+    }
     public List<Study> getStudiesByLab(int labId) throws Exception{
         String sql="select * from study where lab_id=?";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
