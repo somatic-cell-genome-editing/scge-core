@@ -21,6 +21,15 @@ public class Editor {
     private String proteinSequence;
     private String editorDescription;
     private String annotatedMap;
+    private int tier;
+
+    public int getTier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
+    }
 
     public int getId() {
         return id;

@@ -37,6 +37,7 @@ public class EditorQuery extends MappingSqlQuery {
         e.setProteinSequence(rs.getString("protein_sequence"));
         e.setAnnotatedMap(rs.getString("annotated_map"));
         e.setEditorDescription(rs.getString("editor_description"));
+        e.setTier(rs.getInt("tier"));
         return e;
     }
 
