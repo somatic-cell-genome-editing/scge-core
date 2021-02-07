@@ -52,4 +52,15 @@ public class EditorDao extends AbstractDAO {
         List<Editor> list = EditorQuery.execute(this,sql,editor.getSpecies(), editor.getType(),editor.getSubType(),editor.getSymbol() );
         return list.isEmpty() ? 0 : list.get(0).getId();
     }
+    public boolean verifyEditorAccess(int editorId, int personId) throws Exception {
+        String sql="(select e.* from editor e left outer join experiment_record r on e.editor_id=r.editor_id\n" +
+                "left outer join experiment x on x.experiment_id=r.experiment_id " +
+                "left outer join study s on s.study_id =x.study_id " +
+                "left outer join person_info p on p.group_id=s.group_id " +
+                "where p.person_id=? and e.editor_id=? ) union " +
+                "(select ed.* from editor ed  where ed.tier=4 and ed.editor_id=?)";
+        EditorQuery q=new EditorQuery(this.getDataSource(), sql);
+        List<Editor> editorList= execute(q, personId, editorId, editorId);
+        return editorList.size() > 0;
+    }
 }

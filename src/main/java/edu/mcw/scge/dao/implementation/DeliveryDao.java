@@ -41,4 +41,16 @@ public class DeliveryDao extends AbstractDAO {
         List<Delivery> list = DeliveryQuery.execute(this,sql,delivery.getType(),delivery.getSubtype(),delivery.getName() );
         return list.isEmpty() ? 0 : list.get(0).getId();
     }
+    public boolean verifyDeliveryAccess(int deliveryId, int personId) throws Exception {
+        String sql="(select d.* from delivery_system d left outer join experiment_record r on d.ds_id=r.ds_id " +
+                "left outer join experiment x on x.experiment_id=r.experiment_id " +
+                "left outer join study s on s.study_id =x.study_id " +
+                "left outer join person_info p on p.group_id=s.group_id " +
+                "where p.person_id=?  " +
+                "and d.ds_id=?) union " +
+                "(select ds.* from delivery_system ds  where ds.ds_id=? and ds.tier=4) ";
+        DeliveryQuery q=new DeliveryQuery(this.getDataSource(), sql);
+        List<Delivery> deliveryList=execute(q, personId,deliveryId, deliveryId);
+        return deliveryList.size()>0;
+    }
 }

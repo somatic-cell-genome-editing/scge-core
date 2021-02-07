@@ -17,7 +17,7 @@ public class TierUpdateQuery extends MappingSqlQuery {
         StudyTierUpdate object=new StudyTierUpdate();
         object.setStudyTierUpdateId(rs.getInt("study_tier_update_id"));
         object.setStudyId(rs.getInt("study_id"));
-        object.setGroupId(rs.getInt("group_id"));
+        object.setAssociatedGroupId(rs.getInt("associated_group_id"));
         object.setMemberId(rs.getInt("member_id"));
         object.setTier(rs.getInt("tier"));
         object.setAction(rs.getString("action"));

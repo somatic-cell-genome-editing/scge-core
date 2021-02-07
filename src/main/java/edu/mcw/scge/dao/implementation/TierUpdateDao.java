@@ -28,7 +28,7 @@ public class TierUpdateDao extends AbstractDAO {
                 "tier," +
                 "modified_date," +
                 "modified_by," +
-                "group_id," +
+                "associated_group_id," +
                 "status," +
                 "action," +
                 "member_id," +
@@ -43,7 +43,7 @@ public class TierUpdateDao extends AbstractDAO {
                         ps.setInt(3, updates.get(i).getTier());
                         ps.setDate(4,  updates.get(i).getModifiedDate());
                         ps.setInt(5, updates.get(i).getModifiedBy());
-                        ps.setInt(6, updates.get(i).getGroupId());
+                        ps.setInt(6, updates.get(i).getAssociatedGroupId());
                         ps.setString(7, updates.get(i).getStatus());
                         ps.setString(8, updates.get(i).getAction());
                         ps.setInt(9, updates.get(i).getMemberId());

@@ -7,7 +7,7 @@ import java.sql.Time;
 public class StudyTierUpdate {
     private int studyTierUpdateId;
     private int studyId;
-    private int groupId;
+    private int associatedGroupId;
     private int tier;
     private int memberId;
     private Date modifiedDate;
@@ -32,12 +32,12 @@ public class StudyTierUpdate {
         this.studyId = studyId;
     }
 
-    public int getGroupId() {
-        return groupId;
+    public int getAssociatedGroupId() {
+        return associatedGroupId;
     }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
+    public void setAssociatedGroupId(int associatedGroupId) {
+        this.associatedGroupId = associatedGroupId;
     }
 
     public int getTier() {
