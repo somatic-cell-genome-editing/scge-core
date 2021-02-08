@@ -18,7 +18,15 @@ public class Model {
     private String description;
     private String strainCode;
     private String strainAlias;
+    private int tier;
 
+    public int getTier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
+    }
 
     public String getRrid() {
         return rrid;

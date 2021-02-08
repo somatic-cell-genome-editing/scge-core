@@ -12,7 +12,15 @@ public class Delivery {
     private String rrid;
     private String npSize;
     private String molTargetingAgent;
+    private int tier;
 
+    public int getTier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
+    }
 
     public int getId() {
         return id;

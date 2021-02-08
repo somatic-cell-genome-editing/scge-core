@@ -32,6 +32,7 @@ public class VectorQuery extends MappingSqlQuery {
         v.setTiterMethod(rs.getString("titer_method"));
         v.setLabId(rs.getString("lab_id"));
         v.setDescription(rs.getString("description"));
+        v.setTier(rs.getInt("tier"));
         return v;
     }
 
