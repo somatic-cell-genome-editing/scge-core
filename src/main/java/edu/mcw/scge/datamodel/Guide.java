@@ -29,7 +29,15 @@ public class Guide  {
     private String modifications;
     private String guideDescription;
     private String standardScaffoldSequence;
+    private int tier;
 
+    public int getTier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
+    }
 
     public String getSpacerSequence() {
         return spacerSequence;

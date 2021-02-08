@@ -13,6 +13,15 @@ public class Vector {
     private String labId;
     private String annotatedMap;
     private String titerMethod;
+    private int tier;
+
+    public int getTier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
+    }
 
     public String getDescription() {
         return description;

@@ -27,6 +27,7 @@ public class DeliveryQuery extends MappingSqlQuery {
         d.setRrid(rs.getString("ds_rrid"));
         d.setNpSize(rs.getString("ds_np_size"));
         d.setMolTargetingAgent(rs.getString("ds_mol_targeting_agent"));
+        d.setTier(rs.getInt("tier"));
         return d;
     }
 

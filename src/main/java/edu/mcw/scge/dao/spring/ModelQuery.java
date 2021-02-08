@@ -32,6 +32,7 @@ public class ModelQuery extends MappingSqlQuery {
         m.setStrainCode(rs.getString("strain_code"));
       //  m.setStrainAlias(rs.getString("starin_alias"));
         m.setDescription(rs.getString("model_description"));
+        m.setTier(rs.getInt("tier"));
         return m;
     }
 
