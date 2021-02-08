@@ -4,6 +4,7 @@ import edu.mcw.scge.dao.AbstractDAO;
 import edu.mcw.scge.dao.spring.CountQuery;
 import edu.mcw.scge.dao.spring.StudyAssociationQuery;
 import edu.mcw.scge.dao.spring.StudyQuery;
+import edu.mcw.scge.datamodel.Person;
 import edu.mcw.scge.datamodel.PersonInfo;
 import edu.mcw.scge.datamodel.Study;
 import edu.mcw.scge.datamodel.StudyAssociation;
@@ -42,6 +43,32 @@ public class StudyDao extends AbstractDAO {
         return execute(q, studyId);
 
     }
+
+    public List<Study> getStudies(Person p) throws Exception {
+
+
+        PersonDao pDAO = new PersonDao();
+        List<PersonInfo> pInfo = pDAO.getPersonInfo(p.getId());
+
+        String groups ="";
+
+        boolean first=true;
+        for (PersonInfo pi: pInfo) {
+            if (!first) {
+                groups += ",";
+            }
+            first=false;
+            groups += pi.getSubGroupId();
+
+        }
+
+        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id " +
+                " and s.group_id in (" + groups + ") order by s.tier desc, s.submission_date desc";
+        StudyQuery q=new StudyQuery(this.getDataSource(), sql);
+        return execute(q);
+
+    }
+
     public List<Study> getStudies() throws Exception{
         String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id order by s.tier desc, s.submission_date desc";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);

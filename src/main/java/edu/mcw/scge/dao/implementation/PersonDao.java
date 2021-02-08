@@ -95,7 +95,7 @@ public class PersonDao extends AbstractDAO {
         return execute(query, email.toLowerCase(), email, email);
     }
     public List<Person> getAllMembers() throws Exception{
-        String sql="select * from person where status='ACTIVE'";
+        String sql="select * from person where status='ACTIVE' order by name ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return query.execute();
     }
