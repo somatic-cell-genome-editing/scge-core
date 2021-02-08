@@ -234,19 +234,21 @@ public class PersonDao extends AbstractDAO {
     }
 
     public int getGroupId(String groupName, String groupType) throws Exception {
-        String sql = "select group_id from scge_group where group_name=? and group_type=?";
+        String sql = "select group_id from scge_group where group_name_lc=? and group_type=?";
         IntListQuery query = new IntListQuery(this.getDataSource(), sql);
-        List<Integer> ids = execute(query, groupName.trim(), groupType);
+        List<Integer> ids = execute(query, groupName.toLowerCase().trim(), groupType);
         int id = 0;
         if (ids != null && ids.size() > 0) {
+
+           gdao.updateGroupName(ids.get(0), groupName.trim());
             return ids.get(0);
         }else{
             id=getNextKey("group_seq");
             SCGEGroup group=new SCGEGroup();
             group.setGroupId(id);
-            group.setGroupName(groupName);
+            group.setGroupName(groupName.trim());
             group.setGroupType(groupType);
-            group.setGroupNameLC(groupName.toLowerCase());
+            group.setGroupNameLC(groupName.toLowerCase().trim());
             gdao.insert(group);
         }
         return id;
@@ -283,7 +285,6 @@ public class PersonDao extends AbstractDAO {
         Iterator<Row> rowIterator=sheet.iterator();
         List<Person> persons= new ArrayList<>();
         List<String> names=new ArrayList<>();
-        int recordNumber=1;
         while(rowIterator.hasNext()) {
             Person p = new Person.Builder().build();
             String grantTitle=new String();

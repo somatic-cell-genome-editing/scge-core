@@ -26,6 +26,11 @@ public class GroupDAO extends AbstractDAO {
               g.getGroupId(), g.getGroupName(), g.getGroupShortName(),g.getGroupType(),g.getGroupNameLC());
 
     }
+    public void updateGroupName(int groupId, String groupName) throws Exception{
+        String sql="update scge_group set group_name=? where group_id=?" ;
+        update(sql, groupName, groupId);
+
+    }
     public List<SCGEGroup> getAllGroups() throws Exception {
         String sql="select * from scge_group";
         GroupQuery q=new GroupQuery(this.getDataSource(), sql);
@@ -246,6 +251,11 @@ public List<Person> getGroupMembers(String groupName) throws Exception {
                 ")" ;
         IntListQuery q= new IntListQuery(this.getDataSource(), sql);
         return q.execute();
+    }
+    public List<Integer> getDCCNIHAncestorGroupIds() throws Exception {
+        String sql="select group_id from scge_group where group_name in (?,?)" ;
+        IntListQuery q= new IntListQuery(this.getDataSource(), sql);
+        return execute(q, "DCC", "NIH");
     }
     public static void main(String[] args) throws Exception {
 
