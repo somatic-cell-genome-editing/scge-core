@@ -4,6 +4,8 @@ public class ExperimentRecord {
     private int experimentRecordId;
     private int experimentId;
     private String experimentName;
+    private String experimentType;
+
     private int studyId;
     private int editorId;
     private int deliverySystemId;
@@ -171,5 +173,13 @@ public class ExperimentRecord {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public String getExperimentType() {
+        return experimentType;
+    }
+
+    public void setExperimentType(String experimentType) {
+        this.experimentType = experimentType;
     }
 }

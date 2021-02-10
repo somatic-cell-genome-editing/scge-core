@@ -535,7 +535,7 @@ public class PersonDao extends AbstractDAO {
         String sql="select institution_name from institution where institution_id=?";
         StringListQuery query= new StringListQuery(this.getDataSource(), sql);
         List<String> names=execute(query, id);
-        if(names!=null || names.size()>0){
+        if(names!=null && names.size()>0){
             return names.get(0);
         }else{
             return "";

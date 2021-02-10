@@ -43,7 +43,7 @@ public class GuideQuery extends MappingSqlQuery<Guide> {
         g.setStemloop1Sequence(rs.getString("stemloop_1_sequence"));
         g.setStemloop2Sequence(rs.getString("stemloop_2_sequence"));
         g.setStemloop3Sequence(rs.getString("stemloop_3_sequence"));
-        g.setModifications(rs.getString("modifictaions"));
+        g.setModifications(rs.getString("modifications"));
         g.setStandardScaffoldSequence(rs.getString("standard_scaffold_sequence"));
         g.setTier(rs.getInt("tier"));
         return g;
