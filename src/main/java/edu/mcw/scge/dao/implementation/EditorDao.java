@@ -27,7 +27,7 @@ public class EditorDao extends AbstractDAO {
                 "            (select ed.* from editor ed  where ed.tier=4 )";
 
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
-        return (List<Editor>)q.execute(personId);
+        return execute(q, personId);
     }
 
     public List<Editor> getEditorById(int id) throws Exception {
