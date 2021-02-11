@@ -16,6 +16,20 @@ public class EditorDao extends AbstractDAO {
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
         return (List<Editor>)q.execute();
     }
+
+    public List<Editor> getAllEditors(int personId) throws Exception {
+        String sql="(select e.* from editor e left outer join experiment_record r on e.editor_id=r.editor_id" +
+                "    left outer join experiment x on x.experiment_id=r.experiment_id" +
+                "    left outer join study s on s.study_id =x.study_id" +
+                "    left outer join study_associations sa on s.study_id=sa.study_id" +
+                "    left outer join person_info p on (p.group_id=s.group_id or p.group_id=sa.group_id)" +
+                "    where p.person_id=? ) union" +
+                "            (select ed.* from editor ed  where ed.tier=4 )";
+
+        EditorQuery q=new EditorQuery(this.getDataSource(), sql);
+        return (List<Editor>)q.execute(personId);
+    }
+
     public List<Editor> getEditorById(int id) throws Exception {
         String sql="select * from editor where editor_id=?";
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
@@ -56,11 +70,14 @@ public class EditorDao extends AbstractDAO {
         String sql="(select e.* from editor e left outer join experiment_record r on e.editor_id=r.editor_id\n" +
                 "left outer join experiment x on x.experiment_id=r.experiment_id " +
                 "left outer join study s on s.study_id =x.study_id " +
-                "left outer join person_info p on p.group_id=s.group_id " +
+                "    left outer join study_associations sa on s.study_id=sa.study_id " +
+                "    left outer join person_info p on (p.group_id=s.group_id or p.group_id=sa.group_id) " +
                 "where p.person_id=? and e.editor_id=? ) union " +
                 "(select ed.* from editor ed  where ed.tier=4 and ed.editor_id=?)";
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
         List<Editor> editorList= execute(q, personId, editorId, editorId);
         return editorList.size() > 0;
     }
+
+
 }
