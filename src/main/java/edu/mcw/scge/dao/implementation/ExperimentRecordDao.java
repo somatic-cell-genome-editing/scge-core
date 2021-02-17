@@ -78,17 +78,19 @@ public class ExperimentRecordDao extends AbstractDAO {
         ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
         return execute(q, expRecId);
     }
-	public void insertExperimentRecord(ExperimentRecord expRecord) throws Exception{
+	public int insertExperimentRecord(ExperimentRecord expRecord) throws Exception{
 
-        String sql = "insert into experiment (experiment_id,name,study_id, " +
+        String sql = "insert into experiment_record (experiment_id,name,study_id, " +
                 "editor_id,ds_id,model_id,guide_id,sample_prep,application_method_id,experiment_record_id,age, genotype,sex," +
                 "vector_id  ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         
         int experimentId = this.getNextKeyFromSequence("experiment_seq");
         
-        update(sql, experimentId,expRecord.getExperimentName(),expRecord.getStudyId(),
+        update(sql, expRecord.getExperimentId(),expRecord.getExperimentName(),expRecord.getStudyId(),
                 expRecord.getEditorId(),expRecord.getDeliverySystemId(),expRecord.getModelId(),
-                expRecord.getGuideId(),expRecord.getSamplePrep(),expRecord.getApplicationMethodId(),expRecord.getExperimentRecordId(),
+                expRecord.getGuideId(),expRecord.getSamplePrep(),expRecord.getApplicationMethodId(),experimentId,
                 expRecord.getAge(),expRecord.getGenotype(),expRecord.getSex(),expRecord.getVectorId());
+
+        return experimentId;
     }
 }
