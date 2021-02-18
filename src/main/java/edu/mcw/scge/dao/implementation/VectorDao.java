@@ -46,4 +46,7 @@ public class VectorDao extends AbstractDAO {
         List<Vector> list = VectorQuery.execute(this,sql, vector.getSubtype(),vector.getCapsidVariant());
         return list.isEmpty() ? 0 : list.get(0).getVectorId();
     }
+
+
+
 }

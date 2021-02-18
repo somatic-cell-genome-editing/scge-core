@@ -62,6 +62,9 @@ public class PersonDao extends AbstractDAO {
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
          return execute(query, p.getEmail().toLowerCase());
     }
+    //sql = "select distinct pi.person_id, pi.group_id, s.study_id from person_info pi, study s where pi.group_id=s.group_id""
+
+
     public List<Person> getPersonByEmailId(Person p) throws Exception{
         //  String sql="select * from person where name_lc=? and email_lc=? and status='ACTIVE' ";
         String sql="select * from person where email_lc=? ";
