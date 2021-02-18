@@ -10,6 +10,8 @@ public class ApplicationMethod {
     private String injectionVolume;
     private String injectionFrequency;
     private String editorFormat;
+    private String antidoteId;
+    private String antidoteDescription;
 
     public int getApplicationId() {
         return applicationId;
@@ -82,4 +84,21 @@ public class ApplicationMethod {
     public void setEditorFormat(String editorFormat) {
         this.editorFormat = editorFormat;
     }
+
+    public String getAntidoteId() {
+        return antidoteId;
+    }
+
+    public void setAntidoteId(String antidoteId) {
+        this.antidoteId = antidoteId;
+    }
+
+    public String getAntidoteDescription() {
+        return antidoteDescription;
+    }
+
+    public void setAntidoteDescription(String antidoteDescription) {
+        this.antidoteDescription = antidoteDescription;
+    }
+
 }
