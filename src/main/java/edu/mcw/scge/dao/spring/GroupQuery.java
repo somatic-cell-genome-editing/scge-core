@@ -19,6 +19,7 @@ public class GroupQuery extends MappingSqlQuery {
         SCGEGroup g=new SCGEGroup();
         g.setGroupId(rs.getInt("group_id"));
         g.setGroupName(rs.getString("group_name"));
+        g.setGroupNameLC(rs.getString("group_name_lc"));
         g.setGroupShortName(rs.getString("group_short_name"));
         g.setGroupType(rs.getString("group_type"));
         return g;

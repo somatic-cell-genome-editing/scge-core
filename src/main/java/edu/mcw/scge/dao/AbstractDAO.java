@@ -2,6 +2,7 @@ package edu.mcw.scge.dao;
 
 import edu.mcw.scge.dao.spring.CountQuery;
 import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.object.BatchSqlUpdate;
 import org.springframework.jdbc.object.MappingSqlQuery;
 import org.springframework.jdbc.object.SqlUpdate;
 
@@ -83,4 +84,15 @@ public class AbstractDAO implements DAO {
         List results = this.execute(q, params);
         return ((Integer)results.get(0)).intValue();
     }
+    public int executeBatch(BatchSqlUpdate bsu) {
+        bsu.flush();
+
+        // compute nr of rows affected
+        int totalRowsAffected = 0;
+        for( int rowsAffected: bsu.getRowsAffected() ) {
+            totalRowsAffected += rowsAffected;
+        }
+        return totalRowsAffected;
+    }
+
 }

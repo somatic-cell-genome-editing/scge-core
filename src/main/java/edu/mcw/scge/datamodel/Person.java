@@ -14,7 +14,7 @@ public class Person {
     private String email;
     private String email_lc;
     private String otherId;
-
+    private String grantTitle;
     private String address;
     private String phone;
     private int grantId;
@@ -347,5 +347,13 @@ public class Person {
 
     public void setPi(String pi) {
         this.pi = pi;
+    }
+
+    public String getGrantTitle() {
+        return grantTitle;
+    }
+
+    public void setGrantTitle(String grantTitle) {
+        this.grantTitle = grantTitle;
     }
 }

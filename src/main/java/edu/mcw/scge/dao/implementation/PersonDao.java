@@ -2,10 +2,13 @@ package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
 import edu.mcw.scge.dao.spring.IntListQuery;
+import edu.mcw.scge.dao.spring.PersonInfoQuery;
 import edu.mcw.scge.dao.spring.PersonQuery;
 import edu.mcw.scge.dao.spring.StringListQuery;
+import edu.mcw.scge.datamodel.Grant;
 import edu.mcw.scge.datamodel.Person;
 
+import edu.mcw.scge.datamodel.PersonInfo;
 import edu.mcw.scge.datamodel.SCGEGroup;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -28,41 +31,58 @@ import java.util.List;
  */
 public class PersonDao extends AbstractDAO {
         GroupDAO gdao=new GroupDAO();
+        GrantDao grantDao=new GrantDao();
     public void insert(Person p) throws Exception{
-        String sql="insert into person values(?,?,?,?,?,?,?,?,?,?,?,current_date,current_date,?,?,?,?)";
+        String sql="insert into person(person_id,name, name_lc, institution_id, email, email_lc," +
+                "phone, address, google_id,status, created_date, modified_date, modified_by, other_id, " +
+                "first_name," +
+                "last_name)" +
+                " values(?,?,?,?,?,?,?,?,?,?,current_date,current_date,?,?,?,?)";
         update(sql,
                 p.getId(), p.getName(),p.getName().toLowerCase(),
                 p.getInstitution(),
                 p.getEmail(),p.getEmail().toLowerCase(),
                 p.getPhone(), p.getAddress(), p.getGoogleSub(),
                 p.getStatus(),
-                p.getGrantId(),
+            //    p.getGrantId(),
                 p.getModifiedBy(),
                 p.getOtherId(),
                 p.getFirstName(),p.getLastName()
         );
 
     }
-    public int generateNewPersonKey() throws Exception {
-          return getNextKey("PERSON_SEQ");
+    public void update(Person p) throws Exception {
+        String sql="update person set status=?, modified_date=current_date where person_id=?";
+        update(sql, p.getStatus(),p.getId());
     }
+
     public List<Person> getPerson(Person p) throws Exception{
-        String sql="select * from person where name_lc=? and email_lc=?";
+      //  String sql="select * from person where name_lc=? and email_lc=? and status='ACTIVE' ";
+        String sql="select * from person where email_lc=? and status='ACTIVE' ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
-         return execute(query,p.getName().toLowerCase(), p.getEmail().toLowerCase());
+         return execute(query, p.getEmail().toLowerCase());
+    }
+    //sql = "select distinct pi.person_id, pi.group_id, s.study_id from person_info pi, study s where pi.group_id=s.group_id""
+
+
+    public List<Person> getPersonByEmailId(Person p) throws Exception{
+        //  String sql="select * from person where name_lc=? and email_lc=? and status='ACTIVE' ";
+        String sql="select * from person where email_lc=? ";
+        PersonQuery query=new PersonQuery(this.getDataSource(), sql);
+        return execute(query, p.getEmail().toLowerCase());
     }
     public List<Person> getPersonById(int id) throws Exception{
-        String sql="select * from person where person_id=?";
+        String sql="select * from person where person_id=? and status='ACTIVE' ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query,id);
     }
     public List<Person> getPersonByGoogleId(String id) throws Exception{
-        String sql="select * from person where google_id=?";
+        String sql="select * from person where google_id=? and status='ACTIVE' ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query,id);
     }
     public List<Person> getPersonByLastName(String lastName) throws Exception{
-        String sql="select * from person where name like '%"+lastName+"%'";
+        String sql="select * from person where name like '%"+lastName+"%' and status='ACTIVE' " ;
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query);
     }
@@ -73,12 +93,12 @@ public class PersonDao extends AbstractDAO {
         return (String) execute(query, subject).get(0);
     }
     public List<Person> getPersonByEmail(String email) throws Exception{
-        String sql="select * from person where email_lc=? or other_id=? or email=?";
+        String sql="select * from person where email_lc=? or other_id=? or email=? and status='ACTIVE' ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query, email.toLowerCase(), email, email);
     }
     public List<Person> getAllMembers() throws Exception{
-        String sql="select * from person where status='approved'";
+        String sql="select * from person where status='ACTIVE' order by name ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return query.execute();
     }
@@ -86,6 +106,7 @@ public class PersonDao extends AbstractDAO {
         String sql="select g.group_name from scge_group g, person_info r, person p " +
                 "where g.group_id=r.group_id " +
                 "and r.person_id=p.person_id " +
+                "and p.status='ACTIVE' " +
                 "and p.person_id=?";
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q,p.getId());
@@ -128,6 +149,10 @@ public class PersonDao extends AbstractDAO {
         String sql="update person set status=? where email=?";
             update(sql, person.getStatus(), person.getEmail());
     }
+    public void updateStatusToInactive(String status) throws Exception {
+        String sql="update person set status=?";
+        update(sql, status);
+    }
     public void updateGoogleId(String googleId, int personId) throws Exception {
         String sql="update person set google_id=? where person_id=? ";
         update(sql, googleId, personId);
@@ -136,7 +161,7 @@ public class PersonDao extends AbstractDAO {
         String sql="update person set first_name=?, last_name=?, google_id=?, other_id=? where email=? or email_lc=?";
         update(sql,  person.getFirstName(), person.getLastName(), person.getGoogleSub(), person.getOtherId() ,person.getEmail(),person.getEmail().toLowerCase());
     }
-    public int insertOrUpdateGrant(String grantTitle) throws Exception {
+  /*  public int insertOrUpdateGrant(String grantTitle) throws Exception {
         String sql="select grant_id from scge_grants where grant_title=?";
         IntListQuery query=new IntListQuery(this.getDataSource(), sql);
         List<Integer> ids=execute(query, grantTitle);
@@ -148,12 +173,13 @@ public class PersonDao extends AbstractDAO {
             id=ids.get(0);
         }
         return id;
-    }
+    }*/
     public List<String> getRolesByPersonId(int personId, String groupName) throws Exception {
         String sql="select r.role from scge_roles r, person p, person_info pi, scge_group g where " +
                 "r.role_key=pi.role_key " +
                 "and p.person_id=pi.person_id " +
                 "and g.group_id=pi.group_id " +
+                "and p.status='ACTIVE' "  +
                 "and p.person_id=? " +
                 "and g.group_name=?"
                 ;
@@ -211,18 +237,21 @@ public class PersonDao extends AbstractDAO {
     }
 
     public int getGroupId(String groupName, String groupType) throws Exception {
-        String sql = "select group_id from scge_group where group_name=? and group_type=?";
+        String sql = "select group_id from scge_group where group_name_lc=? and group_type=?";
         IntListQuery query = new IntListQuery(this.getDataSource(), sql);
-        List<Integer> ids = execute(query, groupName.trim(), groupType);
+        List<Integer> ids = execute(query, groupName.toLowerCase().trim(), groupType);
         int id = 0;
         if (ids != null && ids.size() > 0) {
+
+           gdao.updateGroupName(ids.get(0), groupName.trim());
             return ids.get(0);
         }else{
             id=getNextKey("group_seq");
             SCGEGroup group=new SCGEGroup();
             group.setGroupId(id);
-            group.setGroupName(groupName);
+            group.setGroupName(groupName.trim());
             group.setGroupType(groupType);
+            group.setGroupNameLC(groupName.toLowerCase().trim());
             gdao.insert(group);
         }
         return id;
@@ -273,71 +302,64 @@ public class PersonDao extends AbstractDAO {
             String name=new String();
             Iterator<Cell> cellIterator = row.cellIterator();
             List<String> roles=new ArrayList<>();
-
+            List<Integer> roleIds = new ArrayList<>();
+            Grant grant=new Grant();
             if (row.getRowNum() != 0) {
                 while (cellIterator.hasNext()) {
 
                     Cell cell = cellIterator.next();
                     int colIndex = cell.getColumnIndex();
                     if (colIndex == 0) {
-                       projectType=cell.getStringCellValue();
-                       groupId=getGroupId(projectType, "group");
+                        projectType = cell.getStringCellValue();
+                        groupId = getGroupId(projectType, "group");
                     }
                     if (colIndex == 1) {
-                        grantTitle=cell.getStringCellValue();
-                       grantId= insertOrUpdateGrant(grantTitle);
-                        p.setGrantId(grantId);
-                      subgroupId= getGroupId(grantTitle, "subgroup");
+                        grantTitle = cell.getStringCellValue();
+                        grant.setGrantInitiative(projectType);
+                        grant.setGrantTitle(grantTitle);
+                        grant.setGrantTitleLc(grantTitle.toLowerCase());
+                        if(!projectType.equalsIgnoreCase("NIH"))
+                        grantId = grantDao.insertOrUpdate(grant);
+                        subgroupId = getGroupId(grantTitle, "subgroup");
                     }
 
                     if (colIndex == 2) {
-                        name=cell.getStringCellValue();
+                        name = cell.getStringCellValue();
                         p.setName(name);
                         p.setName_lc(name.toLowerCase());
-                        if(!names.contains(name.toLowerCase())){
+                        if (!names.contains(name.toLowerCase())) {
                             names.add(name.toLowerCase());
                         }
                     }
-                    if (colIndex == 3) {
-
-                        if (cell.getStringCellValue().equalsIgnoreCase("x"))
-                            p.setStatus("approved");
-                        else p.setStatus("processing");
-                    }
-                    if (colIndex == 4) {
-                        String role1=cell.getStringCellValue().toLowerCase();
-                        if(role1.contains("administrative")){
-                            role1="administrative contact";
-                        }
-                       String role= getRole(role1);
-                        if(!role.equalsIgnoreCase("member")){
-                            roles.addAll(Arrays.asList(role, "member"));
-                        }else{
-                            roles.addAll(Arrays.asList(role));
-                        }
-                    /*    if (cell.getStringCellValue().equalsIgnoreCase("contact pi")) {
-                           roles.addAll(Arrays.asList(cell.getStringCellValue().toLowerCase(), "member"));
-                        } else {
-                           roles.addAll(Arrays.asList("member"));
-                        }*/
-                    }
-                    if (colIndex == 5) {
+                   if (colIndex == 3) {
 
                         if (cell.getStringCellValue().equalsIgnoreCase("x")) {
-                              roles.add("voting member");
-
+                            int roleId = getRoleId("POC");
+                            roleIds.add(roleId);
                         }
+
                     }
-                    if (colIndex == 7) {
+                    p.setStatus("ACTIVE");
+                    //    if (colIndex == 4) {
+                    if (colIndex == 4) {
+                        String role1 = cell.getStringCellValue().toLowerCase();
+                        if (role1.contains("administrative")) {
+                            role1 = "administrative contact";
+                        }
+                        int roleId = getRoleId(role1);
+                        roleIds.add(roleId);
+                    }
+                    if (colIndex == 5) {
                         p.setEmail(cell.getStringCellValue());
                         p.setEmail_lc(cell.getStringCellValue().toLowerCase());
                     }
-                    if (colIndex == 8) {
-                        institution=cell.getStringCellValue();
-                      institutionId=insertOrUpdateInstitution(institution);
+                    if (colIndex == 6) {
+                        institution = cell.getStringCellValue();
+                        institutionId = insertOrUpdateInstitution(institution);
                         p.setInstitution(institutionId);
+                        p.setInstitutionName(institution);
                     }
-                    if (colIndex == 9) {
+                    if (colIndex == 7) {
                         switch (cell.getCellType()) {
                             case Cell.CELL_TYPE_NUMERIC:
                                 p.setPhone(String.valueOf(cell.getNumericCellValue()));
@@ -346,26 +368,20 @@ public class PersonDao extends AbstractDAO {
                                 p.setPhone(cell.getStringCellValue());
                         }
                     }
-
-
                 }
-
-                p.setRoles(roles);
-             //   persons.add(p);
-            //   if(name.equalsIgnoreCase("Dianna Malvey")) {
                 int personId = insertOrUpdate(p);
-                int defaultGoupId=getGroupId("consortium group", "group");
+                if (personId > 0) {
+                    int defaultGoupId = getGroupId("consortium", "group");
+                    gdao.makeAssociations(defaultGoupId, groupId);
+                    if (groupId != 0 ) {
+                        insertPersonInfo(personId, Arrays.asList(1), groupId, grantId);
+                    }
+                    if (subgroupId != 0)
+                        insertPersonInfo(personId, roleIds, subgroupId, grantId);
+                    gdao.makeAssociations(groupId, subgroupId);
 
-          //      System.out.println("default Group: "+ defaultGoupId+"\tgroup: "+ groupId+"\tsubgroup:"+subgroupId);
-                gdao.makeAssociations(defaultGoupId, groupId);
-                insertPersonInfo(personId,Arrays.asList(1), defaultGoupId); //person added to default group as 'member'
-                List<Integer> roleIds = getRolesIds(roles);
-                if(groupId!=0 && personId!=0) {
-                    insertPersonInfo(personId, Arrays.asList(1), groupId);
+                    insertPersonAuthority(personId);
                 }
-                if(subgroupId!=0 && personId!=0)
-                    insertPersonInfo(personId, roleIds, subgroupId);
-                gdao.makeAssociations(groupId, subgroupId);
             }
 
            // }
@@ -373,6 +389,45 @@ public class PersonDao extends AbstractDAO {
     fs.close();
         System.out.println(persons.size());
 
+    }
+    public void insertPersonAuthority(int personId) throws Exception {
+        List<PersonInfo> personInfoList=getPersonInfo(personId);
+        List<String> authorities= new ArrayList<>();
+        for(PersonInfo i:personInfoList){
+            String authroity="ROLE_GROUP"+i.getSubGroupId();
+            if(!authorities.contains(authroity)){
+                authorities.add(authroity);
+                insertAuthority(i.getPersonId(), authroity);
+            }
+        }
+    }
+    public void insertAuthority(int personId, String authority) throws Exception {
+        String sql="insert into person_authorities(person_id, authority) values (?,?)" ;
+
+            update(sql, personId,authority );
+
+    }
+    public List<String> getPersonAuthorities(int personId) throws Exception{
+        String sql="select authority from person_authorities where person_id=?";
+        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+        return execute(q, personId);
+    }
+    public int getRoleId(String role) throws Exception {
+        int roleKey=0;
+        String sql="select role_key from scge_roles where role=?";
+        IntListQuery query=new IntListQuery(this.getDataSource(), sql);
+        List<Integer> roles=execute(query, role);
+        if(roles!=null && roles.size()>0){
+            return roles.get(0);
+        }else{
+            roleKey=getNextKey("role_seq");
+           insertRole(role, roleKey);
+        }
+        return roleKey;
+    }
+    public void insertRole(String role, int roleKey) throws Exception {
+        String sql="insert into scge_roles (role_key, role) values (?,?)";
+        update(sql, roleKey, role);
     }
     public String getRole(String role) throws Exception {
         String sql="select role from scge_roles where role=?";
@@ -384,7 +439,6 @@ public class PersonDao extends AbstractDAO {
             return "member";
         }
     }
-
     public int getDefaultGroupId(String defaultGroupName) throws Exception {
         String sql="select group_id from scge_group where group_name=?";
         IntListQuery query=new IntListQuery(this.getDataSource(), sql);
@@ -426,10 +480,10 @@ public class PersonDao extends AbstractDAO {
             }
         }
     }
-    public void insertPersonInfo(int personId, List<Integer> roleIds,int groupId ) throws Exception {
+    public void insertPersonInfo(int personId, List<Integer> roleIds,int groupId, int grantId ) throws Exception {
        for(int role:roleIds){
            if(!isPersonInfoExists(personId, role, groupId)){
-               insertPersonInfo(personId, role, groupId);
+               insertPersonInfo(personId, role, groupId,grantId);
            }
        }
     }
@@ -447,20 +501,19 @@ public class PersonDao extends AbstractDAO {
         return execute(query, personId, role, groupId);
     }
 
-    public void insertPersonInfo(int personId, int roleId,int groupId ) throws Exception {
+    public void insertPersonInfo(int personId, int roleId,int groupId, int grantId ) throws Exception {
 
-            String sql="insert into person_info values(?,?,?)";
-            try {
-                update(sql, personId,  groupId, roleId);
-            }catch (Exception e){
-                System.err.println("person:"+ personId+"\n================================");
-                e.printStackTrace();
-            }
+            String sql="insert into person_info(person_id, " +
+                    "group_id," +
+                    "role_key," +
+                    "grant_id) values(?,?,?,?)";
+            update(sql, personId,  groupId, roleId, grantId);
+
 
     }
     public int insertOrUpdate(Person p) throws Exception {
         int id=0;
-        List<Person> members=getPerson(p);
+        List<Person> members=getPersonByEmailId(p);
         if(members==null || members.size()==0 ){
             id= getNextKey("person_seq");
             p.setId(id);
@@ -474,22 +527,42 @@ public class PersonDao extends AbstractDAO {
 
         }else{
             id=members.get(0).getId();
+            p.setId(id);
+            update(p);
         }
         return id;
     }
+
+
     public String getInstitutionName(int id) throws Exception {
         String sql="select institution_name from institution where institution_id=?";
         StringListQuery query= new StringListQuery(this.getDataSource(), sql);
         List<String> names=execute(query, id);
-        if(names!=null || names.size()>0){
+        if(names!=null && names.size()>0){
             return names.get(0);
         }else{
             return "";
         }
     }
+    public List<PersonInfo> getPersonInfo(int personId) throws Exception {
+        String sql="select p.person_id, g.group_name as group_name,g.group_id as group_id,sg.group_type, sg.group_name as subgroup_name,sg.group_id as subgroup_id, r.role , grnt.grant_title, grnt.grant_initiative,grnt.grant_id " +
+                " from scge_group g , person_info i, person p, scge_roles r, scge_group sg, group_associations a, scge_grants grnt " +
+                "                               where p.person_id=i.person_id   " +
+                "                                and sg.group_id=i.group_id   " +
+                "                                and r.role_key=i.role_key   " +
+                "                                  and p.status='ACTIVE'  " +
+                "                               and p.person_id =? " +
+                "                               and a.group_id=g.group_id  " +
+                "                               and a.subgroup_id=sg.group_id " +
+                "                               and grnt.grant_id=i.grant_id " +
+                "                               and sg.group_type='subgroup'";
+        PersonInfoQuery q= new PersonInfoQuery(this.getDataSource(), sql);
+        return execute(q,personId);
+    }
     public static void main(String[] args) throws Exception {
        PersonDao dao=new PersonDao();
         try {
+            dao.updateStatusToInactive("INACTIVE");
             dao.insertFromFile("data/directory.xlsx");
         } catch (IOException e) {
             e.printStackTrace();

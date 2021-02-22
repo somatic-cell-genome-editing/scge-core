@@ -21,10 +21,14 @@ import java.util.Map;
 public class GroupDAO extends AbstractDAO {
 
     public void insert(SCGEGroup g) throws Exception{
-        String sql="insert into scge_group values(?,?,?,?)";
+        String sql="insert into scge_group(group_id, group_name, group_short_name,group_type, group_name_lc) values(?,?,?,?,?)";
         update(sql,
-              g.getGroupId(), g.getGroupName(), g.getGroupShortName(),g.getGroupType()
-        );
+              g.getGroupId(), g.getGroupName(), g.getGroupShortName(),g.getGroupType(),g.getGroupNameLC());
+
+    }
+    public void updateGroupName(int groupId, String groupName) throws Exception{
+        String sql="update scge_group set group_name=? where group_id=?" ;
+        update(sql, groupName, groupId);
 
     }
     public List<SCGEGroup> getAllGroups() throws Exception {
@@ -33,7 +37,7 @@ public class GroupDAO extends AbstractDAO {
         return q.execute();
     }
     public int getGroupId(String groupName) throws Exception {
-        String sql="select group_id from scge_group where group_name=?";
+        String sql="select group_id from scge_group where group_name_lc=?";
         IntListQuery q=new IntListQuery(this.getDataSource(), sql);
         List<Integer> group=execute(q, groupName);
         return group != null && group.size() > 0 ? group.get(0) : 0;
@@ -112,7 +116,9 @@ public class GroupDAO extends AbstractDAO {
                 "where p.person_id=i.person_id " +
                 "and g.group_id=i.group_id " +
                 "and r.role_key=i.role_key " +
-                "and p.person_id =? ";
+              " and p.status='ACTIVE' " +
+                "and p.person_id =? " +
+              "and g.group_type='subgroup'";
 
         Connection conn=null;
         PreparedStatement stmt=null;
@@ -163,13 +169,26 @@ public class GroupDAO extends AbstractDAO {
 
     public List<PersonInfo> getGroupsNRolesByPersonId(int personId) throws Exception {
 
-        String sql="select p.person_id, g.group_name as group_name, sg.group_name as subgroup_name, r.role  from scge_group g , person_info i, person p, scge_roles r, scge_group sg, group_associations a " +
+      /*  String sql="select p.person_id, g.group_name as group_name, sg.group_name as subgroup_name, r.role  from scge_group g , person_info i, person p, scge_roles r, scge_group sg, group_associations a " +
                 "                where p.person_id=i.person_id  " +
                 "                and sg.group_id=i.group_id  " +
                 "                and r.role_key=i.role_key  " +
+                "                  and p.status='ACTIVE' " +
                 "               and p.person_id =? " +
                 "               and a.group_id=g.group_id " +
-                "               and a.subgroup_id=sg.group_id";
+                "               and a.subgroup_id=sg.group_id";(/
+
+       */
+        String sql=" select p.person_id, g.group_name as group_name,g.group_id as group_id, sg.group_name as subgroup_name,sg.group_id as subgroup_id, r.role , grnt.grant_title, grnt.grant_initiative,grnt.grant_id " +
+                " from scge_group g , person_info i, person p, scge_roles r, scge_group sg, group_associations a, scge_grants grnt " +
+                "                               where p.person_id=i.person_id   " +
+                "                                and sg.group_id=i.group_id   " +
+                "                                and r.role_key=i.role_key   " +
+                "                                  and p.status='ACTIVE'  " +
+                "                               and p.person_id =? " +
+                "                               and a.group_id=g.group_id  " +
+                "                               and a.subgroup_id=sg.group_id " +
+                "                               and grnt.grant_id=i.grant_id ";
         PersonInfoQuery q=new PersonInfoQuery(this.getDataSource(), sql);
         return execute(q, personId);
     }
@@ -191,22 +210,55 @@ public class GroupDAO extends AbstractDAO {
         StringListQuery query= new StringListQuery(this.getDataSource(), sql);
         return execute(query, groupName, groupName);
     }
+    public List<SCGEGroup> getSubGroupsByGroupId(int groupId) throws Exception {
+        String sql="select sg.* from  scge_group g , scge_group sg where " +
+                "g.group_id in (select group_id from scge_group where group_id=? ) " +
+                "and sg.group_id in (select subgroup_id from group_associations where group_id in (select group_id from scge_group where group_id=? ))";
+        GroupQuery query= new GroupQuery(this.getDataSource(), sql);
+        return execute(query, groupId, groupId);
+    }
 
 public List<Person> getGroupMembers(String groupName) throws Exception {
     String sql="select p.* from person p , person_info pi, scge_group g " +
             "where p.person_id=pi.person_id " +
+            "and p.status='ACTIVE' " +
             "and g.group_id=pi.group_id " +
             "and g.group_name=? order by p.name";
     PersonQuery q=new PersonQuery(this.getDataSource(), sql);
     return execute(q, groupName);
 }
-    public static void main(String[] args) throws Exception {
-        GroupDAO groupDAO=new GroupDAO();
-       List<Person> pList= groupDAO.getGroupMembers("consortium group");
-        for(Person p:pList){
-            System.out.println(p.getName());
+    public List<Person> getGroupMembersByGroupId(int groupId) throws Exception {
+        String sql="select p.* from person p , person_info pi, scge_group g " +
+                "where p.person_id=pi.person_id " +
+                "AND p.status= 'ACTIVE' " +
+                "and g.group_id=pi.group_id " +
+                "and g.group_id=? order by p.name";
+        PersonQuery q=new PersonQuery(this.getDataSource(), sql);
+        return execute(q, groupId);
+    }
+    public SCGEGroup getGroupById(int groupId) throws Exception{
+        String sql="select * from scge_group where group_id=?";
+        GroupQuery q=new GroupQuery(getDataSource(), sql);
+        List<SCGEGroup> groups=execute(q, groupId);
+        if(groups!=null){
+            return groups.get(0);
         }
-        System.out.println("PERSONS: " + pList.size());
+        return null;
+    }
+    public List<Integer> getDCCNIHGroupIds() throws Exception {
+        String sql="select * from scge_group where group_id in (select subgroup_id from " +
+                "group_associations where group_id in (select group_id from scge_group where group_name='DCC' or group_name='NIH')\n" +
+                ")" ;
+        IntListQuery q= new IntListQuery(this.getDataSource(), sql);
+        return q.execute();
+    }
+    public List<Integer> getDCCNIHAncestorGroupIds() throws Exception {
+        String sql="select group_id from scge_group where group_name in (?,?)" ;
+        IntListQuery q= new IntListQuery(this.getDataSource(), sql);
+        return execute(q, "DCC", "NIH");
+    }
+    public static void main(String[] args) throws Exception {
+
     }
 
 }
