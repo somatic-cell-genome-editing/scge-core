@@ -58,7 +58,7 @@ public class StudyDao extends AbstractDAO {
             }
             first=false;
             groups.append(pi.getSubGroupId());
-            groups.append(pi.getGroupId());
+           // groups.append(pi.getGroupId());
         }
 
         String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id " +
