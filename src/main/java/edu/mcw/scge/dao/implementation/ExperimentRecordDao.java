@@ -9,7 +9,7 @@ import java.util.List;
 public class ExperimentRecordDao extends AbstractDAO {
     public List<ExperimentRecord> getExperimentRecords() throws Exception {
         String sql="select x.experiment_id,e.subtype, g.guide,g.detection_method, m.name, t.target_site,t.locus_symbol, t.specificity_ratio " +
-                "from exeriment x, experiment_record r, " +
+                "from experiment x, experiment_record r, " +
                 "editor e, " +
                 "guide g, " +
                 "model m, " +

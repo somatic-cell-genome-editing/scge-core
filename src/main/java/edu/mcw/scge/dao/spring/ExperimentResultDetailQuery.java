@@ -15,10 +15,21 @@ public class ExperimentResultDetailQuery extends MappingSqlQuery<ExperimentResul
     protected ExperimentResultDetail mapRow(ResultSet rs, int rowNum) throws SQLException {
 
         ExperimentResultDetail e= new ExperimentResultDetail();
-
         e.setResultId(rs.getInt("result_id"));
-        e.setReplicate(rs.getInt("replicate"));
-        e.setResult(rs.getString("result"));
+        e.setTissueId(rs.getString("tissue_id"));
+        e.setCellType(rs.getString("cell_type"));
+        e.setExperimentRecordId(rs.getInt("experiment_record_id"));
+        e.setAssayDescription(rs.getString("assay_description"));
+        e.setNumberOfSamples(rs.getInt("number_of_samples"));
+        e.setUnits(rs.getString("units"));
+        e.setResultType(rs.getString("result_type"));
+        try {
+            e.setReplicate(rs.getInt("replicate"));
+            e.setResult(rs.getString("result"));
+        }catch (Exception ignored) {
+
+        }
+
         return e;
 
     }
