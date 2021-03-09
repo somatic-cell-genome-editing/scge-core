@@ -16,8 +16,6 @@ public class ExperimentResultDetailQuery extends MappingSqlQuery<ExperimentResul
 
         ExperimentResultDetail e= new ExperimentResultDetail();
         e.setResultId(rs.getInt("result_id"));
-        e.setTissueId(rs.getString("tissue_id"));
-        e.setCellType(rs.getString("cell_type"));
         e.setExperimentRecordId(rs.getInt("experiment_record_id"));
         e.setAssayDescription(rs.getString("assay_description"));
         e.setNumberOfSamples(rs.getInt("number_of_samples"));

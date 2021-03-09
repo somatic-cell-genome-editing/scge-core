@@ -3,8 +3,7 @@ package edu.mcw.scge.datamodel;
 public class ExperimentResultDetail {
 
     private int resultId;
-    private String tissueId;
-    private String cellType;
+
     private int numberOfSamples;
     private String units;
     private String assayDescription;
@@ -27,22 +26,6 @@ public class ExperimentResultDetail {
 
     public void setResultId(int resultId) {
         this.resultId = resultId;
-    }
-
-    public String getTissueId() {
-        return tissueId;
-    }
-
-    public void setTissueId(String tissueId) {
-        this.tissueId = tissueId;
-    }
-
-    public String getCellType() {
-        return cellType;
-    }
-
-    public void setCellType(String cellType) {
-        this.cellType = cellType;
     }
 
     public int getNumberOfSamples() {
