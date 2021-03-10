@@ -1,8 +1,7 @@
 package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
-import edu.mcw.scge.dao.spring.CountQuery;
-import edu.mcw.scge.dao.spring.EditorQuery;
+import edu.mcw.scge.dao.spring.IntListQuery;
 import edu.mcw.scge.dao.spring.StudyAssociationQuery;
 import edu.mcw.scge.dao.spring.StudyQuery;
 import edu.mcw.scge.datamodel.*;
@@ -26,6 +25,7 @@ public class StudyDao extends AbstractDAO {
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q,labId);
     }
+
     public Study getStudyByStudyId(int studyId) throws Exception{
         String sql="select * from study where study_id=?";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
@@ -41,7 +41,49 @@ public class StudyDao extends AbstractDAO {
         return execute(q, studyId);
 
     }
+    public boolean existsAssociation(StudyTierUpdate u) throws Exception {
+        String sql="select id from study_associations where study_id=? and group_id=? and tier=?";
+        IntListQuery q=new IntListQuery(this.getDataSource(), sql);
+        return execute(q, u.getStudyId(), u.getAssociatedGroupId(), u.getTier()).size()>0;
+    }
+    public List<Integer> getAssociations(StudyTierUpdate u) throws Exception {
+        String sql="select id from study_associations where study_id=? and group_id=? and tier=?";
+        IntListQuery q=new IntListQuery(this.getDataSource(), sql);
+        return execute(q, u.getStudyId(), u.getAssociatedGroupId(), u.getTier());
+    }
+    public void updateStudyAssociation(StudyAssociation a) throws Exception {
 
+        String sql="update study_associations set " +
+                "study_id=?," +
+                "group_id=? ," +
+                "modified_date=?," +
+                "modified_by=?," +
+                "tier=?," +
+                "status=? where study_id=? and group_id=? and tier=?";
+        update(sql, a.getStudyId(), a.getGroupId(), a.getModifiedDate(),a.getModifiedBy(),a.getTier(),
+                "ACTIVE", a.getStudyId(), a.getGroupId(), a.getTier());
+
+    }
+    public void disableStudyAssociations(int studyId) throws Exception {
+        String sql="update study_associations set status=? where study_id=?" ;
+        update(sql, "INACTIVE", studyId);
+    }
+    public void insertStudyAssociations(StudyAssociation a) throws Exception {
+        String sql="insert into study_associations(" +
+                "id," +
+                "study_id," +
+                "group_id," +
+                "created_date," +
+                "created_by," +
+                "modified_date," +
+                "modified_by," +
+                "tier," +
+                "status " +
+                ") values(?,?,?,?,?,?,?,?,?)";
+        update(sql, a.getAssociationId(), a.getStudyId(),
+                a.getGroupId(), a.getCreatedDate(), a.getCreatedBy(),a.getModifiedDate(), a.getModifiedBy()
+        ,a.getTier(),"ACTIVE");
+    }
     public List<Study> getStudies(Person p) throws Exception {
 
 
@@ -188,6 +230,11 @@ public class StudyDao extends AbstractDAO {
         update(sql, studyId,s.getStudy(),s.getLabId(),s.getTier(),s.getSubmissionDate(),
                 s.getSubmitterId(),s.getPiId(),null,null,s.getRawData(),s.getReference(),
                 null,null);
+    }
+    public void updateStudyTier(StudyTierUpdate u) throws Exception{
+        String sql="update study set tier=?, modified_by=?, " +
+                "last_modified_date=? where study_id=?";
+        update(sql, u.getTier(),  String.valueOf(u.getModifiedBy()), u.getModifiedDate(), u.getStudyId());
     }
     public void updateStudyGrantNGroup(int grantId, int groupId, int personId) throws Exception {
         String sql="update study set grant_id=? , group_id=? where pi_id=?";

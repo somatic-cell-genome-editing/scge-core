@@ -11,7 +11,7 @@ import java.util.List;
 public class ExperimentDao extends AbstractDAO {
 
     public List<ExperimentRecord> getExperimentRecords(int experimentId) throws Exception {
-        String sql="select ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, g.guide , x.type from experiment_record ex " +
+        String sql="select ex.*,x.name as experimentName , e.symbol, d.ds_type, d.ds_name, m.name as modelName, g.guide , x.type from experiment_record ex " +
                 " left outer join experiment x on x.experiment_id=ex.experiment_id " +
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +

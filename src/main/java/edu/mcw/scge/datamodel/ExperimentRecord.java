@@ -22,6 +22,15 @@ public class ExperimentRecord {
     private String age;
     private String genotype;
     private String sex;
+    private String experimentRecordName;
+
+    public String getExperimentRecordName() {
+        return experimentRecordName;
+    }
+
+    public void setExperimentRecordName(String experimentRecordName) {
+        this.experimentRecordName = experimentRecordName;
+    }
 
     public int getExperimentRecordId() {
         return experimentRecordId;
