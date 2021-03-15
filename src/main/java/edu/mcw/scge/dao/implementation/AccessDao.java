@@ -5,6 +5,7 @@ import edu.mcw.scge.dao.spring.IntListQuery;
 import edu.mcw.scge.dao.spring.StringListQuery;
 import edu.mcw.scge.datamodel.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -105,6 +106,16 @@ public class AccessDao extends AbstractDAO {
         }else {
             return false;
         }
+    }
+
+    public int insertAccessRequest(String firstName, String lastName, String googleEmail, String institution, String institutionalEmail, String pi) throws Exception {
+
+        String sql = "insert into access_request (first_name, last_name,google_email, institution, institutional_email, pi, date) \n" +
+                " values (?,?,?,?,?,?,?)";
+
+        update(sql, firstName,lastName,googleEmail,institution,institutionalEmail,pi,new Date());
+
+        return 1;
     }
 
 

@@ -9,7 +9,7 @@ import java.util.List;
 public class ExperimentRecordDao extends AbstractDAO {
     public List<ExperimentRecord> getExperimentRecords() throws Exception {
         String sql="select x.experiment_id,e.subtype, g.guide,g.detection_method, m.name, t.target_site,t.locus_symbol, t.specificity_ratio " +
-                "from exeriment x, experiment_record r, " +
+                "from experiment x, experiment_record r, " +
                 "editor e, " +
                 "guide g, " +
                 "model m, " +
@@ -82,14 +82,14 @@ public class ExperimentRecordDao extends AbstractDAO {
 
         String sql = "insert into experiment_record (experiment_id,name,study_id, " +
                 "editor_id,ds_id,model_id,guide_id,sample_prep,application_method_id,experiment_record_id,age, genotype,sex," +
-                "vector_id  ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "vector_id,tissue_id, cell_type  ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         
         int experimentId = this.getNextKeyFromSequence("experiment_seq");
         
-        update(sql, expRecord.getExperimentId(),expRecord.getExperimentName(),expRecord.getStudyId(),
-                expRecord.getEditorId(),expRecord.getDeliverySystemId(),expRecord.getModelId(),
-                expRecord.getGuideId(),expRecord.getSamplePrep(),expRecord.getApplicationMethodId(),experimentId,
-                expRecord.getAge(),expRecord.getGenotype(),expRecord.getSex(),expRecord.getVectorId());
+        update(sql, expRecord.getExperimentId(),expRecord.getExperimentName(),expRecord.getStudyId(), expRecord.getEditorId(),
+                expRecord.getDeliverySystemId(),expRecord.getModelId(), expRecord.getGuideId(),expRecord.getSamplePrep(),
+                expRecord.getApplicationMethodId(),experimentId, expRecord.getAge(),expRecord.getGenotype(),
+                expRecord.getSex(),expRecord.getVectorId(),expRecord.getTissueId(),expRecord.getCellType());
 
         return experimentId;
     }

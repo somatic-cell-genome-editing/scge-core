@@ -5,7 +5,6 @@ public class ExperimentRecord {
     private int experimentId;
     private String experimentName;
     private String experimentType;
-
     private int studyId;
     private int editorId;
     private int deliverySystemId;
@@ -22,6 +21,8 @@ public class ExperimentRecord {
     private String age;
     private String genotype;
     private String sex;
+    private String tissueId;
+    private String cellType;
 
     public int getExperimentRecordId() {
         return experimentRecordId;
@@ -181,5 +182,21 @@ public class ExperimentRecord {
 
     public void setExperimentType(String experimentType) {
         this.experimentType = experimentType;
+    }
+
+    public String getTissueId() {
+        return tissueId;
+    }
+
+    public void setTissueId(String tissueId) {
+        this.tissueId = tissueId;
+    }
+
+    public String getCellType() {
+        return cellType;
+    }
+
+    public void setCellType(String cellType) {
+        this.cellType = cellType;
     }
 }
