@@ -32,14 +32,22 @@ import java.util.List;
 public class PersonDao extends AbstractDAO {
         GroupDAO gdao=new GroupDAO();
         GrantDao grantDao=new GrantDao();
-    public void insert(Person p) throws Exception{
+    public void insert(Person p) throws Exception {
+
+        int newId = 0;
+        if (p.getId() == 0) {
+            newId = getNextKey("person_seq");
+        } else {
+            newId = p.getId();
+        }
+
         String sql="insert into person(person_id,name, name_lc, institution_id, email, email_lc," +
                 "phone, address, google_id,status, created_date, modified_date, modified_by, other_id, " +
                 "first_name," +
                 "last_name)" +
                 " values(?,?,?,?,?,?,?,?,?,?,current_date,current_date,?,?,?,?)";
         update(sql,
-                p.getId(), p.getName(),p.getName().toLowerCase(),
+                newId, p.getName(),p.getName().toLowerCase(),
                 p.getInstitution(),
                 p.getEmail(),p.getEmail().toLowerCase(),
                 p.getPhone(), p.getAddress(), p.getGoogleSub(),
@@ -52,8 +60,9 @@ public class PersonDao extends AbstractDAO {
 
     }
     public void update(Person p) throws Exception {
-        String sql="update person set status=?, modified_date=current_date where person_id=?";
-        update(sql, p.getStatus(),p.getId());
+        System.out.println("in update person");
+        String sql="update person set name=?, name_lc=?,institution_id=?,email=?,email_lc=?,status=?, other_id=?, modified_date=current_date where person_id=?";
+        update(sql, p.getName(), p.getName().toLowerCase(), p.getInstitution(),p.getEmail(), p.getEmail().toLowerCase(),p.getStatus(),p.getOtherId(), p.getId());
     }
 
     public List<Person> getPerson(Person p) throws Exception{
@@ -283,7 +292,11 @@ public class PersonDao extends AbstractDAO {
     }
 
 
-    public void delete(Person person){
+    public void delete(Person person) throws Exception{
+
+        String sql="delete from person where person_id=?" ;
+        update(sql, person.getId() );
+
 
     }
     public void insertFromFile(String file) throws Exception {
@@ -537,6 +550,25 @@ public class PersonDao extends AbstractDAO {
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query,name);
     }
+
+    public boolean exists(Person p) throws Exception {
+        int id=0;
+        List<Person> members=new ArrayList<>();
+        members=getPersonByName(p.getName().toLowerCase().trim());
+        if(members==null || members.size()==0){
+            members=getPersonRecords(p);
+
+            if (members==null || members.size()==0) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+
+
     public int insertOrUpdate(Person p) throws Exception {
         int id=0;
         List<Person> members=new ArrayList<>();
