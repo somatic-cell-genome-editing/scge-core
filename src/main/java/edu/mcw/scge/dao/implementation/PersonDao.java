@@ -517,25 +517,64 @@ public class PersonDao extends AbstractDAO {
 
 
     }
+    public  List<Person> getPersonRecords(Person p) throws Exception {
+        List<Person> members=new ArrayList<>();
+        String name=p.getName().replaceAll("[,.]", "");
+        for(Person person:   getAllMembers()){
+            try {
+                String str1 = person.getName().replaceAll("[,.]", "");
+                if (name.equalsIgnoreCase(str1) ||
+                        p.getEmail().toLowerCase().equalsIgnoreCase(person.getEmail().toLowerCase())) {
+                    members.add(person);
+                }
+
+            }catch (Exception e){e.printStackTrace();}
+        }
+        return members;
+    }
+    public List<Person> getPersonByName(String name) throws Exception{
+        String sql="select * from person where name_lc=? " ;
+        PersonQuery query=new PersonQuery(this.getDataSource(), sql);
+        return execute(query,name);
+    }
     public int insertOrUpdate(Person p) throws Exception {
         int id=0;
-        List<Person> members=getPersonByEmailId(p);
-        if(members==null || members.size()==0 ){
-            id= getNextKey("person_seq");
-            p.setId(id);
-            try{
-                insert(p);
-            }catch (Exception e){
-                System.out.println(p.getName()+"\t"+ p.getEmail());
-                e.printStackTrace();
-                return 0;
-            }
+        List<Person> members=new ArrayList<>();
+        members=getPersonByName(p.getName().toLowerCase().trim());
+        if(members==null || members.size()==0){
+            members=getPersonRecords(p);
 
-        }else{
-            id=members.get(0).getId();
-            p.setId(id);
+            if (members==null || members.size()==0) {
+
+                id= getNextKey("person_seq");
+                p.setId(id);
+                try{
+                    insert(p);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        }
+        if(members!=null && members.size()>0){
+            boolean active=false;
+            for(Person person: members){
+                if(person.getStatus().equalsIgnoreCase("ACTIVE")){
+                    active=true;
+                    id=person.getId();
+                    break;
+                }
+            }
+            if(!active) {
+                p.setId(members.get(0).getId());
+
+            }else{
+                p.setId(id);
+
+            }
             update(p);
         }
+
         return id;
     }
 
@@ -590,14 +629,5 @@ public class PersonDao extends AbstractDAO {
        return   execute(q,personId);
 
     }
-    public static void main(String[] args) throws Exception {
-       PersonDao dao=new PersonDao();
-        try {
-            dao.updateStatusToInactive("INACTIVE");
-            dao.insertFromFile("data/directory.xlsx");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Done!!");
-    }
+
 }
