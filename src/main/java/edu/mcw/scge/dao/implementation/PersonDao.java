@@ -293,12 +293,20 @@ public class PersonDao extends AbstractDAO {
 
 
     public void delete(Person person) throws Exception{
-
+        deletePersonInfo(person);
         String sql="delete from person where person_id=?" ;
         update(sql, person.getId() );
 
 
     }
+    public void deletePersonInfo(Person person) throws Exception{
+
+        String sql="delete from person_info where person_id=?" ;
+        update(sql, person.getId() );
+
+
+    }
+
     public void insertFromFile(String file) throws Exception {
 
         FileInputStream fs=new FileInputStream(new File(file));
