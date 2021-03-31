@@ -106,11 +106,17 @@ public class PersonDao extends AbstractDAO {
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query, email.toLowerCase(), email, email);
     }
-    public List<Person> getAllMembers() throws Exception{
+    public List<Person> getAllActiveMembers() throws Exception{
         String sql="select * from person where status='ACTIVE' order by name ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return query.execute();
     }
+    public List<Person> getAllMembers() throws Exception{
+        String sql="select * from person order by name ";
+        PersonQuery query=new PersonQuery(this.getDataSource(), sql);
+        return query.execute();
+    }
+
     public List<String> getPersonGroups(Person p) throws Exception {
         String sql="select g.group_name from scge_group g, person_info r, person p " +
                 "where g.group_id=r.group_id " +
@@ -541,7 +547,7 @@ public class PersonDao extends AbstractDAO {
     public  List<Person> getPersonRecords(Person p) throws Exception {
         List<Person> members=new ArrayList<>();
         String name=p.getName().replaceAll("[,.]", "");
-        for(Person person:   getAllMembers()){
+        for(Person person:   getAllActiveMembers()){
             try {
                 String str1 = person.getName().replaceAll("[,.]", "");
                 if (name.equalsIgnoreCase(str1) ||
