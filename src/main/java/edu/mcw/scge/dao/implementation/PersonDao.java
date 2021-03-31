@@ -81,17 +81,17 @@ public class PersonDao extends AbstractDAO {
         return execute(query, p.getEmail().toLowerCase());
     }
     public List<Person> getPersonById(int id) throws Exception{
-        String sql="select * from person where person_id=? and status='ACTIVE' ";
+        String sql="select * from person where person_id=? ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query,id);
     }
     public List<Person> getPersonByGoogleId(String id) throws Exception{
-        String sql="select * from person where google_id=? and status='ACTIVE' ";
+        String sql="select * from person where google_id=?  ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query,id);
     }
     public List<Person> getPersonByLastName(String lastName) throws Exception{
-        String sql="select * from person where name like '%"+lastName+"%' and status='ACTIVE' " ;
+        String sql="select * from person where name like '%"+lastName+"%'  " ;
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query);
     }
@@ -102,7 +102,7 @@ public class PersonDao extends AbstractDAO {
         return (String) execute(query, subject).get(0);
     }
     public List<Person> getPersonByEmail(String email) throws Exception{
-        String sql="select * from person where email_lc=? or other_id=? or email=? and status='ACTIVE' ";
+        String sql="select * from person where email_lc=? or other_id=? or email=? ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query, email.toLowerCase(), email, email);
     }
