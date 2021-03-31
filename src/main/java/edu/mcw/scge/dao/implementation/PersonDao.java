@@ -313,6 +313,15 @@ public class PersonDao extends AbstractDAO {
 
     }
 
+    public void removeGroup(Person person, int groupId) throws Exception{
+
+        String sql="delete from person_info where person_id=? and group_id=?" ;
+        update(sql, person.getId(),groupId );
+
+
+    }
+
+
     public void insertFromFile(String file) throws Exception {
 
         FileInputStream fs=new FileInputStream(new File(file));
