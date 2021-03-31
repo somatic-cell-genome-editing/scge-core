@@ -82,6 +82,7 @@ public class PersonDao extends AbstractDAO {
     }
     public List<Person> getPersonById(int id) throws Exception{
         String sql="select * from person where person_id=? ";
+        System.out.println(sql);
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query,id);
     }
@@ -548,8 +549,8 @@ public class PersonDao extends AbstractDAO {
             String sql="insert into person_info(person_id, " +
                     "group_id," +
                     "role_key," +
-                    "grant_id) values(?,?,?,?)";
-            update(sql, personId,  groupId, roleId, grantId);
+                    "grant_id, institution_id) values(?,?,?,?,?)";
+            update(sql, personId,  groupId, roleId, grantId,0);
 
 
     }
