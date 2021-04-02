@@ -95,16 +95,18 @@ public class StudyDao extends AbstractDAO {
     }
 
  */
-/*
+
     public List<Study> getStudiesByGrantId(int grantId) throws Exception{
-        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi where s.lab_id=i.institution_id " +
-                "and s.submitter_id=p.person_id and s.pi_id=pi.person_id" +
-                " and s.grant_id=?";
+        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi, scge_grants sg " +
+                "    where s.lab_id=i.institution_id " +
+                "    and s.submitter_id=p.person_id and s.pi_id=pi.person_id " +
+                "    and sg.group_id=s.group_id " +
+                "    and sg.grant_id=?";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q, grantId);
     }
 
- */
+
     public List<Study> getStudyById(int studyId) throws Exception{
         String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, " +
                 "institution i, person p, person pi where s.study_id=? and s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id";
