@@ -9,8 +9,8 @@ import java.util.List;
 
 public class GrantDao extends AbstractDAO {
     public void insert(Grant g) throws Exception {
-        String sql="insert into scge_grants (grant_id, grant_number, grant_title, grant_title_lc, grant_initiative) values(?,?,?,?,?)";
-        update(sql,g.getGrantId(), g.getGrantNumber(), g.getGrantTitle(), g.getGrantTitleLc(), g.getGrantInitiative());
+        String sql="insert into scge_grants (grant_id, group_id, grant_number, grant_title, grant_title_lc, grant_initiative) values(?,?,?,?,?)";
+        update(sql,g.getGrantId(), g.getGroupId(), g.getGrantNumber(), g.getGrantTitle(), g.getGrantTitleLc(), g.getGrantInitiative());
     }
     public Grant getGrantByTitle(String grantTitle) throws Exception {
         String sql="select * from scge_grants where grant_title_lc=?" ;

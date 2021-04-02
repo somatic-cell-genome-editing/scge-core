@@ -84,7 +84,7 @@ public class StudyDao extends AbstractDAO {
     }
 
 
-
+/*
     public List<Study> getStudiesByInitiative(String initiativeName) throws Exception{
         String sql = "select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id and s.grant_id in (select grant_id from scge_grants where grant_initiative = ?) order by s.tier desc, s.submission_date desc";
         System.out.println(initiativeName + " " + sql);
@@ -94,6 +94,8 @@ public class StudyDao extends AbstractDAO {
 
     }
 
+ */
+/*
     public List<Study> getStudiesByGrantId(int grantId) throws Exception{
         String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi where s.lab_id=i.institution_id " +
                 "and s.submitter_id=p.person_id and s.pi_id=pi.person_id" +
@@ -101,6 +103,8 @@ public class StudyDao extends AbstractDAO {
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q, grantId);
     }
+
+ */
     public List<Study> getStudyById(int studyId) throws Exception{
         String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, " +
                 "institution i, person p, person pi where s.study_id=? and s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id";
@@ -189,9 +193,9 @@ public class StudyDao extends AbstractDAO {
                 s.getSubmitterId(),s.getPiId(),null,null,s.getRawData(),s.getReference(),
                 null,null);
     }
-    public void updateStudyGrantNGroup(int grantId, int groupId, int personId) throws Exception {
-        String sql="update study set grant_id=? , group_id=? where pi_id=?";
-        update(sql, grantId,groupId,personId);
+    public void updateStudyGrantNGroup(int groupId, int personId) throws Exception {
+        String sql="update study set group_id=? where pi_id=?";
+        update(sql, groupId,personId);
     }
 
     public List<Study> getStudiesByGroupId(int groupId) throws Exception {

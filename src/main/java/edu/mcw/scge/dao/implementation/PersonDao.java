@@ -247,11 +247,11 @@ public class PersonDao extends AbstractDAO {
         return id;
     }
 
-    public void insertGrant(int grant_id,String grantTitle) throws Exception {
+    public void insertGrant(int grant_id, String grantTitle, int groupId) throws Exception {
 
-        String sql="insert into scge_grants values(?,?,?)";
+        String sql="insert into scge_grants values(?,?,?,?)";
         try {
-            update(sql, grant_id, grantTitle, grantTitle.toLowerCase());
+            update(sql, grant_id, grantTitle, grantTitle.toLowerCase(),groupId);
         }catch (Exception e){
             System.err.println("Grant TITLE:"+grantTitle);
         }
@@ -544,13 +544,13 @@ public class PersonDao extends AbstractDAO {
         return execute(query, personId, role, groupId);
     }
 
-    public void insertPersonInfo(int personId, int roleId,int groupId, int grantId ) throws Exception {
+    public void insertPersonInfo(int personId, int roleId,int groupId) throws Exception {
 
             String sql="insert into person_info(person_id, " +
                     "group_id," +
-                    "role_key," +
-                    "grant_id, institution_id) values(?,?,?,?,?)";
-            update(sql, personId,  groupId, roleId, grantId,0);
+                    "role_key" +
+                    ") values(?,?,?)";
+            update(sql, personId,  groupId, roleId);
 
 
     }
@@ -657,7 +657,7 @@ public class PersonDao extends AbstractDAO {
                     "                               and p.person_id =? " +
                     "                               and a.group_id=g.group_id  " +
                     "                               and a.subgroup_id=sg.group_id " +
-                    "                               and grnt.grant_id=i.grant_id " +
+                    "                               and grnt.group_id=sg.group_id " +
                     "                               and sg.group_type='subgroup'";
 
 

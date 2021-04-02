@@ -188,7 +188,7 @@ public class GroupDAO extends AbstractDAO {
                 "                               and p.person_id =? " +
                 "                               and a.group_id=g.group_id  " +
                 "                               and a.subgroup_id=sg.group_id " +
-                "                               and grnt.grant_id=i.grant_id ";
+                "                               and grnt.group_id=sg.group_id ";
         PersonInfoQuery q=new PersonInfoQuery(this.getDataSource(), sql);
         return execute(q, personId);
     }

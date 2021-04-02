@@ -23,7 +23,6 @@ public class StudyQuery extends MappingSqlQuery {
         s.setRawData(rs.getString("raw_data"));
         s.setReference(rs.getString("reference"));
         s.setGroupId(rs.getInt("group_id"));
-        s.setGrantId(rs.getInt("grant_id"));
         s.setPiId(rs.getInt("pi_id"));
         try{
             s.setPiId(rs.getInt("piId"));
