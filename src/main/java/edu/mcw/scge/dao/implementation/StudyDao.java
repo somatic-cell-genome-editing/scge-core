@@ -237,7 +237,7 @@ public class StudyDao extends AbstractDAO {
 
                 }
              //   System.out.println("PI_ID: "+ piId+"\tGRANT_ID: "+grantId+"\tGROUP_ID:"+groupId);
-              sdao.updateStudyGrantNGroup(grantId,groupId,piId);
+              sdao.updateStudyGrantNGroup(groupId,piId);
             }
 
         } catch (Exception e) {

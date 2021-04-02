@@ -417,10 +417,10 @@ public class PersonDao extends AbstractDAO {
                     int defaultGoupId = getGroupId("consortium", "group");
                     gdao.makeAssociations(defaultGoupId, groupId);
                     if (groupId != 0 ) {
-                        insertPersonInfo(personId, Arrays.asList(1), groupId, grantId);
+                        insertPersonInfo(personId, Arrays.asList(1), groupId);
                     }
                     if (subgroupId != 0)
-                        insertPersonInfo(personId, roleIds, subgroupId, grantId);
+                        insertPersonInfo(personId, roleIds, subgroupId);
                     gdao.makeAssociations(groupId, subgroupId);
 
                     insertPersonAuthority(personId);
@@ -523,10 +523,10 @@ public class PersonDao extends AbstractDAO {
             }
         }
     }
-    public void insertPersonInfo(int personId, List<Integer> roleIds,int groupId, int grantId ) throws Exception {
+    public void insertPersonInfo(int personId, List<Integer> roleIds,int groupId ) throws Exception {
        for(int role:roleIds){
            if(!isPersonInfoExists(personId, role, groupId)){
-               insertPersonInfo(personId, role, groupId,grantId);
+               insertPersonInfo(personId, role, groupId);
            }
        }
     }
