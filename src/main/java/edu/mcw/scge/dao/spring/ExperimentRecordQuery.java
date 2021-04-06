@@ -27,6 +27,10 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
             e.setDeliverySystemType(rs.getString("ds_name"));
         }catch (Exception e2) {
             e.setDeliverySystemType(rs.getString("ds_type"));
+        }
+        try{
+            e.setVector(rs.getString("vector"));
+        }catch (Exception e1){
 
         }
         e.setTissueId(rs.getString("tissue_id"));
