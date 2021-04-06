@@ -19,7 +19,6 @@ public class Study {
     private String reference;
     private List<Integer> associatedGroups;
     private int groupId;
-    private int grantId;
 
     public int getStudyId() {
         return studyId;
@@ -134,11 +133,4 @@ public class Study {
         this.groupId = groupId;
     }
 
-    public int getGrantId() {
-        return grantId;
-    }
-
-    public void setGrantId(int grantId) {
-        this.grantId = grantId;
-    }
 }
