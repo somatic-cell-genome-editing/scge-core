@@ -178,21 +178,7 @@ public class GroupDAO extends AbstractDAO {
     public List<PersonInfo> getGroupsNRolesByPersonId(int personId) throws Exception {
         PersonDao pdao = new PersonDao();
         return pdao.getPersonInfo(personId);
-        /*
-        String sql=" select p.person_id, g.group_name as group_name,g.group_id as group_id, sg.group_name as subgroup_name,sg.group_id as subgroup_id, r.role , grnt.grant_title, grnt.grant_initiative,grnt.grant_id " +
-                " from scge_group g , person_info i, person p, scge_roles r, scge_group sg, group_associations a, scge_grants grnt " +
-                "                               where p.person_id=i.person_id   " +
-                "                                and sg.group_id=i.group_id   " +
-                "                                and r.role_key=i.role_key   " +
-                "                                  and p.status='ACTIVE'  " +
-                "                               and p.person_id =? " +
-                "                               and a.group_id=g.group_id  " +
-                "                               and a.subgroup_id=sg.group_id " +
-                "                               and grnt.group_id=sg.group_id ";
-        PersonInfoQuery q=new PersonInfoQuery(this.getDataSource(), sql);
-        return execute(q, personId);
 
-         */
     }
     /*
     public List<SCGEGroup> getGroupByPersonIdNType(int personId, String type) throws Exception {
@@ -218,15 +204,15 @@ public class GroupDAO extends AbstractDAO {
     }
     */
 
-    /*
+
     public List<SCGEGroup> getSubGroupsByGroupId(int groupId) throws Exception {
-        String sql="select sg.* from  scge_group g , scge_group sg where " +
-                "g.group_id in (select group_id from scge_group where group_id=? ) " +
-                "and sg.group_id in (select subgroup_id from group_associations where group_id in (select group_id from scge_group where group_id=? ))";
+        String sql="select * from scge_group where group_id in (" +
+                "select subgroup_id from group_associations where group_id in (" +
+                "select group_id from scge_group where group_id=?))";
         GroupQuery query= new GroupQuery(this.getDataSource(), sql);
-        return execute(query, groupId, groupId);
+        return execute(query, groupId);
     }
-     */
+
 
 public List<Person> getGroupMembers(String groupName) throws Exception {
     String sql="select p.* from person p , person_info pi, scge_group g " +
