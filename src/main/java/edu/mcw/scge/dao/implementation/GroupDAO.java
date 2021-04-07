@@ -242,17 +242,14 @@ public List<Person> getGroupMembers(String groupName) throws Exception {
         return null;
     }
     public List<Integer> getDCCNIHGroupIds() throws Exception {
-        String sql = "select * from scge_group where group_name='DCC' or group_name='NIH'";
-        /*
-        String sql="select * from scge_group where group_id in (select subgroup_id from " +
-                "group_associations where group_id in (select group_id from scge_group where group_name='DCC' or group_name='NIH')\n" +
-                ")" ;
-        */
+        String sql = "select subgroup_id from group_associations where group_id in (" +
+
+                "select group_id from scge_group where group_name='DCC' or group_name='NIH')";
         IntListQuery q= new IntListQuery(this.getDataSource(), sql);
 
         return q.execute();
     }
-    /*
+
     public List<Integer> getDCCNIHAncestorGroupIds() throws Exception {
         String sql="select group_id from scge_group where group_name in (?,?)" ;
         IntListQuery q= new IntListQuery(this.getDataSource(), sql);
@@ -262,6 +259,6 @@ public List<Person> getGroupMembers(String groupName) throws Exception {
 
     }
 
-     */
+
 
 }
