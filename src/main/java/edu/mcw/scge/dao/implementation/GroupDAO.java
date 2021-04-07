@@ -42,6 +42,8 @@ public class GroupDAO extends AbstractDAO {
         List<Integer> group=execute(q, groupName);
         return group != null && group.size() > 0 ? group.get(0) : 0;
     }
+
+    /*
     public void makeAssociations(int groupId, int subgroupId) throws Exception {
         List<Integer> groupIds=getGroupIds(groupId, subgroupId);
         if(groupIds!=null && groupIds.size()>0){
@@ -51,6 +53,8 @@ public class GroupDAO extends AbstractDAO {
         }
 
     }
+    */
+    /*
     public List<Integer> getGroupIds(int groupId, int subgroupId) throws Exception {
         String sql="select group_id from group_associations where group_id=? and subgroup_id=?";
         IntListQuery query=new IntListQuery(this.getDataSource(), sql);
@@ -60,6 +64,9 @@ public class GroupDAO extends AbstractDAO {
         String sql="insert into group_associations values(?,?)";
         update(sql,groupId, subgroupId);
     }
+    */
+
+
     public Map<String, List<String>> getGroupsNRoles(String userName) throws Exception {
         String sql="select g.group_name, r.role  from scge_group g , person_info i, person p, scge_roles r " +
                 "where p.person_id=i.person_id " +
@@ -111,6 +118,7 @@ public class GroupDAO extends AbstractDAO {
         }
         return groupRoleMap;
     }
+
     public Map<String, List<String>> getGroupsNRolesByMemberId(int personId) throws Exception {
       String sql="select g.group_name, r.role  from scge_group g , person_info i, person p, scge_roles r " +
                 "where p.person_id=i.person_id " +
@@ -168,17 +176,9 @@ public class GroupDAO extends AbstractDAO {
 
 
     public List<PersonInfo> getGroupsNRolesByPersonId(int personId) throws Exception {
-
-      /*  String sql="select p.person_id, g.group_name as group_name, sg.group_name as subgroup_name, r.role  from scge_group g , person_info i, person p, scge_roles r, scge_group sg, group_associations a " +
-                "                where p.person_id=i.person_id  " +
-                "                and sg.group_id=i.group_id  " +
-                "                and r.role_key=i.role_key  " +
-                "                  and p.status='ACTIVE' " +
-                "               and p.person_id =? " +
-                "               and a.group_id=g.group_id " +
-                "               and a.subgroup_id=sg.group_id";(/
-
-       */
+        PersonDao pdao = new PersonDao();
+        return pdao.getPersonInfo(personId);
+        /*
         String sql=" select p.person_id, g.group_name as group_name,g.group_id as group_id, sg.group_name as subgroup_name,sg.group_id as subgroup_id, r.role , grnt.grant_title, grnt.grant_initiative,grnt.grant_id " +
                 " from scge_group g , person_info i, person p, scge_roles r, scge_group sg, group_associations a, scge_grants grnt " +
                 "                               where p.person_id=i.person_id   " +
@@ -191,7 +191,10 @@ public class GroupDAO extends AbstractDAO {
                 "                               and grnt.group_id=sg.group_id ";
         PersonInfoQuery q=new PersonInfoQuery(this.getDataSource(), sql);
         return execute(q, personId);
+
+         */
     }
+    /*
     public List<SCGEGroup> getGroupByPersonIdNType(int personId, String type) throws Exception {
 
         String sql="select sg.group_name, sg.group_id, sg.group_type from scge_group g , scge_group sg, group_associations a where " +
@@ -203,6 +206,9 @@ public class GroupDAO extends AbstractDAO {
         return execute(q,type, personId);
     }
 
+     */
+
+    /*
     public List<String> getSubGroupsByGroupName(String groupName) throws Exception {
         String sql="select sg.group_name from  scge_group g , scge_group sg where " +
                 "g.group_id in (select group_id from scge_group where group_name=? ) " +
@@ -210,6 +216,9 @@ public class GroupDAO extends AbstractDAO {
         StringListQuery query= new StringListQuery(this.getDataSource(), sql);
         return execute(query, groupName, groupName);
     }
+    */
+
+    /*
     public List<SCGEGroup> getSubGroupsByGroupId(int groupId) throws Exception {
         String sql="select sg.* from  scge_group g , scge_group sg where " +
                 "g.group_id in (select group_id from scge_group where group_id=? ) " +
@@ -217,6 +226,7 @@ public class GroupDAO extends AbstractDAO {
         GroupQuery query= new GroupQuery(this.getDataSource(), sql);
         return execute(query, groupId, groupId);
     }
+     */
 
 public List<Person> getGroupMembers(String groupName) throws Exception {
     String sql="select p.* from person p , person_info pi, scge_group g " +
@@ -246,12 +256,17 @@ public List<Person> getGroupMembers(String groupName) throws Exception {
         return null;
     }
     public List<Integer> getDCCNIHGroupIds() throws Exception {
+        String sql = "select * from scge_group where group_name='DCC' or group_name='NIH'";
+        /*
         String sql="select * from scge_group where group_id in (select subgroup_id from " +
                 "group_associations where group_id in (select group_id from scge_group where group_name='DCC' or group_name='NIH')\n" +
                 ")" ;
+        */
         IntListQuery q= new IntListQuery(this.getDataSource(), sql);
+
         return q.execute();
     }
+    /*
     public List<Integer> getDCCNIHAncestorGroupIds() throws Exception {
         String sql="select group_id from scge_group where group_name in (?,?)" ;
         IntListQuery q= new IntListQuery(this.getDataSource(), sql);
@@ -260,5 +275,7 @@ public List<Person> getGroupMembers(String groupName) throws Exception {
     public static void main(String[] args) throws Exception {
 
     }
+
+     */
 
 }

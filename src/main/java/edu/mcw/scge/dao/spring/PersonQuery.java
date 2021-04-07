@@ -27,6 +27,7 @@ public class PersonQuery extends MappingSqlQuery {
         .name(rs.getString("name"))
                .firstName(rs.getString("first_name"))
                .lastName(rs.getString("last_name"))
+               .institution(institution_id)
         .institutionName(getInstitution(institution_id))
         .email(rs.getString("email"))
                .email_lc(rs.getString("email_lc"))
