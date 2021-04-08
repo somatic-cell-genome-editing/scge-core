@@ -53,4 +53,8 @@ public class DeliveryDao extends AbstractDAO {
         List<Delivery> deliveryList=execute(q, personId,deliveryId, deliveryId);
         return deliveryList.size()>0;
     }
+    public void updateDeliveryTier(int tier, int deliveryId) throws Exception{
+        String sql="update delivery_system set tier=? where ds_id=?";
+        update(sql, tier, deliveryId);
+    }
 }

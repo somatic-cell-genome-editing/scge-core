@@ -61,5 +61,8 @@ public class ModelDao extends AbstractDAO {
         List<Model> modelList= execute(q, personId, modelId, modelId);
         return modelList.size() > 0;
     }
-
+    public void updateModelTier(int tier, int modelId) throws Exception{
+        String sql="update model set tier=? where model_id=?";
+        update(sql, tier, modelId);
+    }
 }
