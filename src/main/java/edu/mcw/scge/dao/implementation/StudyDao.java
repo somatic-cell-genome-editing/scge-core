@@ -99,7 +99,7 @@ public class StudyDao extends AbstractDAO {
 
             }
             first=false;
-            groups.append(pi.getSubGroupId());
+            groups.append(pi.getGroupId());
            // groups.append(pi.getGroupId());
         }
 
@@ -269,8 +269,8 @@ public class StudyDao extends AbstractDAO {
                 List<Integer> groupIds=new ArrayList<>();
                 List<Integer> grantIds=new ArrayList<>();
                 for(PersonInfo i:infoList){
-                    if(!groupIds.contains(i.getSubGroupId()))
-                    groupIds.add(i.getSubGroupId());
+                    if(!groupIds.contains(i.getGroupId()))
+                    groupIds.add(i.getGroupId());
                     if(!grantIds.contains(i.getGrantId()))
                     grantIds.add(i.getGrantId());
                 }

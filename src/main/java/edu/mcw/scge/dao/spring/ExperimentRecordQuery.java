@@ -33,6 +33,7 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         }
         try{
             e.setVector(rs.getString("vector"));
+            e.setApplicationMethodId(rs.getInt("application_method_id"));
         }catch (Exception e1){
 
         }
