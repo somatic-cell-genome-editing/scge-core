@@ -36,7 +36,7 @@ public class StudyDao extends AbstractDAO {
         return null;
     }
     public List<StudyAssociation> getStudyAssociations(int studyId) throws Exception {
-        String sql="select * from study_associations where study_id=?";
+        String sql="select * from study_associations where study_id=? and status='ACTIVE'";
         StudyAssociationQuery q=new StudyAssociationQuery(getDataSource(), sql);
         return execute(q, studyId);
 
