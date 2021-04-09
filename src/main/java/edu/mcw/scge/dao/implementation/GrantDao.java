@@ -51,7 +51,7 @@ public class GrantDao extends AbstractDAO {
 
     }
     public List<String> getAllDistinctInitiatives() throws Exception {
-        String sql="select distinct(grant_initiative) from scge_grants";
+        String sql="select distinct(grant_initiative) from scge_grants where project_type='grant'";
         StringListQuery q= new StringListQuery(this.getDataSource(), sql);
         return q.execute();
     }
