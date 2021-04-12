@@ -51,4 +51,8 @@ public class GuideDao extends AbstractDAO {
                 guide.getPam(),guide.getSpacerSequence(),guide.getSpacerLength() );
         return list.isEmpty() ? 0 : list.get(0).getGuide_id();
     }
+    public void updateGuideTier(int tier, int guideId) throws Exception{
+        String sql="update guide set tier=? where guide_id=?";
+        update(sql, tier, guideId);
+    }
 }

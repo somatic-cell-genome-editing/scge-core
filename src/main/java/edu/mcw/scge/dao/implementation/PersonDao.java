@@ -31,15 +31,22 @@ import java.util.List;
  */
 public class PersonDao extends AbstractDAO {
         GroupDAO gdao=new GroupDAO();
-        GrantDao grantDao=new GrantDao();
-    public void insert(Person p) throws Exception{
+    public void insert(Person p) throws Exception {
+
+        int newId = 0;
+        if (p.getId() == 0) {
+            newId = getNextKey("person_seq");
+        } else {
+            newId = p.getId();
+        }
+
         String sql="insert into person(person_id,name, name_lc, institution_id, email, email_lc," +
                 "phone, address, google_id,status, created_date, modified_date, modified_by, other_id, " +
                 "first_name," +
                 "last_name)" +
                 " values(?,?,?,?,?,?,?,?,?,?,current_date,current_date,?,?,?,?)";
         update(sql,
-                p.getId(), p.getName(),p.getName().toLowerCase(),
+                newId, p.getName(),p.getName().toLowerCase(),
                 p.getInstitution(),
                 p.getEmail(),p.getEmail().toLowerCase(),
                 p.getPhone(), p.getAddress(), p.getGoogleSub(),
@@ -52,8 +59,10 @@ public class PersonDao extends AbstractDAO {
 
     }
     public void update(Person p) throws Exception {
-        String sql="update person set status=?, modified_date=current_date where person_id=?";
-        update(sql, p.getStatus(),p.getId());
+        String sql="update person set name=?, name_lc=?,institution_id=?,email=?,email_lc=?,status=?, other_id=?, modified_date=current_date where person_id=?";
+
+        System.out.println("institution = " + p.getInstitution());
+        update(sql, p.getName(), p.getName().toLowerCase(), p.getInstitution(),p.getEmail(), p.getEmail().toLowerCase(),p.getStatus(),p.getOtherId(), p.getId());
     }
 
     public List<Person> getPerson(Person p) throws Exception{
@@ -62,7 +71,6 @@ public class PersonDao extends AbstractDAO {
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
          return execute(query, p.getEmail().toLowerCase());
     }
-    //sql = "select distinct pi.person_id, pi.group_id, s.study_id from person_info pi, study s where pi.group_id=s.group_id""
 
 
     public List<Person> getPersonByEmailId(Person p) throws Exception{
@@ -72,17 +80,17 @@ public class PersonDao extends AbstractDAO {
         return execute(query, p.getEmail().toLowerCase());
     }
     public List<Person> getPersonById(int id) throws Exception{
-        String sql="select * from person where person_id=? and status='ACTIVE' ";
+        String sql="select * from person where person_id=? ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query,id);
     }
     public List<Person> getPersonByGoogleId(String id) throws Exception{
-        String sql="select * from person where google_id=? and status='ACTIVE' ";
+        String sql="select * from person where google_id=?  ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query,id);
     }
     public List<Person> getPersonByLastName(String lastName) throws Exception{
-        String sql="select * from person where name like '%"+lastName+"%' and status='ACTIVE' " ;
+        String sql="select * from person where name like '%"+lastName+"%'  " ;
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query);
     }
@@ -93,15 +101,21 @@ public class PersonDao extends AbstractDAO {
         return (String) execute(query, subject).get(0);
     }
     public List<Person> getPersonByEmail(String email) throws Exception{
-        String sql="select * from person where email_lc=? or other_id=? or email=? and status='ACTIVE' ";
+        String sql="select * from person where email_lc=? or other_id=? or email=? ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return execute(query, email.toLowerCase(), email, email);
     }
-    public List<Person> getAllMembers() throws Exception{
+    public List<Person> getAllActiveMembers() throws Exception{
         String sql="select * from person where status='ACTIVE' order by name ";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
         return query.execute();
     }
+    public List<Person> getAllMembers() throws Exception{
+        String sql="select * from person order by name ";
+        PersonQuery query=new PersonQuery(this.getDataSource(), sql);
+        return query.execute();
+    }
+
     public List<String> getPersonGroups(Person p) throws Exception {
         String sql="select g.group_name from scge_group g, person_info r, person p " +
                 "where g.group_id=r.group_id " +
@@ -118,42 +132,15 @@ public class PersonDao extends AbstractDAO {
         return execute(q, p.getId());
     }
     public List<Integer> getGroupIds(Person p) throws Exception {
-        String sql="select g.group_id from scge_group g , person_info pg where " +
-                "g.group_id=pg.group_id and person_id=?";
+        String sql="select group_id from  person_info  where " +
+                " person_id=?";
         IntListQuery q=new IntListQuery(this.getDataSource(), sql);
         return execute(q, p.getId());
     }
-    /*public List<String> getGroupAccessLevel(Person p, String group) throws Exception {
-        String sql="select a.access_level from person_group_access pga, accesses a where " +
-                 " pga.person_id=? and " +
-                "a.access_id = pga.access_id " +
-                " and pga.group_key in (select group_key from scge_groups where group_name =?)";
-
-        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
-        return execute(q, p.getId(),group);
-    }*/
-  /*  public void addMemberToGroup(int person_id, int group_key, int access_id) throws Exception {
-        String sql="insert into person_group_access(person_id, group_key, access_id) values(" +
-                "?,?,?)";
-        update(sql, person_id, group_key, access_id);
-    }
-    public List<Person> getMembersOfGroup(int group_key) throws Exception {
-       String sql="select p.* from person p, person_group_access pg where" +
-               " p.person_id=pg.person_id and " +
-               "pg.group_key=?";
-        PersonQuery q=new PersonQuery(this.getDataSource(), sql);
-        return execute(q, group_key);
-    }
-    */
-    public List<Person> getAllUnauthorizedUsers() throws Exception {
-        String sql="select * from person where status='processing'";
-        PersonQuery q=new PersonQuery(this.getDataSource(), sql);
-        return q.execute();
-    }
 
     public void updateStatus(Person person) throws Exception {
-        String sql="update person set status=? where email=?";
-            update(sql, person.getStatus(), person.getEmail());
+        String sql="update person set status=? where email_lc=?";
+            update(sql, person.getStatus(), person.getEmail().trim().toLowerCase());
     }
     public void updateStatusToInactive(String status) throws Exception {
         String sql="update person set status=?";
@@ -167,19 +154,7 @@ public class PersonDao extends AbstractDAO {
         String sql="update person set first_name=?, last_name=?, google_id=?, other_id=? where email=? or email_lc=?";
         update(sql,  person.getFirstName(), person.getLastName(), person.getGoogleSub(), person.getOtherId() ,person.getEmail(),person.getEmail().toLowerCase());
     }
-  /*  public int insertOrUpdateGrant(String grantTitle) throws Exception {
-        String sql="select grant_id from scge_grants where grant_title=?";
-        IntListQuery query=new IntListQuery(this.getDataSource(), sql);
-        List<Integer> ids=execute(query, grantTitle);
-        int id=0;
-        if(ids==null || ids.size()==0){
-           id= getNextKey("grant_seq");
-            insertGrant(id, grantTitle);
-        }else{
-            id=ids.get(0);
-        }
-        return id;
-    }*/
+
     public List<String> getRolesByPersonId(int personId, String groupName) throws Exception {
         String sql="select r.role from scge_roles r, person p, person_info pi, scge_group g where " +
                 "r.role_key=pi.role_key " +
@@ -195,17 +170,6 @@ public class PersonDao extends AbstractDAO {
     }
 
 
- /*   public void insertSubgroup(int subgroup_id,String subgroupName) throws Exception {
-
-        String sql="insert into subgroups values(?,?)";
-        try{
-            update(sql,subgroup_id, subgroupName);
-        }catch (Exception e){
-            System.err.println("subgroup: "+ subgroupName);
-        }
-
-
-    }*/
     public void insertInstitution(int id,String name) throws Exception {
 
         String sql="insert into institution values(?,?,?)";
@@ -231,11 +195,11 @@ public class PersonDao extends AbstractDAO {
         return id;
     }
 
-    public void insertGrant(int grant_id,String grantTitle) throws Exception {
+    public void insertGrant(int grant_id, String grantTitle, int groupId) throws Exception {
 
-        String sql="insert into scge_grants values(?,?,?)";
+        String sql="insert into scge_grants values(?,?,?,?)";
         try {
-            update(sql, grant_id, grantTitle, grantTitle.toLowerCase());
+            update(sql, grant_id, grantTitle, grantTitle.toLowerCase(),groupId);
         }catch (Exception e){
             System.err.println("Grant TITLE:"+grantTitle);
         }
@@ -283,140 +247,25 @@ public class PersonDao extends AbstractDAO {
     }
 
 
-    public void delete(Person person){
+    public void delete(Person person) throws Exception{
+        deletePersonInfo(person);
+        String sql="delete from person where person_id=?" ;
+        update(sql, person.getId() );
+
 
     }
-    public void insertFromFile(String file) throws Exception {
+    public void deletePersonInfo(Person person) throws Exception{
 
-        FileInputStream fs=new FileInputStream(new File(file));
-        XSSFWorkbook workbook=new XSSFWorkbook(fs);
-        XSSFSheet sheet=workbook.getSheet("directory");
-        Iterator<Row> rowIterator=sheet.iterator();
-        List<Person> persons= new ArrayList<>();
-        List<String> names=new ArrayList<>();
-        while(rowIterator.hasNext()) {
-            Person p = new Person.Builder().build();
-            String grantTitle=new String();
-            String projectType=new String();
-            String institution=new String();
+        String sql="delete from person_info where person_id=?" ;
+        update(sql, person.getId() );
 
-            int grantId= 0;
-            int subgroupId= 0;
-            int institutionId=0;
-            int groupId=0;
-            Row row = rowIterator.next();
-            String name=new String();
-            Iterator<Cell> cellIterator = row.cellIterator();
-            List<String> roles=new ArrayList<>();
-            List<Integer> roleIds = new ArrayList<>();
-            Grant grant=new Grant();
-            if (row.getRowNum() != 0) {
-                while (cellIterator.hasNext()) {
-
-                    Cell cell = cellIterator.next();
-                    int colIndex = cell.getColumnIndex();
-                    if (colIndex == 0) {
-                        projectType = cell.getStringCellValue();
-                        groupId = getGroupId(projectType, "group");
-                    }
-                    if (colIndex == 1) {
-                        grantTitle = cell.getStringCellValue();
-                        grant.setGrantInitiative(projectType);
-                        grant.setGrantTitle(grantTitle);
-                        grant.setGrantTitleLc(grantTitle.toLowerCase());
-                        if(!projectType.equalsIgnoreCase("NIH"))
-                        grantId = grantDao.insertOrUpdate(grant);
-                        subgroupId = getGroupId(grantTitle, "subgroup");
-                    }
-
-                    if (colIndex == 2) {
-                        name = cell.getStringCellValue();
-                        p.setName(name);
-                        p.setName_lc(name.toLowerCase());
-                        if (!names.contains(name.toLowerCase())) {
-                            names.add(name.toLowerCase());
-                        }
-                    }
-                   if (colIndex == 3) {
-
-                        if (cell.getStringCellValue().equalsIgnoreCase("x")) {
-                            int roleId = getRoleId("POC");
-                            roleIds.add(roleId);
-                        }
-
-                    }
-                    p.setStatus("ACTIVE");
-                    //    if (colIndex == 4) {
-                    if (colIndex == 4) {
-                        String role1 = cell.getStringCellValue().toLowerCase();
-                        if (role1.contains("administrative")) {
-                            role1 = "administrative contact";
-                        }
-                        int roleId = getRoleId(role1);
-                        roleIds.add(roleId);
-                    }
-                    if (colIndex == 5) {
-                        p.setEmail(cell.getStringCellValue());
-                        p.setEmail_lc(cell.getStringCellValue().toLowerCase());
-                    }
-                    if (colIndex == 6) {
-                        institution = cell.getStringCellValue();
-                        institutionId = insertOrUpdateInstitution(institution);
-                        p.setInstitution(institutionId);
-                        p.setInstitutionName(institution);
-                    }
-                    if (colIndex == 7) {
-                        switch (cell.getCellType()) {
-                            case Cell.CELL_TYPE_NUMERIC:
-                                p.setPhone(String.valueOf(cell.getNumericCellValue()));
-                                break;
-                            case Cell.CELL_TYPE_STRING:
-                                p.setPhone(cell.getStringCellValue());
-                        }
-                    }
-                }
-                int personId = insertOrUpdate(p);
-                if (personId > 0) {
-                    int defaultGoupId = getGroupId("consortium", "group");
-                    gdao.makeAssociations(defaultGoupId, groupId);
-                    if (groupId != 0 ) {
-                        insertPersonInfo(personId, Arrays.asList(1), groupId, grantId);
-                    }
-                    if (subgroupId != 0)
-                        insertPersonInfo(personId, roleIds, subgroupId, grantId);
-                    gdao.makeAssociations(groupId, subgroupId);
-
-                    insertPersonAuthority(personId);
-                }
-            }
-
-           // }
-        }
-    fs.close();
-        System.out.println(persons.size());
 
     }
-    public void insertPersonAuthority(int personId) throws Exception {
-        List<PersonInfo> personInfoList=getPersonInfo(personId);
-        List<String> authorities= new ArrayList<>();
-        for(PersonInfo i:personInfoList){
-            String authroity="ROLE_GROUP"+i.getSubGroupId();
-            if(!authorities.contains(authroity)){
-                authorities.add(authroity);
-                insertAuthority(i.getPersonId(), authroity);
-            }
-        }
-    }
-    public void insertAuthority(int personId, String authority) throws Exception {
-        String sql="insert into person_authorities(person_id, authority) values (?,?)" ;
 
-            update(sql, personId,authority );
+    public void removeGroup(Person person, int groupId) throws Exception{
+        String sql="delete from person_info where person_id=? and group_id=?" ;
+        update(sql, person.getId(),groupId );
 
-    }
-    public List<String> getPersonAuthorities(int personId) throws Exception{
-        String sql="select authority from person_authorities where person_id=?";
-        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
-        return execute(q, personId);
     }
     public int getRoleId(String role) throws Exception {
         int roleKey=0;
@@ -462,80 +311,117 @@ public class PersonDao extends AbstractDAO {
         }
         return id;
     }
- /*   public int getDefaultSubgroupId(String defaultSubgroupName) throws Exception {
-        String sql="select subgroup_id from subgroups where subgroup_name=?";
-        IntListQuery query=new IntListQuery(this.getDataSource(), sql);
-        List<Integer> ids=execute(query, defaultSubgroupName);
-        int id=0;
-        if(ids!=null && ids.size()>0){
-            id= ids.get(0);
-        }else{
-            id=getNextKey("subgroup_seq");
-            insertSubgroup(id,defaultSubgroupName);
-        }
-        return id;
-    }*/
-    public void insertPersonDetails(int personId, List<Integer> roleIds,int groupId, int subgroupId ) throws Exception {
-        for(int roleId:roleIds){
-            String sql="insert into person_role_group values(?,?,?,?)";
-            try {
-                update(sql, personId, roleId, groupId, subgroupId);
-            }catch (Exception e){
-                System.err.println("person:"+ personId+"\n================================");
-              e.printStackTrace();
-            }
-        }
-    }
-    public void insertPersonInfo(int personId, List<Integer> roleIds,int groupId, int grantId ) throws Exception {
+    public void insertPersonInfo(int personId, List<Integer> roleIds,int groupId ) throws Exception {
        for(int role:roleIds){
-           if(!isPersonInfoExists(personId, role, groupId)){
-               insertPersonInfo(personId, role, groupId,grantId);
+           if(!isPersonInfoExists(personId, groupId)){
+               insertPersonInfo(personId, role, groupId);
            }
        }
     }
-   public boolean isPersonInfoExists(int personId, int role, int groupId) throws Exception {
-      List<Integer> personInfo= getPersonInfo(personId, role, groupId);
+   public boolean isPersonInfoExists(int personId, int groupId) throws Exception {
+      List<Integer> personInfo= getPersonInfo(personId, groupId);
        if(personInfo!=null && personInfo.size()>0){
            return true;
        }else
            return false;
    }
 
-    public List<Integer> getPersonInfo(int personId, int role, int groupId) throws Exception {
-        String sql="select person_id from person_info where person_id=? and role_key=? and group_id=?";
+    public List<Integer> getPersonInfo(int personId,  int groupId) throws Exception {
+        String sql="select person_id from person_info where person_id=?  and group_id=?";
         IntListQuery query=new IntListQuery(this.getDataSource(), sql);
-        return execute(query, personId, role, groupId);
+        return execute(query, personId,  groupId);
     }
 
-    public void insertPersonInfo(int personId, int roleId,int groupId, int grantId ) throws Exception {
+    public void insertPersonInfo(int personId, int roleId,int groupId) throws Exception {
 
             String sql="insert into person_info(person_id, " +
                     "group_id," +
-                    "role_key," +
-                    "grant_id) values(?,?,?,?)";
-            update(sql, personId,  groupId, roleId, grantId);
+                    "role_key" +
+                    ") values(?,?,?)";
+            update(sql, personId,  groupId, roleId);
 
 
     }
+
+    public void deletePersonInfo(int personId, int groupId) throws Exception {
+        String sql="delete from person_info where person_id=? and group_id=?";
+        update(sql, personId,  groupId);
+    }
+
+    public  List<Person> getPersonRecords(Person p) throws Exception {
+        List<Person> members=new ArrayList<>();
+        String name=p.getName().replaceAll("[,.]", "");
+        for(Person person:   getAllActiveMembers()){
+            try {
+                String str1 = person.getName().replaceAll("[,.]", "");
+                if (name.equalsIgnoreCase(str1) ||
+                        p.getEmail().toLowerCase().equalsIgnoreCase(person.getEmail().toLowerCase())) {
+                    members.add(person);
+                }
+
+            }catch (Exception e){e.printStackTrace();}
+        }
+        return members;
+    }
+    public List<Person> getPersonByName(String name) throws Exception{
+        String sql="select * from person where name_lc=? " ;
+        PersonQuery query=new PersonQuery(this.getDataSource(), sql);
+        return execute(query,name);
+    }
+
+    public boolean exists(Person p) throws Exception {
+        List<Person> members=new ArrayList<>();
+        members=getPersonByName(p.getName().toLowerCase().trim());
+        if(members==null || members.size()==0){
+            members=getPersonRecords(p);
+
+            return members != null && members.size() != 0;
+        }
+
+        return true;
+
+    }
+
+
+
     public int insertOrUpdate(Person p) throws Exception {
         int id=0;
-        List<Person> members=getPersonByEmailId(p);
-        if(members==null || members.size()==0 ){
-            id= getNextKey("person_seq");
-            p.setId(id);
-            try{
-                insert(p);
-            }catch (Exception e){
-                System.out.println(p.getName()+"\t"+ p.getEmail());
-                e.printStackTrace();
-                return 0;
-            }
+        List<Person> members=new ArrayList<>();
+        members=getPersonByName(p.getName().toLowerCase().trim());
+        if(members==null || members.size()==0){
+            members=getPersonRecords(p);
 
-        }else{
-            id=members.get(0).getId();
-            p.setId(id);
+            if (members==null || members.size()==0) {
+
+                id= getNextKey("person_seq");
+                p.setId(id);
+                try{
+                    insert(p);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        }
+        if(members!=null && members.size()>0){
+            boolean active=false;
+            for(Person person: members){
+                if(person.getStatus().equalsIgnoreCase("ACTIVE")){
+                    active=true;
+                    id=person.getId();
+                    break;
+                }
+            }
+            if(!active) {
+                p.setId(members.get(0).getId());
+
+            }else{
+                p.setId(id);
+
+            }
             update(p);
         }
+
         return id;
     }
 
@@ -551,53 +437,14 @@ public class PersonDao extends AbstractDAO {
         }
     }
     public List<PersonInfo> getPersonInfo(int personId) throws Exception {
-        List<PersonInfo> records=getInfoIfBelongsToNIH( personId);
-        if(records.size()==0) {
-            String sql = "select p.person_id, g.group_name as group_name,g.group_id as group_id,sg.group_type, sg.group_name as subgroup_name,sg.group_id as subgroup_id, r.role , grnt.grant_title, grnt.grant_initiative,grnt.grant_id " +
-                    " from scge_group g , person_info i, person p, scge_roles r, scge_group sg, group_associations a, scge_grants grnt " +
-                    "                               where p.person_id=i.person_id   " +
-                    "                                and sg.group_id=i.group_id   " +
-                    "                                and r.role_key=i.role_key   " +
-                    "                                  and p.status='ACTIVE'  " +
-                    "                               and p.person_id =? " +
-                    "                               and a.group_id=g.group_id  " +
-                    "                               and a.subgroup_id=sg.group_id " +
-                    "                               and grnt.grant_id=i.grant_id " +
-                    "                               and sg.group_type='subgroup'";
+            String sql = "select p.person_id, g.group_name,g.group_id, g.group_type, r.role , grnt.grant_title, grnt.grant_initiative,grnt.grant_id " +
+            "from scge_group g , person_info i, person p, scge_roles r, scge_grants grnt where p.person_id=i.person_id " +
+            "and g.group_id=i.group_id and r.role_key=i.role_key and p.status='ACTIVE' and p.person_id =? and grnt.group_id=g.group_id ";
 
 
             PersonInfoQuery q = new PersonInfoQuery(this.getDataSource(), sql);
             return execute(q, personId);
-        }
-        return records;
-    }
-    public List<PersonInfo> getInfoIfBelongsToNIH(int personId) throws Exception {
-        String sql="select p.person_id, g.group_name as group_name,g.group_id as group_id,sg.group_type,  " +
-                "sg.group_name as subgroup_name,sg.group_id as subgroup_id, r.role \n" +
-                "                from scge_group g , person_info i, person p, scge_roles r, scge_group sg, group_associations a " +
-                "                                               where p.person_id=i.person_id    " +
-                "                                                and sg.group_id=i.group_id    " +
-                "                                                and r.role_key=i.role_key    " +
-                "                                                  and p.status='ACTIVE'   " +
-                "                                                and p.person_id =? " +
-                "                                               and a.group_id=g.group_id  " +
-                "                                               and a.subgroup_id=sg.group_id " +
-                "                                               and sg.group_type='subgroup' " +
-                "                                               and g.group_name='NIH' " +
-
-                "                                  ";
-        PersonInfoQuery q=new PersonInfoQuery(this.getDataSource(), sql);
-       return   execute(q,personId);
 
     }
-    public static void main(String[] args) throws Exception {
-       PersonDao dao=new PersonDao();
-        try {
-            dao.updateStatusToInactive("INACTIVE");
-            dao.insertFromFile("data/directory.xlsx");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Done!!");
-    }
+
 }

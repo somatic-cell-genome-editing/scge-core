@@ -80,5 +80,8 @@ public class EditorDao extends AbstractDAO {
         List<Editor> editorList= execute(q, personId, editorId, editorId);
         return editorList.size() > 0;
     }
-
+    public void updateEditorTier(int tier, int editorId) throws Exception{
+        String sql="update editor set tier=? where editor_id=?";
+        update(sql, tier, editorId);
+    }
 }

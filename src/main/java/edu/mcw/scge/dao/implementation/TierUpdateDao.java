@@ -66,4 +66,9 @@ public class TierUpdateDao extends AbstractDAO {
         TierUpdateQuery q=new TierUpdateQuery(this.getDataSource(), sql);
         return execute(q,studyId);
     }
+    public List<StudyTierUpdate> getStudyTierUpdates() throws Exception {
+        String sql="select * from study_tier_updates ";
+        TierUpdateQuery q=new TierUpdateQuery(this.getDataSource(), sql);
+        return execute(q);
+    }
 }

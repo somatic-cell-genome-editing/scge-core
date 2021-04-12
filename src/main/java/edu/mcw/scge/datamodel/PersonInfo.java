@@ -8,15 +8,24 @@ import java.io.Serializable;
 public class PersonInfo implements Serializable {
     private int personId;
     private int groupId;
-    private int subGroupId;
+    //private int subGroupId;
     private int roleKey;
     private int grantId;
     private String groupName;
-    private String subGroupName;
+    private String groupType;
+    //private String subGroupName;
     private String grantTitle;
     private String grantInitiative;
     private String role;
 
+
+    public String getGroupType() {
+        return groupType;
+    }
+
+    public void setGroupType(String groupType) {
+        this.groupType = groupType;
+    }
 
     public int getPersonId() {
         return personId;
@@ -68,14 +77,6 @@ public class PersonInfo implements Serializable {
         this.groupName = groupName;
     }
 
-    public String getSubGroupName() {
-        return subGroupName;
-    }
-
-    public void setSubGroupName(String subGroupName) {
-        this.subGroupName = subGroupName;
-    }
-
     public String getGrantTitle() {
         return grantTitle;
     }
@@ -92,11 +93,4 @@ public class PersonInfo implements Serializable {
         this.grantInitiative = grantInitiative;
     }
 
-    public int getSubGroupId() {
-        return subGroupId;
-    }
-
-    public void setSubGroupId(int subGroupId) {
-        this.subGroupId = subGroupId;
-    }
 }

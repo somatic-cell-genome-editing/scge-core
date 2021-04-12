@@ -2,12 +2,21 @@ package edu.mcw.scge.datamodel;
 
 public class Grant {
    private int grantId;
+   private int groupId;
    private String grantTitle;
    private String  grantTitleLc;
    private String grantNumber;
    private String grantInitiative;
    public int getGrantId() {
         return grantId;
+    }
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
     public void setGrantId(int grantId) {

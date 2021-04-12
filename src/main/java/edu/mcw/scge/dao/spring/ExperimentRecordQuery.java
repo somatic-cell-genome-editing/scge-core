@@ -16,7 +16,10 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
     protected ExperimentRecord mapRow(ResultSet rs, int rowNum) throws SQLException {
         ExperimentRecord e= new ExperimentRecord();
         e.setExperimentId(rs.getInt("experiment_id"));
-        e.setExperimentName(rs.getString("name"));
+        try {
+            e.setExperimentName(rs.getString("experimentName"));
+        }catch (Exception exception){}
+     //   e.setExperimentRecordName(rs.getString("name"));
         e.setStudyId(rs.getInt("study_id"));
         e.setGuideId(rs.getInt("guide_id"));
         e.setDeliverySystemId(rs.getInt("ds_id"));
@@ -27,6 +30,11 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
             e.setDeliverySystemType(rs.getString("ds_name"));
         }catch (Exception e2) {
             e.setDeliverySystemType(rs.getString("ds_type"));
+        }
+        try{
+            e.setVector(rs.getString("vector"));
+            e.setApplicationMethodId(rs.getInt("application_method_id"));
+        }catch (Exception e1){
 
         }
         e.setTissueId(rs.getString("tissue_id"));

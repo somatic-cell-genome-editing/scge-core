@@ -22,8 +22,9 @@ public class PersonInfoQuery extends MappingSqlQuery {
         obj.setPersonId(rs.getInt("person_id"));
         obj.setGroupId(rs.getInt("group_id"));
         obj.setGroupName(rs.getString("group_name"));
-        obj.setSubGroupId(rs.getInt("subgroup_id"));
-        obj.setSubGroupName(rs.getString("subgroup_name"));
+        obj.setGroupType(rs.getString("group_type"));
+        //obj.setSubGroupId(rs.getInt("subgroup_id"));
+        //obj.setSubGroupName(rs.getString("subgroup_name"));
         try {
             obj.setGrantId(rs.getInt("grant_id"));
         }catch (Exception e){ }

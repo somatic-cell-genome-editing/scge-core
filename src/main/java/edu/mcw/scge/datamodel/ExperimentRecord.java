@@ -23,6 +23,7 @@ public class ExperimentRecord {
     private String sex;
     private String tissueId;
     private String cellType;
+    private String vector;
 
     public int getExperimentRecordId() {
         return experimentRecordId;
@@ -198,5 +199,13 @@ public class ExperimentRecord {
 
     public void setCellType(String cellType) {
         this.cellType = cellType;
+    }
+
+    public String getVector() {
+        return vector;
+    }
+
+    public void setVector(String vector) {
+        this.vector = vector;
     }
 }
