@@ -17,11 +17,11 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         ExperimentRecord e= new ExperimentRecord();
         e.setExperimentId(rs.getInt("experiment_id"));
         try {
-            e.setExperimentName(rs.getString("experimentName"));
+            e.setExperimentName(rs.getString("name"));
         }catch (Exception exception){}
      //   e.setExperimentRecordName(rs.getString("name"));
         e.setStudyId(rs.getInt("study_id"));
-        e.setGuideId(rs.getInt("guide_id"));
+     //   e.setGuideId(rs.getInt("guide_id"));
         e.setDeliverySystemId(rs.getInt("ds_id"));
         e.setModelId(rs.getInt("model_id"));
         e.setEditorId(rs.getInt("editor_id"));
@@ -40,7 +40,7 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         e.setTissueId(rs.getString("tissue_id"));
         e.setCellType(rs.getString("cell_type"));
         e.setModelName(rs.getString("modelName"));
-        e.setGuide(rs.getString("guide"));
+     //   e.setGuide(rs.getString("guide"));
         e.setExperimentRecordId(rs.getInt("experiment_record_id"));
         e.setVectorId(rs.getInt("vector_id"));
         return e;
