@@ -88,14 +88,14 @@ public class ExperimentRecordDao extends AbstractDAO {
 
         String sql = "insert into experiment_record (experiment_id,name,study_id, " +
                 "editor_id,ds_id,model_id,sample_prep,application_method_id,experiment_record_id,age, genotype,sex," +
-                "vector_id,tissue_id, cell_type  ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "tissue_id, cell_type  ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         
         int experimentId = this.getNextKeyFromSequence("experiment_seq");
         
         update(sql, expRecord.getExperimentId(),expRecord.getExperimentName(),expRecord.getStudyId(), expRecord.getEditorId(),
                 expRecord.getDeliverySystemId(),expRecord.getModelId(),expRecord.getSamplePrep(),
                 expRecord.getApplicationMethodId(),experimentId, expRecord.getAge(),expRecord.getGenotype(),
-                expRecord.getSex(),expRecord.getVectorId(),expRecord.getTissueId(),expRecord.getCellType());
+                expRecord.getSex(),expRecord.getTissueId(),expRecord.getCellType());
 
         return experimentId;
     }

@@ -51,6 +51,10 @@ public class VectorDao extends AbstractDAO {
         VectorQuery q=new VectorQuery(this.getDataSource(), sql);
         return execute(q, expRecId);
     }
+    public void insertVectorAssoc(int expRecId,int vectorId) throws Exception{
+        String sql = "insert into vector_associations ( experiment_record_id, vector_id ) values (?,?)";
 
+        update(sql,expRecId,vectorId);
+    }
 
 }

@@ -182,9 +182,12 @@ public class StudyDao extends AbstractDAO {
     }
 
     public List<Study> getStudiesByVector(int vectorId) throws Exception{
-        String sql = "select distinct s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName " +
-                "from study s, institution i, person p, person pi, vector v, experiment_record ex " +
-                "where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id and v.vector_id=? and ex.vector_id=v.vector_id and ex.study_id=s.study_id ";
+        String sql = "select distinct s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName \n" +
+                "from study s inner join institution i on s.lab_id=i.institution_id \n" +
+                "inner join person p on s.submitter_id=p.person_id \n" +
+                "inner join person pi on s.pi_id=pi.person_id \n" +
+                "inner join vector_associations va on va.vector_id=? \n" +
+                "inner join experiment_record ex on ex.experiment_record_id = va.experiment_record_id and ex.study_id=s.study_id  ";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q, vectorId);
     }

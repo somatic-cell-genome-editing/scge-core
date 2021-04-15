@@ -8,7 +8,7 @@ public class ExperimentRecord {
     private int studyId;
     private int editorId;
     private int deliverySystemId;
-    private int vectorId;
+  //  private int vectorId;
     private int modelId;
     //private int guideId;
     private String samplePrep;
@@ -23,7 +23,7 @@ public class ExperimentRecord {
     private String sex;
     private String tissueId;
     private String cellType;
-    private String vector;
+  //  private String vector;
 
     public int getExperimentRecordId() {
         return experimentRecordId;
@@ -49,14 +49,14 @@ public class ExperimentRecord {
         this.deliverySystemId = deliverySystemId;
     }
 
-    public int getVectorId() {
+ /*   public int getVectorId() {
         return vectorId;
     }
 
     public void setVectorId(int vectorId) {
         this.vectorId = vectorId;
     }
-
+*/
     public String getEditorSymbol() {
         return editorSymbol;
     }
@@ -201,11 +201,12 @@ public class ExperimentRecord {
         this.cellType = cellType;
     }
 
-    public String getVector() {
+ /*   public String getVector() {
         return vector;
     }
 
     public void setVector(String vector) {
         this.vector = vector;
     }
+    */
 }

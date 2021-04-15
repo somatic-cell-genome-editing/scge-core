@@ -77,7 +77,10 @@ public class AccessDao extends AbstractDAO {
             return true;
         }
 
-        String sql = "select distinct er.vector_id from person_info pi, study s, experiment_record er where pi.person_id=? and er.vector_id=? and pi.group_id=s.group_id and er.study_id=s.study_id and s.tier=1 or s.tier=2";
+        String sql = "select distinct ga.guide_id from person_info pi inner join study s on pi.group_id=s.group_id " +
+                "inner join experiment_record er on er.study_id=s.study_id " +
+                "inner join vector_associations va on er.experiment_record_id = va.experiment_record_id " +
+                "where pi.person_id=? and va.vector_id=? and s.tier=1 or s.tier=2";
         IntListQuery q=new IntListQuery(this.getDataSource(), sql);
         List<Integer> found = execute(q,p.getId(),v.getVectorId());
 

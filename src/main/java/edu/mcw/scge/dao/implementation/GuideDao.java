@@ -43,6 +43,12 @@ public class GuideDao extends AbstractDAO {
         return guideId;
     }
 
+    public void insertGuideAssoc(int expRecId,int guideId) throws Exception{
+        String sql = "insert into guide_associations ( experiment_record_id, guide_id ) values (?,?)";
+
+        update(sql,expRecId,guideId);
+    }
+
     public int getGuideId(Guide guide) throws Exception {
 
         String sql = "select * from guide where species =? and target_locus=? and target_sequence=? and pam=? and spacer_sequence=? and spacer_length=?";

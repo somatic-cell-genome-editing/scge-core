@@ -32,7 +32,7 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
             e.setDeliverySystemType(rs.getString("ds_type"));
         }
         try{
-            e.setVector(rs.getString("vector"));
+          //  e.setVector(rs.getString("vector"));
             e.setApplicationMethodId(rs.getInt("application_method_id"));
         }catch (Exception e1){
 
@@ -42,7 +42,7 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         e.setModelName(rs.getString("modelName"));
      //   e.setGuide(rs.getString("guide"));
         e.setExperimentRecordId(rs.getInt("experiment_record_id"));
-        e.setVectorId(rs.getInt("vector_id"));
+     //   e.setVectorId(rs.getInt("vector_id"));
         return e;
 
 
