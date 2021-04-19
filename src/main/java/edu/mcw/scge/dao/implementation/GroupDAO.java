@@ -32,7 +32,7 @@ public class GroupDAO extends AbstractDAO {
 
     }
     public List<SCGEGroup> getAllGroups() throws Exception {
-        String sql="select * from scge_group";
+        String sql="select * from scge_group order by group_name";
         GroupQuery q=new GroupQuery(this.getDataSource(), sql);
         return q.execute();
     }
