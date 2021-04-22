@@ -18,7 +18,7 @@ public class GuideDao extends AbstractDAO {
         return execute(q);
     }
     public List<Guide> getGuidesByEditor(int editorId) throws Exception {
-        String sql="select g.* from experiment_record e, guide g where e.guide_id=g.guide_id and e.editor_id=?";
+        String sql="select distinct g.* from experiment_record e, guide g,guide_associations ga where e.experiment_record_id=ga.experiment_record_id and ga.guide_id=g.guide_id and e.editor_id=?";
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
         return execute(q,editorId);
 	}
@@ -43,6 +43,12 @@ public class GuideDao extends AbstractDAO {
         return guideId;
     }
 
+    public void insertGuideAssoc(int expRecId,int guideId) throws Exception{
+        String sql = "insert into guide_associations ( experiment_record_id, guide_id ) values (?,?)";
+
+        update(sql,expRecId,guideId);
+    }
+
     public int getGuideId(Guide guide) throws Exception {
 
         String sql = "select * from guide where species =? and target_locus=? and target_sequence=? and pam=? and spacer_sequence=? and spacer_length=?";
@@ -54,5 +60,11 @@ public class GuideDao extends AbstractDAO {
     public void updateGuideTier(int tier, int guideId) throws Exception{
         String sql="update guide set tier=? where guide_id=?";
         update(sql, tier, guideId);
+    }
+
+    public List<Guide> getGuidesByExpRecId(int expRecId) throws Exception {
+        String sql="select g.* from guide g inner join guide_associations ga on g.guide_id = ga.guide_id where ga.experiment_record_id=?";
+        GuideQuery q= new GuideQuery(this.getDataSource(), sql);
+        return execute(q, expRecId);
     }
 }
