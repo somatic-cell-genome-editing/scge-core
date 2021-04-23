@@ -19,17 +19,20 @@ public class UpdateUtils {
         int studyId=update.getStudyId();
         List<ExperimentRecord> records=edao.getExperimentRecordsByStudyId(studyId);
         for(ExperimentRecord r:records){
-            updateGuideTier(r.getGuideId(), update.getTier());
+            updateGuideTier(r.getExperimentRecordId(), update.getTier());
             updateModelTier(r.getModelId(), update.getTier());
             updateDeliverySystemTier(r.getDeliverySystemId(), update.getTier());
             updateEditorTier(r.getEditorId(), update.getTier());
 
         }
     }
-    public void updateGuideTier(int guideId, int updatedTier) throws Exception {
-        Guide g=gdao.getGuideById(guideId).get(0);
-        if(g.getTier()<updatedTier || (g.getTier()>updatedTier && g.getTier()==2)){
-            gdao.updateGuideTier(updatedTier, guideId);
+    public void updateGuideTier(int expRecId, int updatedTier) throws Exception {
+        List<Guide> guides = gdao.getGuidesByExpRecId(expRecId);
+        for(Guide g:guides) {
+            //Guide g = gdao.getGuideById(guideId).get(0);
+            if (g.getTier() < updatedTier || (g.getTier() > updatedTier && g.getTier() == 2)) {
+                gdao.updateGuideTier(updatedTier, g.getGuide_id());
+            }
         }
     }
     public void updateModelTier(int modelId, int updatedTier) throws Exception {

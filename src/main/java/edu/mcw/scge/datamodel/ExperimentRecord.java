@@ -8,14 +8,14 @@ public class ExperimentRecord {
     private int studyId;
     private int editorId;
     private int deliverySystemId;
-    private int vectorId;
+  //  private int vectorId;
     private int modelId;
-    private int guideId;
+    //private int guideId;
     private String samplePrep;
     private int applicationMethodId;
     private String editorSymbol;
     private String deliverySystemType;
-    private String guide;
+   // private String guide;
     private String modelName;
     private String studyName;
     private String age;
@@ -23,7 +23,7 @@ public class ExperimentRecord {
     private String sex;
     private String tissueId;
     private String cellType;
-    private String vector;
+  //  private String vector;
 
     public int getExperimentRecordId() {
         return experimentRecordId;
@@ -49,14 +49,14 @@ public class ExperimentRecord {
         this.deliverySystemId = deliverySystemId;
     }
 
-    public int getVectorId() {
+ /*   public int getVectorId() {
         return vectorId;
     }
 
     public void setVectorId(int vectorId) {
         this.vectorId = vectorId;
     }
-
+*/
     public String getEditorSymbol() {
         return editorSymbol;
     }
@@ -97,7 +97,7 @@ public class ExperimentRecord {
         this.experimentId = experimentId;
     }
 
-    public String getGuide() {
+   /* public String getGuide() {
         return guide;
     }
 
@@ -105,7 +105,7 @@ public class ExperimentRecord {
         this.guide = guide;
     }
 
-    public String getExperimentName() {
+   */ public String getExperimentName() {
         return experimentName;
     }
 
@@ -129,14 +129,14 @@ public class ExperimentRecord {
         this.modelId = modelId;
     }
 
-    public int getGuideId() {
+  /*  public int getGuideId() {
         return guideId;
     }
 
     public void setGuideId(int guideId) {
         this.guideId = guideId;
     }
-
+*/
     public String getSamplePrep() {
         return samplePrep;
     }
@@ -201,11 +201,12 @@ public class ExperimentRecord {
         this.cellType = cellType;
     }
 
-    public String getVector() {
+ /*   public String getVector() {
         return vector;
     }
 
     public void setVector(String vector) {
         this.vector = vector;
     }
+    */
 }
