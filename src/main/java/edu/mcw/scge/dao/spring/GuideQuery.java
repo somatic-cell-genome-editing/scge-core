@@ -46,6 +46,14 @@ public class GuideQuery extends MappingSqlQuery<Guide> {
         g.setModifications(rs.getString("modifications"));
         g.setStandardScaffoldSequence(rs.getString("standard_scaffold_sequence"));
         g.setTier(rs.getInt("tier"));
+        g.setIvtConstructSource(rs.getString("ivt_construct_source"));
+        g.setVectorId(rs.getString("vector_id"));;
+        g.setVectorName(rs.getString("vector_name"));
+        g.setVectorDescription(rs.getString("vector_description"));
+        g.setVectorType(rs.getString("vector_type"));
+        g.setAnnotatedMap(rs.getString("annotated_map"));
+        g.setSpecificityRatio(rs.getString("specificity_ratio"));
+
         return g;
     }
 

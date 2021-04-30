@@ -11,6 +11,7 @@ public class ExperimentResultDetail {
     private String resultType;
     private int replicate;
     private String result;
+    private String editType;
 
     public int getExperimentRecordId() {
         return experimentRecordId;
@@ -74,5 +75,13 @@ public class ExperimentResultDetail {
 
     public void setResult(String result) {
         this.result = result;
+    }
+
+    public String getEditType() {
+        return editType;
+    }
+
+    public void setEditType(String editType) {
+        this.editType = editType;
     }
 }

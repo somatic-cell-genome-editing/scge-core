@@ -30,6 +30,13 @@ public class Guide  {
     private String guideDescription;
     private String standardScaffoldSequence;
     private int tier;
+    private String ivtConstructSource;
+    private String vectorId;
+    private String vectorName;
+    private String vectorDescription;
+    private String vectorType;
+    private String annotatedMap;
+    private String specificityRatio;
 
     public int getTier() {
         return tier;
@@ -253,5 +260,61 @@ public class Guide  {
 
     public void setStandardScaffoldSequence(String standardScaffoldSequence) {
         this.standardScaffoldSequence = standardScaffoldSequence;
+    }
+
+    public String getIvtConstructSource() {
+        return ivtConstructSource;
+    }
+
+    public void setIvtConstructSource(String ivtConstructSource) {
+        this.ivtConstructSource = ivtConstructSource;
+    }
+
+    public String getVectorId() {
+        return vectorId;
+    }
+
+    public void setVectorId(String vectorId) {
+        this.vectorId = vectorId;
+    }
+
+    public String getVectorName() {
+        return vectorName;
+    }
+
+    public void setVectorName(String vectorName) {
+        this.vectorName = vectorName;
+    }
+
+    public String getVectorDescription() {
+        return vectorDescription;
+    }
+
+    public void setVectorDescription(String vectorDescription) {
+        this.vectorDescription = vectorDescription;
+    }
+
+    public String getVectorType() {
+        return vectorType;
+    }
+
+    public void setVectorType(String vectorType) {
+        this.vectorType = vectorType;
+    }
+
+    public String getAnnotatedMap() {
+        return annotatedMap;
+    }
+
+    public void setAnnotatedMap(String annotatedMap) {
+        this.annotatedMap = annotatedMap;
+    }
+
+    public String getSpecificityRatio() {
+        return specificityRatio;
+    }
+
+    public void setSpecificityRatio(String specificityRatio) {
+        this.specificityRatio = specificityRatio;
     }
 }

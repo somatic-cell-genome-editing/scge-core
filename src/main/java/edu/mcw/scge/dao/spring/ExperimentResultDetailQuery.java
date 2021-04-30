@@ -21,6 +21,7 @@ public class ExperimentResultDetailQuery extends MappingSqlQuery<ExperimentResul
         e.setNumberOfSamples(rs.getInt("number_of_samples"));
         e.setUnits(rs.getString("units"));
         e.setResultType(rs.getString("result_type"));
+        e.setEditType(rs.getString("edit_type"));
         try {
             e.setReplicate(rs.getInt("replicate"));
             e.setResult(rs.getString("result"));
