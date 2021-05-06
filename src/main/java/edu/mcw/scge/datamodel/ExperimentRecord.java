@@ -23,7 +23,17 @@ public class ExperimentRecord {
     private String sex;
     private String tissueId;
     private String cellType;
+    private String tissueTerm;
   //  private String vector;
+
+
+    public String getTissueTerm() {
+        return tissueTerm;
+    }
+
+    public void setTissueTerm(String tissueTerm) {
+        this.tissueTerm = tissueTerm;
+    }
 
     public int getExperimentRecordId() {
         return experimentRecordId;
