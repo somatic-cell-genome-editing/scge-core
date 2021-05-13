@@ -36,9 +36,9 @@ public class DeliveryDao extends AbstractDAO {
 
     public int getDeliveryId(Delivery delivery) throws Exception {
 
-        String sql = "select * from delivery_system where ds_type =? and ds_subtype=? and ds_name=?";
+        String sql = "select * from delivery_system where ds_type =? and ds_name=?";
 
-        List<Delivery> list = DeliveryQuery.execute(this,sql,delivery.getType(),delivery.getSubtype(),delivery.getName() );
+        List<Delivery> list = DeliveryQuery.execute(this,sql,delivery.getType(),delivery.getName() );
         return list.isEmpty() ? 0 : list.get(0).getId();
     }
     public boolean verifyDeliveryAccess(int deliveryId, int personId) throws Exception {

@@ -31,9 +31,9 @@ public class GuideDao extends AbstractDAO {
                 " grna_lab_id , guide_format, spacer_sequence, spacer_length, repeat_sequence," +
                 " guide,guide_description, forward_primer, reverse_primer, linker_sequence, " +
                 "anti_repeat_sequence, stemloop_1_sequence, stemloop_2_sequence, stemloop_3_sequence, " +
-                "standard_scaffold_sequence, modifications,tier ) " +
-                "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?" +
-                ",?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "standard_scaffold_sequence, modifications,tier,ivt_construct_source," +
+                "vector_id,vector_name,vector_description,vector_type,annotated_map,specificity_ratio ) " +
+                "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         int guideId = this.getNextKeyFromSequence("guide_seq");
 
@@ -43,7 +43,9 @@ public class GuideDao extends AbstractDAO {
                 guide.getGrnaLabId(),guide.getGuideFormat(),guide.getSpacerSequence(),guide.getSpacerLength(),guide.getRepeatSequence(),
                 guide.getGuide(),guide.getGuideDescription(), guide.getForwardPrimer(), guide.getReversePrimer(), guide.getLinkerSequence(),
                 guide.getAntiRepeatSequence(),guide.getStemloop1Sequence(),guide.getStemloop2Sequence(),guide.getStemloop3Sequence(),
-                guide.getStandardScaffoldSequence(), guide.getModifications(),guide.getTier());
+                guide.getStandardScaffoldSequence(), guide.getModifications(),guide.getTier(),guide.getIvtConstructSource(),
+                guide.getVectorId(),guide.getVectorName(),guide.getVectorDescription(),guide.getVectorType(),guide.getAnnotatedMap(),
+                guide.getSpecificityRatio());
 
         return guideId;
     }
