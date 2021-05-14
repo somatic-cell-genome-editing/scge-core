@@ -8,7 +8,16 @@ public class ExperimentRecord {
     private int studyId;
     private int editorId;
     private int deliverySystemId;
-  //  private int vectorId;
+
+    public String getOrganSystemID() {
+        return organSystemID;
+    }
+
+    public void setOrganSystemID(String organSystemID) {
+        this.organSystemID = organSystemID;
+    }
+
+    //  private int vectorId;
     private int modelId;
     //private int guideId;
     private String samplePrep;
@@ -24,8 +33,18 @@ public class ExperimentRecord {
     private String tissueId;
     private String cellType;
     private String tissueTerm;
+    private String organSystemID;
+    private String cellTypeTerm;
   //  private String vector;
 
+
+    public String getCellTypeTerm() {
+        return cellTypeTerm;
+    }
+
+    public void setCellTypeTerm(String cellTypeTerm) {
+        this.cellTypeTerm = cellTypeTerm;
+    }
 
     public String getTissueTerm() {
         return tissueTerm;

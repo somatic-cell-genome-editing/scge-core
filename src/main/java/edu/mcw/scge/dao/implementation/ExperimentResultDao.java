@@ -28,6 +28,12 @@ public class ExperimentResultDao extends AbstractDAO {
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q, expId);
     }
+    public List<String> getUnitsByExpId(int expId) throws Exception {
+        String sql="select distinct(r.units) from experiment_result r inner join experiment_record e " +
+                "on e.experiment_record_id = r.experiment_record_id where e.experiment_id = ?";
+        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+        return execute(q, expId);
+    }
 
 	public int insertExperimentResult(ExperimentResultDetail expResult) throws Exception{
 

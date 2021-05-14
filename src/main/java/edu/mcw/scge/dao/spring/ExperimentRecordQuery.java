@@ -29,6 +29,12 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         } catch(Exception ignored) {
 
         }
+
+        try {
+            e.setCellTypeTerm(rs.getString("cellTerm"));
+        } catch(Exception ignored) {
+
+        }
         e.setModelId(rs.getInt("model_id"));
         e.setEditorId(rs.getInt("editor_id"));
         e.setEditorSymbol(rs.getString("symbol"));
@@ -43,6 +49,7 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         }catch (Exception e1){
 
         }
+        e.setOrganSystemID(rs.getString("organ_system"));
         e.setTissueId(rs.getString("tissue_id"));
         e.setCellType(rs.getString("cell_type"));
         e.setModelName(rs.getString("modelName"));

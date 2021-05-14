@@ -47,7 +47,7 @@ public class VectorDao extends AbstractDAO {
         return list.isEmpty() ? 0 : list.get(0).getVectorId();
     }
     public List<Vector> getVectorsByExpRecId(int expRecId) throws Exception {
-        String sql="select v.* from vector v inner join vector_associations va on v.vector_id = va.vector_id where va.experiment_record_id=?";
+        String sql="select distinct v.* from vector v inner join vector_associations va on v.vector_id = va.vector_id where va.experiment_record_id=?";
         VectorQuery q=new VectorQuery(this.getDataSource(), sql);
         return execute(q, expRecId);
     }

@@ -2,6 +2,7 @@ package edu.mcw.scge.dao.implementation;
 
 
 import edu.mcw.scge.dao.AbstractDAO;
+import edu.mcw.scge.dao.spring.CountQuery;
 import edu.mcw.scge.dao.spring.StringListQuery;
 import edu.mcw.scge.dao.spring.StringMapQuery;
 import edu.mcw.scge.dao.spring.ontologyx.*;
@@ -552,12 +553,29 @@ public class OntologyXDAO extends AbstractDAO {
      */
     public boolean isDescendantOf(String termAcc, String ancestorTermAcc) throws Exception {
 
-        String sql = "SELECT COUNT(parent_term_acc) FROM ont_dag \n"+
-                "WHERE parent_term_acc=? \n"+
-                "START WITH child_term_acc=? \n"+
-                "CONNECT BY PRIOR parent_term_acc=child_term_acc";
+        //String sql = "SELECT COUNT(parent_term_acc) FROM ont_dag \n"+
+        //        "WHERE parent_term_acc=? \n"+
+        //        "START WITH child_term_acc=? \n"+
+        //        "CONNECT BY PRIOR parent_term_acc=child_term_acc";
 
-        return getCount(sql, ancestorTermAcc, termAcc)!=0;
+        String sql = "WITH RECURSIVE a AS ( " +
+                "SELECT parent_term_acc, child_term_acc " +
+                "FROM ont_dag " +
+                "WHERE child_term_acc=? " +
+                "UNION ALL " +
+                "SELECT d.parent_term_acc, d.child_term_acc " +
+                "FROM ont_dag d " +
+                "JOIN a ON a.parent_term_acc = d.child_term_acc) " +
+                "SELECT parent_term_acc, child_term_acc FROM a where parent_term_acc=?;";
+
+        StringMapQuery smq = new StringMapQuery(this.getDataSource(),sql);
+        List<StringMapQuery.MapPair> lst = this.execute(smq,termAcc,ancestorTermAcc);
+        if (lst.size() > 0 ) {
+            return true;
+        }else {
+            return false;
+        }
+
     }
 
     /**

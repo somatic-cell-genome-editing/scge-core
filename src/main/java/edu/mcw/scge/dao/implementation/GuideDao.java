@@ -70,7 +70,7 @@ public class GuideDao extends AbstractDAO {
     }
 
     public List<Guide> getGuidesByExpRecId(int expRecId) throws Exception {
-        String sql="select g.* from guide g inner join guide_associations ga on g.guide_id = ga.guide_id where ga.experiment_record_id=?";
+        String sql="select distinct g.* from guide g inner join guide_associations ga on g.guide_id = ga.guide_id where ga.experiment_record_id=?";
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
         return execute(q, expRecId);
     }
