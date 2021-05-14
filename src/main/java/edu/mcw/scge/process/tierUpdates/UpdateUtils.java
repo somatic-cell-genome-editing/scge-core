@@ -18,40 +18,52 @@ public class UpdateUtils {
     public void updateOtherExperimentalObjects(StudyTierUpdate update) throws Exception {
         int studyId=update.getStudyId();
         List<ExperimentRecord> records=edao.getExperimentRecordsByStudyId(studyId);
-        for(ExperimentRecord r:records){
-            updateGuideTier(r.getExperimentRecordId(), update.getTier());
-            updateModelTier(r.getModelId(), update.getTier());
-            updateDeliverySystemTier(r.getDeliverySystemId(), update.getTier());
-            updateEditorTier(r.getEditorId(), update.getTier());
+        if(records!=null && records.size()>0)
+            for(ExperimentRecord r:records){
+                updateGuideTier(r.getExperimentRecordId(), update.getTier());
+                if(r.getModelId()>0)
+                    updateModelTier(r.getModelId(), update.getTier());
+                if(r.getDeliverySystemId()>0)
+                    updateDeliverySystemTier(r.getDeliverySystemId(), update.getTier());
+                if(r.getEditorId()>0)
+                    updateEditorTier(r.getEditorId(), update.getTier());
 
-        }
+            }
     }
     public void updateGuideTier(int expRecId, int updatedTier) throws Exception {
         List<Guide> guides = gdao.getGuidesByExpRecId(expRecId);
-        for(Guide g:guides) {
-            //Guide g = gdao.getGuideById(guideId).get(0);
-            if (g.getTier() < updatedTier || (g.getTier() > updatedTier && g.getTier() == 2)) {
-                gdao.updateGuideTier(updatedTier, g.getGuide_id());
+        if(guides!=null && guides.size()>0)
+            for(Guide g:guides) {
+                //Guide g = gdao.getGuideById(guideId).get(0);
+                if (g.getTier() < updatedTier || (g.getTier() > updatedTier && g.getTier() == 2)) {
+                    gdao.updateGuideTier(updatedTier, g.getGuide_id());
+                }
             }
-        }
     }
     public void updateModelTier(int modelId, int updatedTier) throws Exception {
         Model m=mdao.getModelById(modelId);
-        if(m.getTier()<updatedTier || (m.getTier()>updatedTier && m.getTier()==2)){
-            mdao.updateModelTier(updatedTier, modelId);
-        }
+        if(m!=null)
+            if(m.getTier()<updatedTier || (m.getTier()>updatedTier && m.getTier()==2)){
+                mdao.updateModelTier(updatedTier, modelId);
+            }
     }
     public void updateDeliverySystemTier(int dsId, int updatedTier) throws Exception {
-        for(Delivery d: deliveryDao.getDeliverySystemsById(dsId)){
-            if(d.getTier()<updatedTier || (d.getTier()>updatedTier && d.getTier()==2)){
-                deliveryDao.updateDeliveryTier(updatedTier, dsId);
+        List<Delivery> dsList=deliveryDao.getDeliverySystemsById(dsId);
+        if(dsList!=null && dsList.size()>0) {
+            for (Delivery d : dsList) {
+                if (d.getTier() < updatedTier || (d.getTier() > updatedTier && d.getTier() == 2)) {
+                    deliveryDao.updateDeliveryTier(updatedTier, dsId);
+                }
             }
         }
     }
     public void updateEditorTier(int editorId, int updatedTIer) throws Exception {
-        Editor e=editorDao.getEditorById(editorId).get(0);
-        if(e.getTier()<updatedTIer || (e.getTier()>updatedTIer && e.getTier()==2)){
-            editorDao.updateEditorTier(updatedTIer, editorId);
+        List<Editor> editors=editorDao.getEditorById(editorId);
+        if(editors!=null && editors.size()>0) {
+            Editor e = editorDao.getEditorById(editorId).get(0);
+            if (e.getTier() < updatedTIer || (e.getTier() > updatedTIer && e.getTier() == 2)) {
+                editorDao.updateEditorTier(updatedTIer, editorId);
+            }
         }
     }
 
@@ -114,11 +126,11 @@ public class UpdateUtils {
         List<StudyTierUpdate> updateList= tierUpdateDao.getStudyTierUpdatesByStudyId(studyId);
         for(StudyTierUpdate u:updateList) {
 
-                if(!disabled) {
-                    sdao.disableStudyAssociations(u.getStudyId());
-                    disabled=true;
-                }
-                loadStudyUpdates(u);
+            if(!disabled) {
+                sdao.disableStudyAssociations(u.getStudyId());
+                disabled=true;
+            }
+            loadStudyUpdates(u);
 
         }
         if(disabled){
