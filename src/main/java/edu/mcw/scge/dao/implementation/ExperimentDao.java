@@ -32,7 +32,7 @@ public class ExperimentDao extends AbstractDAO {
 
     public List<String> getExperimentRecordConditionList(int experimentId) throws Exception {
         String sql="select distinct ex.name from experiment_record ex " +
-                " where ex.experiment_id=?";
+                " where ex.experiment_id=? order by name";
 
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
