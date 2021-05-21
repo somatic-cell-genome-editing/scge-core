@@ -29,8 +29,8 @@ public class ModelDao extends AbstractDAO {
     public int insertModel(Model model) throws Exception{
 
         String sql = "insert into model ( model_id, type, name, organism, sex, rrid, source, transgene, subtype, annotated_map," +
-                "transgene_description, transgene_reporter,model_description,parental_origin,strain_code,strain_alias )" +
-                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "transgene_description, transgene_reporter,model_description,parental_origin,strain_code,strain_alias,tier )" +
+                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         int modelId = this.getNextKeyFromSequence("model_seq");
 
@@ -38,7 +38,7 @@ public class ModelDao extends AbstractDAO {
         update(sql, modelId, model.getType(), model.getName(), model.getOrganism(),model.getSex(), model.getRrid(),
                 model.getSource(),model.getTransgene(),model.getSubtype(),model.getAnnotatedMap(),
                 model.getTransgeneDescription(),model.getTransgeneReporter(),model.getDescription(),model.getParentalOrigin(),
-                model.getStrainCode(),model.getStrainAlias());
+                model.getStrainCode(),model.getStrainAlias(),model.getTier());
 
         return modelId;
     }

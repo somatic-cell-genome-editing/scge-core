@@ -45,8 +45,8 @@ public class EditorDao extends AbstractDAO {
 
         String sql = "insert into editor ( editor_id, subtype, species, pam_preference, editor_variant, \n" +
                 "fusion, activity, dsb_cleavage_type, target_sequence, source, \n" +
-                "type, symbol, alias,  substrate_target, protein_sequence, editor_description, annotated_map ) " +
-                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "type, symbol, alias,  substrate_target, protein_sequence, editor_description, annotated_map,tier ) " +
+                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         int editorId = this.getNextKeyFromSequence("editor_seq");
 
@@ -55,7 +55,7 @@ public class EditorDao extends AbstractDAO {
                 editor.getEditorVariant(),editor.getFusion(),editor.getActivity(),editor.getDsbCleavageType(),
                 editor.getTarget_sequence(),editor.getSource(),editor.getType(),
                 editor.getSymbol(),editor.getAlias(),editor.getSubstrateTarget(), editor.getProteinSequence(),
-                editor.getEditorDescription(),editor.getAnnotatedMap());
+                editor.getEditorDescription(),editor.getAnnotatedMap(),editor.getTier());
 
         return editorId;
     }

@@ -21,7 +21,7 @@ public class DeliveryDao extends AbstractDAO {
 
         String sql = "insert into delivery_system ( ds_id, ds_type, ds_subtype, ds_name, ds_source, " +
                 "ds_description, ds_lab_id, ds_annotated_map, ds_rrid, " +
-                "ds_np_size, ds_mol_targeting_agent ) values (?,?,?,?,?,?,?,?,?,?,?)";
+                "ds_np_size, ds_mol_targeting_agent,tier ) values (?,?,?,?,?,?,?,?,?,?,?,?)";
 
         int deliveryId = this.getNextKeyFromSequence("delivery_seq");
 
@@ -29,7 +29,7 @@ public class DeliveryDao extends AbstractDAO {
         update(sql, deliveryId,delivery.getType(),delivery.getSubtype(),delivery.getName(),
                 delivery.getSource(),delivery.getDescription(),
                 delivery.getLabId(),delivery.getAnnotatedMap(),
-                delivery.getRrid(),delivery.getNpSize(),delivery.getMolTargetingAgent());
+                delivery.getRrid(),delivery.getNpSize(),delivery.getMolTargetingAgent(),delivery.getTier());
 
         return deliveryId;
     }
