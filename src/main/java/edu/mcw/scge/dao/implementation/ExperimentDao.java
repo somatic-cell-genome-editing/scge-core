@@ -15,7 +15,7 @@ public class ExperimentDao extends AbstractDAO {
     public List<String> getExperimentRecordTissueList(int experimentId) throws Exception {
         String sql="select distinct ot.term from experiment_record ex " +
                 "inner join ont_terms ot on ex.tissue_id=ot.term_acc " +
-                "where ex.experiment_id=?";
+                "where ex.experiment_id=? order by ot.term";
 
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
@@ -24,7 +24,7 @@ public class ExperimentDao extends AbstractDAO {
     public List<String> getExperimentRecordCellTypeList(int experimentId) throws Exception {
         String sql="select distinct ot.term from experiment_record ex " +
                 "inner join ont_terms ot on ex.cell_type=ot.term_acc " +
-                "where ex.experiment_id=?";
+                "where ex.experiment_id=? order by ot.term";
 
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
@@ -42,7 +42,7 @@ public class ExperimentDao extends AbstractDAO {
         String sql="select distinct e.symbol from experiment_record ex " +
                 " inner join experiment x on x.experiment_id=ex.experiment_id " +
                 " inner join editor e on ex.editor_id = e.editor_id " +
-                " where ex.experiment_id=?";
+                " where ex.experiment_id=? order by e.symbol";
 
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
@@ -50,14 +50,14 @@ public class ExperimentDao extends AbstractDAO {
 
     public List<String> getExperimentRecordVectorList(int experimentId) throws Exception {
         String sql="select distinct v.name from vector v, experiment e, experiment_record er, vector_associations va " +
-                "     where e.experiment_id=? and e.experiment_id=er.experiment_id and va.vector_id=v.vector_id and va.experiment_record_id=er.experiment_record_id ";
+                "     where e.experiment_id=? and e.experiment_id=er.experiment_id and va.vector_id=v.vector_id and va.experiment_record_id=er.experiment_record_id order by v.name";
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
     }
 
     public List<String> getExperimentRecordGuideList(int experimentId) throws Exception {
         String sql="select distinct g.guide from guide g, experiment e, experiment_record er, guide_associations ga " +
-                "     where e.experiment_id=? and e.experiment_id=er.experiment_id and ga.guide_id=g.guide_id and ga.experiment_record_id=er.experiment_record_id  ";
+                "     where e.experiment_id=? and e.experiment_id=er.experiment_id and ga.guide_id=g.guide_id and ga.experiment_record_id=er.experiment_record_id order by g.guide ";
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
     }
@@ -65,7 +65,7 @@ public class ExperimentDao extends AbstractDAO {
     public List<String> getExperimentRecordModelList(int experimentId) throws Exception {
         String sql="select distinct m.name from experiment_record ex " +
                 " inner join model m on ex.model_id = m.model_id " +
-                " where ex.experiment_id=?";
+                " where ex.experiment_id=? order by m.name";
 
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
@@ -73,7 +73,7 @@ public class ExperimentDao extends AbstractDAO {
     public List<String> getExperimentRecordDeliverySystemList(int experimentId) throws Exception {
         String sql="select distinct d.ds_name from experiment_record ex " +
                 "inner join delivery_system d on ex.ds_id = d.ds_id " +
-                "where ex.experiment_id=?";
+                "where ex.experiment_id=? order by d.ds_name";
 
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         List<String> returnVal = execute(q, experimentId);
