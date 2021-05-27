@@ -15,6 +15,13 @@ public class ExperimentResultDao extends AbstractDAO {
         return execute(q, expRecId);
     }
 
+    public List<ExperimentResultDetail> getResultsByExperimentId(int expId) throws Exception {
+        String sql="select r.*,d.replicate,d.result from experiment_result r inner join experiment_result_detail d " +
+                "on r.result_id = d.result_id inner join experiment_record e on r.experiment_record_id = e.experiment_record_id" +
+                " where e.experiment_id=? ";
+        ExperimentResultDetailQuery q=new ExperimentResultDetailQuery(this.getDataSource(), sql);
+        return execute(q, expId);
+    }
     public List<ExperimentResultDetail> getResultsByExpResType(int expRecId,String resultType) throws Exception {
         String sql="select r.*,d.replicate,d.result from experiment_result r inner join experiment_result_detail d " +
                 "on r.result_id = d.result_id where r.experiment_record_id=? and r.result_type = ?";
