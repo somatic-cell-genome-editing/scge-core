@@ -77,7 +77,7 @@ public class AccessDao extends AbstractDAO {
             return true;
         }
 
-        String sql = "select distinct ga.guide_id from person_info pi inner join study s on pi.group_id=s.group_id " +
+        String sql = "select distinct va.vector_id from person_info pi inner join study s on pi.group_id=s.group_id " +
                 "inner join experiment_record er on er.study_id=s.study_id " +
                 "inner join vector_associations va on er.experiment_record_id = va.experiment_record_id " +
                 "where pi.person_id=? and va.vector_id=? and s.tier in (0, 1, 2 )";
