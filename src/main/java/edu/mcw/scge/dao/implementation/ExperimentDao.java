@@ -200,7 +200,7 @@ public class ExperimentDao extends AbstractDAO {
         return execute(q, vectorId);
     }
 
-    public List<ExperimentRecord> getExperimentsByGuide(int guideId) throws Exception {
+    public List<ExperimentRecord> getExperimentsByGuide(long guideId) throws Exception {
         String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
                 "inner join guide_associations ga on ex.experiment_record_id=ga.experiment_record_id \n" +
                 //"inner join guide g on ga.guide_id = g.guide_id\n" +
