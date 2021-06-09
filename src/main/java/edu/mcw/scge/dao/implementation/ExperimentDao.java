@@ -185,7 +185,7 @@ public class ExperimentDao extends AbstractDAO {
         return execute(q, dsId);
     }
 
-    public List<ExperimentRecord> getExperimentsByVector(int vectorId) throws Exception {
+    public List<ExperimentRecord> getExperimentsByVector(long vectorId) throws Exception {
         String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, x.type, ot.term, ct.term as cellTerm from experiment_record ex \n" +
                 "left outer join experiment x on x.experiment_id=ex.experiment_id \n" +
                 "left outer join editor e on ex.editor_id = e.editor_id \n" +

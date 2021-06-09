@@ -181,7 +181,7 @@ public class StudyDao extends AbstractDAO {
         return execute(q, deliveryId);
     }
 
-    public List<Study> getStudiesByVector(int vectorId) throws Exception{
+    public List<Study> getStudiesByVector(long vectorId) throws Exception{
         String sql = "select distinct s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName \n" +
                 "from study s inner join institution i on s.lab_id=i.institution_id \n" +
                 "inner join person p on s.submitter_id=p.person_id \n" +

@@ -17,7 +17,7 @@ public class VectorDao extends AbstractDAO {
         VectorQuery q=new VectorQuery(this.getDataSource(), sql);
         return (List<Vector>)q.execute();
     }
-    public List<Vector> getVectorById(int id) throws Exception {
+    public List<Vector> getVectorById(long id) throws Exception {
         String sql="select * from vector where vector_id=?";
         VectorQuery q=new VectorQuery(this.getDataSource(), sql);
         return execute(q, id);
@@ -39,7 +39,7 @@ public class VectorDao extends AbstractDAO {
         return vectorId;
     }
 
-    public int getVectorId(Vector vector) throws Exception {
+    public long getVectorId(Vector vector) throws Exception {
 
         String sql = "select * from vector where subtype=? and capsid_variant = ?";
 
@@ -51,7 +51,7 @@ public class VectorDao extends AbstractDAO {
         VectorQuery q=new VectorQuery(this.getDataSource(), sql);
         return execute(q, expRecId);
     }
-    public void insertVectorAssoc(int expRecId,int vectorId) throws Exception{
+    public void insertVectorAssoc(int expRecId,long vectorId) throws Exception{
         String sql = "insert into vector_associations ( experiment_record_id, vector_id ) values (?,?)";
 
         update(sql,expRecId,vectorId);
