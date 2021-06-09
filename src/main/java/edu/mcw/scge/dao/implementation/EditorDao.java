@@ -35,7 +35,7 @@ public class EditorDao extends AbstractDAO {
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
         return execute(q, id);
     }
-	public List<Editor> getEditorByGuide(int guideId) throws Exception {
+	public List<Editor> getEditorByGuide(long guideId) throws Exception {
         String sql="select distinct(ed.*) from editor ed  inner join experiment_record e on e.editor_id=ed.editor_id\n" +
                 "inner join guide_associations ga on e.experiment_record_id=ga.experiment_record_id and ga.guide_id=?";
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);

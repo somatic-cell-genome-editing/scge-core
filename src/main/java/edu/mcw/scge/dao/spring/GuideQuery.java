@@ -18,7 +18,7 @@ public class GuideQuery extends MappingSqlQuery<Guide> {
     protected Guide mapRow(ResultSet rs, int rowNum) throws SQLException {
 
         Guide g = new Guide();
-        g.setGuide_id(rs.getInt("guide_id"));
+        g.setGuide_id(rs.getLong("guide_id"));
         g.setGuide(rs.getString("guide"));
         g.setGuideDescription(rs.getString("guide_description"));
         g.setGuideFormat(rs.getString("guide_format"));

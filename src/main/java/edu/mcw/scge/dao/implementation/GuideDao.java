@@ -7,11 +7,12 @@ import edu.mcw.scge.datamodel.Guide;
 import java.util.List;
 
 public class GuideDao extends AbstractDAO {
-    public List<Guide> getGuideById(int guideId) throws Exception {
+    public List<Guide> getGuideById(long guideId) throws Exception {
         String sql="select * from guide where guide_id=?";
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
         return execute(q, guideId);
     }
+
 	public List<Guide> getGuides() throws Exception {
         String sql="select * from guide";
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
@@ -24,7 +25,7 @@ public class GuideDao extends AbstractDAO {
         return execute(q,editorId);
 	}
 	
-    public int insertGuide(Guide guide) throws Exception{
+    public long insertGuide(Guide guide) throws Exception{
 
         String sql = "insert into guide ( guide_id, species, source, target_locus, target_sequence, " +
                 "pam, assembly, chr,start, stop, strand," +
@@ -35,7 +36,7 @@ public class GuideDao extends AbstractDAO {
                 "vector_id,vector_name,vector_description,vector_type,annotated_map,specificity_ratio ) " +
                 "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        int guideId = this.getNextKeyFromSequence("guide_seq");
+        long guideId = this.getNextKeyFromSequence("guide_seq");
 
 
         update(sql, guideId, guide.getSpecies(), guide.getSource(), guide.getTargetLocus(),guide.getTargetSequence(),
@@ -50,13 +51,13 @@ public class GuideDao extends AbstractDAO {
         return guideId;
     }
 
-    public void insertGuideAssoc(int expRecId,int guideId) throws Exception{
+    public void insertGuideAssoc(int expRecId,long guideId) throws Exception{
         String sql = "insert into guide_associations ( experiment_record_id, guide_id ) values (?,?)";
 
         update(sql,expRecId,guideId);
     }
 
-    public int getGuideId(Guide guide) throws Exception {
+    public long getGuideId(Guide guide) throws Exception {
 
         String sql = "select * from guide where species =? and target_locus=? and target_sequence=? and pam=? and spacer_sequence=? and spacer_length=?";
 
@@ -64,7 +65,7 @@ public class GuideDao extends AbstractDAO {
                 guide.getPam(),guide.getSpacerSequence(),guide.getSpacerLength() );
         return list.isEmpty() ? 0 : list.get(0).getGuide_id();
     }
-    public void updateGuideTier(int tier, int guideId) throws Exception{
+    public void updateGuideTier(int tier, long guideId) throws Exception{
         String sql="update guide set tier=? where guide_id=?";
         update(sql, tier, guideId);
     }
