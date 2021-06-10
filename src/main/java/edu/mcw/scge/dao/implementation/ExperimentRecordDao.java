@@ -66,7 +66,7 @@ public class ExperimentRecordDao extends AbstractDAO {
     }
     */
 
-   public List<ExperimentRecord> getExperimentRecordById(int expRecId) throws Exception {
+   public List<ExperimentRecord> getExperimentRecordById(long expRecId) throws Exception {
         String sql="select s.study, r.*, e.symbol, d.ds_type, m.name as modelName, g.guide, x.type" +
                 " from  experiment x  " +
                 "left join experiment_record r on (r.experiment_id=x.experiment_id) " +
