@@ -2,17 +2,17 @@ package edu.mcw.scge.datamodel;
 
 
 public class Experiment {
-    private int experimentId;
+    private long experimentId;
     private int studyId;
     private String studyName;
     private String type;
     private String name;
 
-    public int getExperimentId() {
+    public long getExperimentId() {
         return experimentId;
     }
 
-    public void setExperimentId(int experimentId) {
+    public void setExperimentId(long experimentId) {
         this.experimentId = experimentId;
     }
 

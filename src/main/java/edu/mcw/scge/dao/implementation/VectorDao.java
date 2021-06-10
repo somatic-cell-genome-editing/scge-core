@@ -46,12 +46,12 @@ public class VectorDao extends AbstractDAO {
         List<Vector> list = VectorQuery.execute(this,sql, vector.getSubtype(),vector.getCapsidVariant());
         return list.isEmpty() ? 0 : list.get(0).getVectorId();
     }
-    public List<Vector> getVectorsByExpRecId(int expRecId) throws Exception {
+    public List<Vector> getVectorsByExpRecId(long expRecId) throws Exception {
         String sql="select distinct v.* from vector v inner join vector_associations va on v.vector_id = va.vector_id where va.experiment_record_id=?";
         VectorQuery q=new VectorQuery(this.getDataSource(), sql);
         return execute(q, expRecId);
     }
-    public void insertVectorAssoc(int expRecId,long vectorId) throws Exception{
+    public void insertVectorAssoc(long expRecId,long vectorId) throws Exception{
         String sql = "insert into vector_associations ( experiment_record_id, vector_id ) values (?,?)";
 
         update(sql,expRecId,vectorId);

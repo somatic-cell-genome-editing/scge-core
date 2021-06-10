@@ -30,7 +30,7 @@ public class UpdateUtils {
 
         }
     }
-    public void updateGuideTier(int expRecId, int updatedTier) throws Exception {
+    public void updateGuideTier(long expRecId, int updatedTier) throws Exception {
         List<Guide> guides = gdao.getGuidesByExpRecId(expRecId);
         if(guides!=null && guides.size()>0)
         for(Guide g:guides) {
@@ -40,14 +40,14 @@ public class UpdateUtils {
             }
         }
     }
-    public void updateModelTier(int modelId, int updatedTier) throws Exception {
+    public void updateModelTier(long modelId, int updatedTier) throws Exception {
         Model m=mdao.getModelById(modelId);
         if(m!=null)
         if(m.getTier()<updatedTier || (m.getTier()>updatedTier && m.getTier()==2)){
             mdao.updateModelTier(updatedTier, modelId);
         }
     }
-    public void updateDeliverySystemTier(int dsId, int updatedTier) throws Exception {
+    public void updateDeliverySystemTier(long dsId, int updatedTier) throws Exception {
         List<Delivery> dsList=deliveryDao.getDeliverySystemsById(dsId);
         if(dsList!=null && dsList.size()>0) {
             for (Delivery d : dsList) {
@@ -57,7 +57,7 @@ public class UpdateUtils {
             }
         }
     }
-    public void updateEditorTier(int editorId, int updatedTIer) throws Exception {
+    public void updateEditorTier(long editorId, int updatedTIer) throws Exception {
         List<Editor> editors=editorDao.getEditorById(editorId);
         if(editors!=null && editors.size()>0) {
             Editor e = editorDao.getEditorById(editorId).get(0);

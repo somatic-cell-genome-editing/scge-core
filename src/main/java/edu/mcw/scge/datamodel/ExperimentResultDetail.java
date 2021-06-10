@@ -2,30 +2,30 @@ package edu.mcw.scge.datamodel;
 
 public class ExperimentResultDetail {
 
-    private int resultId;
+    private long resultId;
 
     private int numberOfSamples;
     private String units;
     private String assayDescription;
-    private int experimentRecordId;
+    private long experimentRecordId;
     private String resultType;
     private int replicate;
     private String result;
     private String editType;
 
-    public int getExperimentRecordId() {
+    public long getExperimentRecordId() {
         return experimentRecordId;
     }
 
-    public void setExperimentRecordId(int experimentRecordId) {
+    public void setExperimentRecordId(long experimentRecordId) {
         this.experimentRecordId = experimentRecordId;
     }
 
-    public int getResultId() {
+    public long getResultId() {
         return resultId;
     }
 
-    public void setResultId(int resultId) {
+    public void setResultId(long resultId) {
         this.resultId = resultId;
     }
 

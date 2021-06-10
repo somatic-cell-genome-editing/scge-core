@@ -16,7 +16,7 @@ public class ModelDao extends AbstractDAO {
         return models;
     }
 
-    public Model getModelById(int modelId) throws Exception {
+    public Model getModelById(long modelId) throws Exception {
         String sql="select * from model where model_id=?";
         ModelQuery q=new ModelQuery(this.getDataSource(), sql);
         List<Model> models=execute(q, modelId);
@@ -26,13 +26,13 @@ public class ModelDao extends AbstractDAO {
             return new Model();
     }
 
-    public int insertModel(Model model) throws Exception{
+    public long insertModel(Model model) throws Exception{
 
         String sql = "insert into model ( model_id, type, name, organism, sex, rrid, source, transgene, subtype, annotated_map," +
                 "transgene_description, transgene_reporter,model_description,parental_origin,strain_code,strain_alias,tier )" +
                 "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        int modelId = this.getNextKeyFromSequence("model_seq");
+        long modelId = this.getNextKeyFromSequence("model_seq");
 
 
         update(sql, modelId, model.getType(), model.getName(), model.getOrganism(),model.getSex(), model.getRrid(),
@@ -43,14 +43,14 @@ public class ModelDao extends AbstractDAO {
         return modelId;
     }
 
-    public int getModelId(Model model) throws Exception {
+    public long getModelId(Model model) throws Exception {
 
         String sql = "select * from model where type =? and name=? and organism=?";
 
         List<Model> list = ModelQuery.execute(this,sql,model.getType(), model.getName(), model.getOrganism() );
         return list.isEmpty() ? 0 : list.get(0).getModelId();
     }
-    public boolean verifyModelAccess(int modelId, int personId) throws Exception {
+    public boolean verifyModelAccess(long modelId, int personId) throws Exception {
         String sql="(select e.* from model e left outer join experiment_record r on e.model_id=r.model_id " +
                 "left outer join experiment x on x.experiment_id=r.experiment_id " +
                 "left outer join study s on s.study_id =x.study_id " +
@@ -61,7 +61,7 @@ public class ModelDao extends AbstractDAO {
         List<Model> modelList= execute(q, personId, modelId, modelId);
         return modelList.size() > 0;
     }
-    public void updateModelTier(int tier, int modelId) throws Exception{
+    public void updateModelTier(int tier, long modelId) throws Exception{
         String sql="update model set tier=? where model_id=?";
         update(sql, tier, modelId);
     }

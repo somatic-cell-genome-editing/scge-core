@@ -15,14 +15,14 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
     @Override
     protected ExperimentRecord mapRow(ResultSet rs, int rowNum) throws SQLException {
         ExperimentRecord e= new ExperimentRecord();
-        e.setExperimentId(rs.getInt("experiment_id"));
+        e.setExperimentId(rs.getLong("experiment_id"));
         try {
             e.setExperimentName(rs.getString("name"));
         }catch (Exception exception){}
      //   e.setExperimentRecordName(rs.getString("name"));
         e.setStudyId(rs.getInt("study_id"));
      //   e.setGuideId(rs.getInt("guide_id"));
-        e.setDeliverySystemId(rs.getInt("ds_id"));
+        e.setDeliverySystemId(rs.getLong("ds_id"));
 
         try {
             e.setTissueTerm(rs.getString("term"));
@@ -35,8 +35,8 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         } catch(Exception ignored) {
 
         }
-        e.setModelId(rs.getInt("model_id"));
-        e.setEditorId(rs.getInt("editor_id"));
+        e.setModelId(rs.getLong("model_id"));
+        e.setEditorId(rs.getLong("editor_id"));
         e.setEditorSymbol(rs.getString("symbol"));
         try {
             e.setDeliverySystemType(rs.getString("ds_name"));
@@ -54,7 +54,7 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         e.setCellType(rs.getString("cell_type"));
         e.setModelName(rs.getString("modelName"));
      //   e.setGuide(rs.getString("guide"));
-        e.setExperimentRecordId(rs.getInt("experiment_record_id"));
+        e.setExperimentRecordId(rs.getLong("experiment_record_id"));
      //   e.setVectorId(rs.getInt("vector_id"));
         return e;
 

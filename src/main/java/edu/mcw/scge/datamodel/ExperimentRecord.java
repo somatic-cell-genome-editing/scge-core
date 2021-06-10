@@ -1,13 +1,13 @@
 package edu.mcw.scge.datamodel;
 
 public class ExperimentRecord {
-    private int experimentRecordId;
-    private int experimentId;
+    private long experimentRecordId;
+    private long experimentId;
     private String experimentName;
     private String experimentType;
     private int studyId;
-    private int editorId;
-    private int deliverySystemId;
+    private long editorId;
+    private long deliverySystemId;
 
     public String getOrganSystemID() {
         return organSystemID;
@@ -18,7 +18,7 @@ public class ExperimentRecord {
     }
 
     //  private int vectorId;
-    private int modelId;
+    private long modelId;
     //private int guideId;
     private String samplePrep;
     private int applicationMethodId;
@@ -54,11 +54,11 @@ public class ExperimentRecord {
         this.tissueTerm = tissueTerm;
     }
 
-    public int getExperimentRecordId() {
+    public long getExperimentRecordId() {
         return experimentRecordId;
     }
 
-    public void setExperimentRecordId(int experimentRecordId) {
+    public void setExperimentRecordId(long experimentRecordId) {
         this.experimentRecordId = experimentRecordId;
     }
 
@@ -70,11 +70,11 @@ public class ExperimentRecord {
         this.studyId = studyId;
     }
 
-    public int getDeliverySystemId() {
+    public long getDeliverySystemId() {
         return deliverySystemId;
     }
 
-    public void setDeliverySystemId(int deliverySystemId) {
+    public void setDeliverySystemId(long deliverySystemId) {
         this.deliverySystemId = deliverySystemId;
     }
 
@@ -118,11 +118,11 @@ public class ExperimentRecord {
         this.studyName = studyName;
     }
 
-    public int getExperimentId() {
+    public long getExperimentId() {
         return experimentId;
     }
 
-    public void setExperimentId(int experimentId) {
+    public void setExperimentId(long experimentId) {
         this.experimentId = experimentId;
     }
 
@@ -142,19 +142,19 @@ public class ExperimentRecord {
         this.experimentName = experimentName;
     }
 
-    public int getEditorId() {
+    public long getEditorId() {
         return editorId;
     }
 
-    public void setEditorId(int editorId) {
+    public void setEditorId(long editorId) {
         this.editorId = editorId;
     }
 
-    public int getModelId() {
+    public long getModelId() {
         return modelId;
     }
 
-    public void setModelId(int modelId) {
+    public void setModelId(long modelId) {
         this.modelId = modelId;
     }
 

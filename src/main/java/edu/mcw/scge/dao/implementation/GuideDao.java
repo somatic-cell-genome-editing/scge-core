@@ -18,7 +18,7 @@ public class GuideDao extends AbstractDAO {
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
         return execute(q);
     }
-    public List<Guide> getGuidesByEditor(int editorId) throws Exception {
+    public List<Guide> getGuidesByEditor(long editorId) throws Exception {
         String sql="select distinct(g.*) from guide g inner join guide_associations ga on ga.guide_id=g.guide_id\n" +
                 "inner join experiment_record e on e.experiment_record_id=ga.experiment_record_id and e.editor_id=?";
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
@@ -51,7 +51,7 @@ public class GuideDao extends AbstractDAO {
         return guideId;
     }
 
-    public void insertGuideAssoc(int expRecId,long guideId) throws Exception{
+    public void insertGuideAssoc(long expRecId,long guideId) throws Exception{
         String sql = "insert into guide_associations ( experiment_record_id, guide_id ) values (?,?)";
 
         update(sql,expRecId,guideId);
@@ -70,7 +70,7 @@ public class GuideDao extends AbstractDAO {
         update(sql, tier, guideId);
     }
 
-    public List<Guide> getGuidesByExpRecId(int expRecId) throws Exception {
+    public List<Guide> getGuidesByExpRecId(long expRecId) throws Exception {
         String sql="select distinct g.* from guide g inner join guide_associations ga on g.guide_id = ga.guide_id where ga.experiment_record_id=?";
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
         return execute(q, expRecId);

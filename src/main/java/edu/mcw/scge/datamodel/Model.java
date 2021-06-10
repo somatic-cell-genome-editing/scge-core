@@ -2,7 +2,7 @@ package edu.mcw.scge.datamodel;
 
 public class Model {
 
-   private int modelId;
+   private long modelId;
    private String type;
     private String name;
     private String  organism;
@@ -84,11 +84,11 @@ public class Model {
         this.transgeneReporter = transgeneReporter;
     }
 
-    public int getModelId() {
+    public long getModelId() {
         return modelId;
     }
 
-    public void setModelId(int modelId) {
+    public void setModelId(long modelId) {
         this.modelId = modelId;
     }
 

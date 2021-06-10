@@ -16,7 +16,7 @@ public class ModelQuery extends MappingSqlQuery {
     @Override
     protected Object mapRow(ResultSet rs, int rowNum) throws SQLException {
         Model m=new Model();
-        m.setModelId(rs.getInt("model_id"));
+        m.setModelId(rs.getLong("model_id"));
         m.setName(rs.getString("name"));
         m.setOrganism(rs.getString("organism"));
         m.setSex(rs.getString("sex"));
