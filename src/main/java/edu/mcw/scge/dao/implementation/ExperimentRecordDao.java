@@ -65,8 +65,8 @@ public class ExperimentRecordDao extends AbstractDAO {
         return execute(q, expId);
     }
     */
-   /* //Not used anywhere
-   public List<ExperimentRecord> getExperimentRecordByExpRecId(int expRecId) throws Exception {
+
+   public List<ExperimentRecord> getExperimentRecordById(int expRecId) throws Exception {
         String sql="select s.study, r.*, e.symbol, d.ds_type, m.name as modelName, g.guide, x.type" +
                 " from  experiment x  " +
                 "left join experiment_record r on (r.experiment_id=x.experiment_id) " +
@@ -80,7 +80,7 @@ public class ExperimentRecordDao extends AbstractDAO {
         ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
         return execute(q, expRecId);
     }
-    */
+
 	public long insertExperimentRecord(ExperimentRecord expRecord) throws Exception{
 
         String sql = "insert into experiment_record (experiment_id,name,study_id, " +
