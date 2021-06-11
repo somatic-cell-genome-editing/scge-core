@@ -1,7 +1,7 @@
 package edu.mcw.scge.datamodel;
 
 public class Vector {
-    private int vectorId;
+    private long vectorId;
     private String name;
     private String type;
     private String subtype;
@@ -55,11 +55,11 @@ public class Vector {
         this.name = name;
     }
 
-    public int getVectorId() {
+    public long getVectorId() {
         return vectorId;
     }
 
-    public void setVectorId(int vectorId) {
+    public void setVectorId(long vectorId) {
         this.vectorId = vectorId;
     }
 

@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class StudyDao extends AbstractDAO {
-    public List<Study> getStudyByExperimentId(int experimentId,int personId ) throws Exception {
+    public List<Study> getStudyByExperimentId(long experimentId,int personId ) throws Exception {
         String sql = "select s.* from study s inner join experiment e on s.study_id=e.study_id " +
                 "                inner join person_info p on p.group_id=s.group_id " +
                 "                where p.person_id=? " +
@@ -165,7 +165,7 @@ public class StudyDao extends AbstractDAO {
         return getCount(sql,studyId, personId)>0;
     }
 
-    public List<Study> getStudiesByEditor(int editorId) throws Exception{
+    public List<Study> getStudiesByEditor(long editorId) throws Exception{
         String sql = "select distinct s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName " +
                 "from study s, institution i, person p, person pi, editor e, experiment_record ex " +
                 "where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id and e.editor_id=? and ex.editor_id=e.editor_id and ex.study_id=s.study_id ";
@@ -173,7 +173,7 @@ public class StudyDao extends AbstractDAO {
         return execute(q, editorId);
     }
 
-    public List<Study> getStudiesByDeliverySystem(int deliveryId) throws Exception{
+    public List<Study> getStudiesByDeliverySystem(long deliveryId) throws Exception{
         String sql = "select distinct s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName " +
                 "from study s, institution i, person p, person pi, delivery_system d, experiment_record ex " +
                 "where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id and d.ds_id=? and ex.ds_id=d.ds_id and ex.study_id=s.study_id ";
@@ -181,7 +181,7 @@ public class StudyDao extends AbstractDAO {
         return execute(q, deliveryId);
     }
 
-    public List<Study> getStudiesByVector(int vectorId) throws Exception{
+    public List<Study> getStudiesByVector(long vectorId) throws Exception{
         String sql = "select distinct s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName \n" +
                 "from study s inner join institution i on s.lab_id=i.institution_id \n" +
                 "inner join person p on s.submitter_id=p.person_id \n" +
@@ -192,7 +192,7 @@ public class StudyDao extends AbstractDAO {
         return execute(q, vectorId);
     }
 
-    public List<Study> getStudiesByModel(int modelId) throws Exception{
+    public List<Study> getStudiesByModel(long modelId) throws Exception{
         String sql = "select distinct s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName " +
                 "from study s, institution i, person p, person pi, model m, experiment_record ex " +
                 "where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id and m.model_id=? and ex.model_id=m.model_id and ex.study_id=s.study_id ";
@@ -200,7 +200,7 @@ public class StudyDao extends AbstractDAO {
         return execute(q, modelId);
     }
 
-    public List<Study> getStudiesByGuide(int guideId) throws Exception{
+    public List<Study> getStudiesByGuide(long guideId) throws Exception{
         String sql = "select distinct s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName \n" +
                 "from study s inner join institution i on s.lab_id=i.institution_id \n" +
                 "inner join person p on s.submitter_id=p.person_id \n" +

@@ -65,8 +65,8 @@ public class ExperimentRecordDao extends AbstractDAO {
         return execute(q, expId);
     }
     */
-   /* //Not used anywhere
-   public List<ExperimentRecord> getExperimentRecordByExpRecId(int expRecId) throws Exception {
+
+   public List<ExperimentRecord> getExperimentRecordById(long expRecId) throws Exception {
         String sql="select s.study, r.*, e.symbol, d.ds_type, m.name as modelName, g.guide, x.type" +
                 " from  experiment x  " +
                 "left join experiment_record r on (r.experiment_id=x.experiment_id) " +
@@ -80,14 +80,14 @@ public class ExperimentRecordDao extends AbstractDAO {
         ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
         return execute(q, expRecId);
     }
-    */
-	public int insertExperimentRecord(ExperimentRecord expRecord) throws Exception{
+
+	public long insertExperimentRecord(ExperimentRecord expRecord) throws Exception{
 
         String sql = "insert into experiment_record (experiment_id,name,study_id, " +
                 "editor_id,ds_id,model_id,sample_prep,application_method_id,experiment_record_id,age, genotype,sex," +
                 "tissue_id, cell_type  ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        
-        int experimentId = this.getNextKeyFromSequence("experiment_seq");
+
+        long experimentId = this.getNextKeyFromSequence("experiment_seq");
         
         update(sql, expRecord.getExperimentId(),expRecord.getExperimentName(),expRecord.getStudyId(), expRecord.getEditorId(),
                 expRecord.getDeliverySystemId(),expRecord.getModelId(),expRecord.getSamplePrep(),

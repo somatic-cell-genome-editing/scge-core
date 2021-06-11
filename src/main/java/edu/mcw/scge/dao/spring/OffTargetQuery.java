@@ -16,7 +16,7 @@ public class OffTargetQuery extends MappingSqlQuery<OffTarget> {
     protected OffTarget mapRow(ResultSet rs, int rowNum) throws SQLException {
 
         OffTarget o = new OffTarget();
-        o.setGuideId(rs.getInt("guide_id"));
+        o.setGuideId(rs.getLong("guide_id"));
         o.setDetectionMethod(rs.getString("detection_method"));
         o.setNoOfSitesDetected(rs.getInt("no_of_sites_detected"));
         return o;

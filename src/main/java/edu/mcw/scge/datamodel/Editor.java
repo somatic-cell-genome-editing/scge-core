@@ -4,7 +4,7 @@ package edu.mcw.scge.datamodel;
  * Created by jdepons on 9/10/2019.
  */
 public class Editor {
-    private int id;
+    private long id;
     private String type;
     private String subType;
     private String symbol;
@@ -31,11 +31,11 @@ public class Editor {
         this.tier = tier;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

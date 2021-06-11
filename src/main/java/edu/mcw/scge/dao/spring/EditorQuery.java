@@ -20,7 +20,7 @@ public class EditorQuery extends MappingSqlQuery {
     @Override
     protected Object mapRow(ResultSet rs, int rowNum) throws SQLException {
         Editor e= new Editor();
-        e.setId(rs.getInt("editor_id"));
+        e.setId(rs.getLong("editor_id"));
         e.setType(rs.getString("type"));
         e.setSubType(rs.getString("subtype"));
         e.setSymbol(rs.getString("symbol"));

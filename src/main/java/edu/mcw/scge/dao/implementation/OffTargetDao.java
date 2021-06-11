@@ -9,7 +9,7 @@ import java.util.List;
 
 public class OffTargetDao extends AbstractDAO {
 
-    public List<OffTarget> getOffTargetByGuide(int guideId) throws Exception {
+    public List<OffTarget> getOffTargetByGuide(long guideId) throws Exception {
         String sql="select * from off_target where guide_id=?";
         OffTargetQuery q= new OffTargetQuery(this.getDataSource(), sql);
         return execute(q, guideId);

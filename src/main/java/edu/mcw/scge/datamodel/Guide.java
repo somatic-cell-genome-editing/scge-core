@@ -1,7 +1,7 @@
 package edu.mcw.scge.datamodel;
 
 public class Guide  {
-    private int guide_id;
+    private long guide_id;
 
     private String species;
     private String targetLocus;
@@ -54,11 +54,11 @@ public class Guide  {
         this.spacerSequence = spacerSequence;
     }
 
-    public int getGuide_id() {
+    public long getGuide_id() {
         return guide_id;
     }
 
-    public void setGuide_id(int guide_id) {
+    public void setGuide_id(long guide_id) {
         this.guide_id = guide_id;
     }
 

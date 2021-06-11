@@ -21,7 +21,7 @@ public class VectorQuery extends MappingSqlQuery {
     protected Object mapRow(ResultSet rs, int rowNum) throws SQLException {
         Vector v= new Vector();
         v.setName(rs.getString("name"));
-        v.setVectorId(rs.getInt("vector_id"));
+        v.setVectorId(rs.getLong("vector_id"));
         v.setType(rs.getString("type"));
         v.setSubtype(rs.getString("subtype"));
         v.setAnnotatedMap(rs.getString("annotated_map"));

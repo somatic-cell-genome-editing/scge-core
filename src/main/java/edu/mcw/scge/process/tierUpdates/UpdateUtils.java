@@ -19,35 +19,35 @@ public class UpdateUtils {
         int studyId=update.getStudyId();
         List<ExperimentRecord> records=edao.getExperimentRecordsByStudyId(studyId);
         if(records!=null && records.size()>0)
-            for(ExperimentRecord r:records){
-                updateGuideTier(r.getExperimentRecordId(), update.getTier());
-                if(r.getModelId()>0)
-                    updateModelTier(r.getModelId(), update.getTier());
-                if(r.getDeliverySystemId()>0)
-                    updateDeliverySystemTier(r.getDeliverySystemId(), update.getTier());
-                if(r.getEditorId()>0)
-                    updateEditorTier(r.getEditorId(), update.getTier());
+        for(ExperimentRecord r:records){
+            updateGuideTier(r.getExperimentRecordId(), update.getTier());
+            if(r.getModelId()>0)
+            updateModelTier(r.getModelId(), update.getTier());
+            if(r.getDeliverySystemId()>0)
+            updateDeliverySystemTier(r.getDeliverySystemId(), update.getTier());
+            if(r.getEditorId()>0)
+            updateEditorTier(r.getEditorId(), update.getTier());
 
-            }
+        }
     }
-    public void updateGuideTier(int expRecId, int updatedTier) throws Exception {
+    public void updateGuideTier(long expRecId, int updatedTier) throws Exception {
         List<Guide> guides = gdao.getGuidesByExpRecId(expRecId);
         if(guides!=null && guides.size()>0)
-            for(Guide g:guides) {
-                //Guide g = gdao.getGuideById(guideId).get(0);
-                if (g.getTier() < updatedTier || (g.getTier() > updatedTier && g.getTier() == 2)) {
-                    gdao.updateGuideTier(updatedTier, g.getGuide_id());
-                }
+        for(Guide g:guides) {
+            //Guide g = gdao.getGuideById(guideId).get(0);
+            if (g.getTier() < updatedTier || (g.getTier() > updatedTier && g.getTier() == 2)) {
+                gdao.updateGuideTier(updatedTier, g.getGuide_id());
             }
+        }
     }
-    public void updateModelTier(int modelId, int updatedTier) throws Exception {
+    public void updateModelTier(long modelId, int updatedTier) throws Exception {
         Model m=mdao.getModelById(modelId);
         if(m!=null)
-            if(m.getTier()<updatedTier || (m.getTier()>updatedTier && m.getTier()==2)){
-                mdao.updateModelTier(updatedTier, modelId);
-            }
+        if(m.getTier()<updatedTier || (m.getTier()>updatedTier && m.getTier()==2)){
+            mdao.updateModelTier(updatedTier, modelId);
+        }
     }
-    public void updateDeliverySystemTier(int dsId, int updatedTier) throws Exception {
+    public void updateDeliverySystemTier(long dsId, int updatedTier) throws Exception {
         List<Delivery> dsList=deliveryDao.getDeliverySystemsById(dsId);
         if(dsList!=null && dsList.size()>0) {
             for (Delivery d : dsList) {
@@ -57,7 +57,7 @@ public class UpdateUtils {
             }
         }
     }
-    public void updateEditorTier(int editorId, int updatedTIer) throws Exception {
+    public void updateEditorTier(long editorId, int updatedTIer) throws Exception {
         List<Editor> editors=editorDao.getEditorById(editorId);
         if(editors!=null && editors.size()>0) {
             Editor e = editorDao.getEditorById(editorId).get(0);
@@ -126,11 +126,11 @@ public class UpdateUtils {
         List<StudyTierUpdate> updateList= tierUpdateDao.getStudyTierUpdatesByStudyId(studyId);
         for(StudyTierUpdate u:updateList) {
 
-            if(!disabled) {
-                sdao.disableStudyAssociations(u.getStudyId());
-                disabled=true;
-            }
-            loadStudyUpdates(u);
+                if(!disabled) {
+                    sdao.disableStudyAssociations(u.getStudyId());
+                    disabled=true;
+                }
+                loadStudyUpdates(u);
 
         }
         if(disabled){

@@ -1,7 +1,7 @@
 package edu.mcw.scge.datamodel;
 
 public class Delivery {
-    private int id;
+    private long id;
     private String  type;
     private String subtype;
     private String name;
@@ -22,11 +22,11 @@ public class Delivery {
         this.tier = tier;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
