@@ -48,7 +48,7 @@ public class EditorDao extends AbstractDAO {
                 "type, symbol, alias,  substrate_target, protein_sequence, editor_description, annotated_map,tier ) " +
                 "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        long editorId = this.getNextKeyFromSequence("editor_seq");
+        long editorId = this.getNextKeyFromSequenceLong("editor_seq");
 
 
         update(sql, editorId,editor.getSubType(),editor.getSpecies(),editor.getPamPreference(),

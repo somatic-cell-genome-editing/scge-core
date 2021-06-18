@@ -23,7 +23,7 @@ public class DeliveryDao extends AbstractDAO {
                 "ds_description, ds_lab_id, ds_annotated_map, ds_rrid, " +
                 "ds_np_size, ds_mol_targeting_agent,tier ) values (?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        long deliveryId = this.getNextKeyFromSequence("delivery_seq");
+        long deliveryId = this.getNextKeyFromSequenceLong("delivery_seq");
 
 
         update(sql, deliveryId,delivery.getType(),delivery.getSubtype(),delivery.getName(),

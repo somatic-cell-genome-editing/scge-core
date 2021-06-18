@@ -87,7 +87,7 @@ public class ExperimentRecordDao extends AbstractDAO {
                 "editor_id,ds_id,model_id,sample_prep,application_method_id,experiment_record_id,age, genotype,sex," +
                 "tissue_id, cell_type  ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        long experimentId = this.getNextKeyFromSequence("experiment_seq");
+        long experimentId = this.getNextKeyFromSequenceLong("experiment_seq");
         
         update(sql, expRecord.getExperimentId(),expRecord.getExperimentName(),expRecord.getStudyId(), expRecord.getEditorId(),
                 expRecord.getDeliverySystemId(),expRecord.getModelId(),expRecord.getSamplePrep(),

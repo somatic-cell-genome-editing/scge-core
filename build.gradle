@@ -6,6 +6,7 @@ apply plugin: 'application'
 mainClassName="edu.mcw.scge.dao.impementation.PersonDao"
 String myAppName="scge-core"
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()

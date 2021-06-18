@@ -36,7 +36,7 @@ public class GuideDao extends AbstractDAO {
                 "vector_id,vector_name,vector_description,vector_type,annotated_map,specificity_ratio ) " +
                 "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        long guideId = this.getNextKeyFromSequence("guide_seq");
+        long guideId = this.getNextKeyFromSequenceLong("guide_seq");
 
 
         update(sql, guideId, guide.getSpecies(), guide.getSource(), guide.getTargetLocus(),guide.getTargetSequence(),

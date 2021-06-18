@@ -3,11 +3,11 @@ package edu.mcw.scge.process;
 import edu.mcw.scge.dao.DataSourceFactory;
 
 
-import javax.xml.bind.DatatypeConverter;
+//import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.net.Socket;
-import java.security.MessageDigest;
+//import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -743,12 +743,13 @@ public class Utils {
      * @param str data string
      * @return MD5 digest (hex-encoded string)
      */
+    /*
     static public String generateMD5(String str) throws Exception {
         MessageDigest md = MessageDigest.getInstance("MD5");
         byte[] md5 = md.digest(str.getBytes());
         return DatatypeConverter.printHexBinary(md5);
     }
-
+    */
     /**
      * given file name, return BufferedReader object;
      * if file name ends with '.gz', assumes that the file is 'gzip'-compressed

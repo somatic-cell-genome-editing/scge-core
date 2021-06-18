@@ -48,7 +48,7 @@ public class ExperimentResultDao extends AbstractDAO {
                 " assay_description, experiment_record_id, result_type,edit_type  )" +
                 " values (?,?,?,?,?,?,?)";
 
-        long resultId = this.getNextKeyFromSequence("result_seq");
+        long resultId = this.getNextKeyFromSequenceLong("result_seq");
         
         update(sql, resultId,
                 expResult.getNumberOfSamples(),expResult.getUnits(),expResult.getAssayDescription(),
