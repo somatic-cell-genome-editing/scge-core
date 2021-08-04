@@ -36,16 +36,21 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
 
         }
         e.setModelId(rs.getLong("model_id"));
+        e.setModelName(rs.getString("modelName"));
         e.setEditorId(rs.getLong("editor_id"));
         e.setEditorSymbol(rs.getString("symbol"));
         try {
-            e.setDeliverySystemType(rs.getString("ds_name"));
-        }catch (Exception e2) {
+            e.setDeliverySystemName(rs.getString("ds_name"));
             e.setDeliverySystemType(rs.getString("ds_type"));
+        }catch (Exception e2) {
         }
         try{
           //  e.setVector(rs.getString("vector"));
             e.setApplicationMethodId(rs.getInt("application_method_id"));
+            e.setDosage(rs.getString("dosage"));
+            if(rs.getString("injection_frequency")!=null)
+            e.setInjectionFrequency(rs.getString("injection_frequency"));
+
         }catch (Exception e1){
 
         }
@@ -56,6 +61,11 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
      //   e.setGuide(rs.getString("guide"));
         e.setExperimentRecordId(rs.getLong("experiment_record_id"));
      //   e.setVectorId(rs.getInt("vector_id"));
+        if(rs.getInt("application_method_id")!=0)
+        e.setApplicationMethodId(rs.getInt("application_method_id"));
+       try {
+           e.setDosage(rs.getString("dosage"));
+       }catch (Exception e1){}
         return e;
 
 

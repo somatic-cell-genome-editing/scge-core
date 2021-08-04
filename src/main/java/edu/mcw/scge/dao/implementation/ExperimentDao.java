@@ -61,7 +61,12 @@ public class ExperimentDao extends AbstractDAO {
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
     }
-
+    public List<String> getExperimentRecordGuideTargetLocusList(long experimentId) throws Exception {
+        String sql="select distinct g.target_locus from guide g, experiment e, experiment_record er, guide_associations ga " +
+                "     where e.experiment_id=? and e.experiment_id=er.experiment_id and ga.guide_id=g.guide_id and ga.experiment_record_id=er.experiment_record_id order by g.target_locus ";
+        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+        return execute(q, experimentId);
+    }
     public List<String> getExperimentRecordModelList(long experimentId) throws Exception {
         String sql="select distinct m.name from experiment_record ex " +
                 " inner join model m on ex.model_id = m.model_id " +
@@ -83,14 +88,16 @@ public class ExperimentDao extends AbstractDAO {
     }
 
     public List<ExperimentRecord> getExperimentRecords(long experimentId) throws Exception {
-        String sql="select ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, x.type, ot.term, ct.term as cellTerm  from experiment_record ex " +
+        String sql="select ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, x.type, ot.term, ct.term as cellTerm, a.*  from experiment_record ex " +
                 " left outer join experiment x on x.experiment_id=ex.experiment_id " +
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +
+                "left outer join application_method a on ex.application_method_id = a.application_method_id " +
+
                 "left outer join model m on ex.model_id = m.model_id " +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
-                "where ex.experiment_id=?";
+                "where ex.experiment_id=? order by ex.name";
 
         ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
@@ -219,7 +226,7 @@ public class ExperimentDao extends AbstractDAO {
     public List<Experiment> getAllExperiments() throws Exception{
         String sql="select * from experiment" ;
         ExperimentQuery q=new ExperimentQuery(this.getDataSource(), sql);
-        return q.execute();
+        return execute(q);
     }
 	
 	public void insertExperiment(Experiment experiment) throws Exception{

@@ -41,7 +41,7 @@ public class ExperimentRecordDao extends AbstractDAO {
     */
 
     public List<ExperimentRecord> getExperimentRecordsByStudyId(int studyId) throws Exception {
-        String sql="select s.study, r.*, e.symbol, d.ds_type, m.name as modelName, x.type from study s join experiment x on (s.study_id=x.study_id) \n" +
+        String sql="select s.study, r.*, app.*, e.symbol, d.ds_type, m.name as modelName, x.type from study s join experiment x on (s.study_id=x.study_id) \n" +
                 "inner join experiment_record r on (r.experiment_id=x.experiment_id) \n" +
                 "left outer join editor e on (e.editor_id= r.editor_id) \n" +
                 "left outer join delivery_system d on (d.ds_id= r.ds_id) \n" +

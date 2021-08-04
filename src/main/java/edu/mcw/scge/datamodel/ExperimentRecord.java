@@ -24,6 +24,7 @@ public class ExperimentRecord {
     private int applicationMethodId;
     private String editorSymbol;
     private String deliverySystemType;
+    private String deliverySystemName;
    // private String guide;
     private String modelName;
     private String studyName;
@@ -36,7 +37,32 @@ public class ExperimentRecord {
     private String organSystemID;
     private String cellTypeTerm;
   //  private String vector;
+    private String dosage;
+    private String injectionFrequency;
 
+    public String getInjectionFrequency() {
+        return injectionFrequency;
+    }
+
+    public void setInjectionFrequency(String injectionFrequency) {
+        this.injectionFrequency = injectionFrequency;
+    }
+
+    public String getDeliverySystemName() {
+        return deliverySystemName;
+    }
+
+    public void setDeliverySystemName(String deliverySystemName) {
+        this.deliverySystemName = deliverySystemName;
+    }
+
+    public String getDosage() {
+        return dosage;
+    }
+
+    public void setDosage(String dosage) {
+        this.dosage = dosage;
+    }
 
     public String getCellTypeTerm() {
         return cellTypeTerm;
