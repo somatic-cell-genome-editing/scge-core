@@ -66,6 +66,9 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
        try {
            e.setDosage(rs.getString("dosage"));
        }catch (Exception e1){}
+        try {
+            e.setSex(rs.getString("sex"));
+        }catch (Exception e1){}
         return e;
 
 
