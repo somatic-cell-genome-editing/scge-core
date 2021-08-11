@@ -75,4 +75,11 @@ public class GuideDao extends AbstractDAO {
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
         return execute(q, expRecId);
     }
+    public List<Guide> getAllGuidesByRange(int start , int stop) throws Exception {
+        String sql="select * from guide where CAST (start AS int8) >= ? and start <> ''\n" +
+                "and CAST (start AS int8) < ? and CAST (stop AS int8) > ? and start <> ''\n" +
+                "and CAST (start AS int8) <= ? ";
+        GuideQuery q= new GuideQuery(this.getDataSource(), sql);
+        return execute(q, start,stop,start, stop);
+    }
 }

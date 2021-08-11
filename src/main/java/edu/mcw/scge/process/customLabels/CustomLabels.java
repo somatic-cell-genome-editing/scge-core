@@ -507,7 +507,7 @@ public class CustomLabels {
         System.out.println("label:"+label);
         return label;
     }
-    public StringBuilder getLabel(ExperimentRecord record,String initiative, Map<String, Integer> objectMapSize, List<String> uniqueFields) throws Exception {
+    public String getLabel(ExperimentRecord record,String initiative, Map<String, Integer> objectMapSize, List<String> uniqueFields, String tissue,int tissueSize) throws Exception {
         StringBuilder label=new StringBuilder();
         switch (initiative.toLowerCase()){
             case "rodent testing center":
@@ -731,6 +731,16 @@ public class CustomLabels {
 
         }
         System.out.println("label:"+label);
-        return label;
+
+        if(tissue!=null && !tissue.equals("") || tissueSize>0) {
+            String labelTrimmed=new String();
+            if(record.getCellType()!=null && record.getTissueTerm()!=null)
+                labelTrimmed= label.toString().replace(record.getTissueTerm(), "").replace(record.getCellType(),"");
+            else if(record.getTissueTerm()!=null)
+                labelTrimmed= label.toString().replace(record.getTissueTerm(), "");
+            else labelTrimmed= label.toString();
+           return labelTrimmed;
+        }
+        return label.toString();
     }
 }
