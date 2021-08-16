@@ -1,11 +1,11 @@
 package edu.mcw.scge.process.customLabels;
 
+import edu.mcw.scge.dao.implementation.EditorDao;
 import edu.mcw.scge.dao.implementation.ExperimentResultDao;
 import edu.mcw.scge.dao.implementation.GuideDao;
 import edu.mcw.scge.dao.implementation.VectorDao;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 import edu.mcw.scge.datamodel.Guide;
-import edu.mcw.scge.datamodel.Vector;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,8 +27,8 @@ public class CustomUniqueLabels {
                 break;
             }
         }
-        if(flag)
-            return uniqueFields;
+        if(flag){
+            return uniqueFields;}
         else{
 
             for (String s : objectSizeMap.keySet()) {
@@ -68,6 +68,7 @@ public class CustomUniqueLabels {
                     }
                 }
                 if(uniqueLabels.size()==records.size()){
+                    System.out.println("UNIQUE LABELS SIZE:"+uniqueLabels.size() +"\tRECORDS:"+ records.size());
                     uniqueFields.add(s);
                     return uniqueFields;
                 }
@@ -357,6 +358,17 @@ public class CustomUniqueLabels {
             }
             return null;
         }).filter(Objects::nonNull).flatMap(Set::stream).collect(Collectors.toSet());
+        Set<String> resultTypes=records.stream().map(x -> {
+            try {
+                return experimentResultDao.getResultsByExperimentRecId(x.getExperimentRecordId()).stream()
+                        .map(r -> r.getResultType())
+                        .collect(Collectors.toSet())
+                        ;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return null;
+        }).filter(Objects::nonNull).flatMap(Set::stream).collect(Collectors.toSet());
         if(editors.size()>0){
             objectSizeMap.put("editor", editors.size());
         }
@@ -390,6 +402,9 @@ public class CustomUniqueLabels {
        /* if(samples.size()>0){
             objectSizeMap.put("samples", samples.size());
         }*/
+     /*  if(resultTypes.size()>0){
+           objectSizeMap.put("resultType", resultTypes.size());
+       }*/
         if(sex.size()>0){
             objectSizeMap.put("sex", sex.size());
         }
@@ -509,231 +524,159 @@ public class CustomUniqueLabels {
         System.out.println("label:"+label);
         return label;
     }
-    public StringBuilder getLabel(ExperimentRecord record,String initiative, Map<String, Integer> objectMapSize, List<String> uniqueFields) throws Exception {
+    public StringBuilder getLabel(ExperimentRecord record,String initiative, Map<String, Integer> objectMapSize, List<String> uniqueFields, long resultId) throws Exception {
         StringBuilder label=new StringBuilder();
         switch (initiative.toLowerCase()){
             case "rodent testing center":
             case "delivery vehicle initiative":
                 System.out.println("CASE: "+ initiative);
                 if(uniqueFields.contains("delivery")) {
-                    label.append(record.getDeliverySystemName() + " ");
+                    appendDelivery(record, label);
                 }
-                for(String s:uniqueFields) {
-                    if (s.equalsIgnoreCase("editor")){
-                        label.append(record.getEditorSymbol() + " ");
-
-                    }
-                    if (s.equalsIgnoreCase("guide") || s.equalsIgnoreCase("targetLocus")){
-                        for(Guide g: guideDao.getGuidesByExpRecId(record.getExperimentRecordId()))
-                            // labels.add("\"" + record.getExperimentName() + "\"");
-                            label.append(g.getGuide()).append(" ");
-                    }
-                    if (s.equalsIgnoreCase("vector")){
-                        for(edu.mcw.scge.datamodel.Vector v: vectorDao.getVectorsByExpRecId(record.getExperimentRecordId()))
-                            label.append( v.getName() + " ");
-
-                    }
-                    if(s.equalsIgnoreCase("applicationMethod") || s.equalsIgnoreCase("dosage") ){
-
-                        if(record.getInjectionFrequency()!=null) {
-
-                            label.append(record.getInjectionFrequency());
-                            label.append(" ");
-                        }
-                        label.append(record.getDosage());
-                    }
-                    if(s.equalsIgnoreCase("model")){
-                        label.append(record.getModelId());
-
-                    }
-                    if(s.equalsIgnoreCase("tissue")){
-                        label.append( record.getTissueTerm() + " ");
-
-                    }
-                    if(s.equalsIgnoreCase("cellType")){
-                        label.append( record.getCellType() + " ");
-
-                    }
-                    if(s.equalsIgnoreCase("samples")){
-                        label.append( experimentResultDao.getResultsByExperimentRecId(record.getExperimentRecordId()).get(0).getNumberOfSamples() + " Samples ");
-
-                    }
-                    if(s.equalsIgnoreCase("sex")){
-                        if(record.getSex()!=null && record.getSex().equalsIgnoreCase("F"))
-                            label.append(  "Female ");
-                        if(record.getSex()!=null && record.getSex().equalsIgnoreCase("M"))
-                            label.append(  "Male ");
+                for(String field:uniqueFields) {
+                   if(!field.equalsIgnoreCase("delivery")){
+                       appendLabel(record, label, field);
                     }
                 }
 
                 break;
             case "new editors initiative":
                 System.out.println("CASE: "+ initiative);
-
                 if(uniqueFields.contains("editor")) {
-                    label.append(record.getEditorSymbol() + " ");
+                   appendEditor(record, label);
                 }
-                for (String s : uniqueFields) {
-                    if (s.equalsIgnoreCase("delivery")) {
-                        label.append(record.getDeliverySystemType() + " ");
-                    }
-                    if (s.equalsIgnoreCase("guide") || s.equalsIgnoreCase("targetLocus")) {
-                        for (Guide g : guideDao.getGuidesByExpRecId(record.getExperimentRecordId())) {
-                            // labels.add("\"" + record.getExperimentName() + "\"");
-                            label.append(g.getGuide()).append(" ");
+                for (String field : uniqueFields) {
+                  if(!field.equalsIgnoreCase("editor")){
+                      appendLabel(record, label, field);
 
-                        }
-                    }
-                    if (s.equalsIgnoreCase("vector")) {
-                        for (edu.mcw.scge.datamodel.Vector v : vectorDao.getVectorsByExpRecId(record.getExperimentRecordId())) {
-
-                            label.append(v.getName() + " ");
-                        }
-
-                    }
-                    if(s.equalsIgnoreCase("applicationMethod") || s.equalsIgnoreCase("dosage") ){
-
-                        if(record.getInjectionFrequency()!=null) {
-
-                            label.append(record.getInjectionFrequency());
-                            label.append(" ");
-                        }
-                        label.append(record.getDosage());
-                    }
-                    if(s.equalsIgnoreCase("model")){
-                        label.append(record.getModelId());
-
-                    }
-                    if(s.equalsIgnoreCase("tissue")){
-                        label.append( record.getTissueTerm() + " ");
-
-                    }
-                    if(s.equalsIgnoreCase("cellType")){
-                        label.append( record.getCellType() + " ");
-
-                    }
-                    if(s.equalsIgnoreCase("samples")){
-                        label.append( experimentResultDao.getResultsByExperimentRecId(record.getExperimentId()).get(0).getNumberOfSamples() + " Samples ");
-
-                    }
-                    if(s.equalsIgnoreCase("sex")){
-                        if(record.getSex()!=null && record.getSex().equalsIgnoreCase("F"))
-                            label.append(  "Female ");
-                        if(record.getSex()!=null && record.getSex().equalsIgnoreCase("M"))
-                            label.append(  "Male ");
-                    }
+                  }
                 }
 
                 break;
             default:
                 System.out.println("CASE: DEFAULT:"+ initiative);
+                for (String field : uniqueFields) {
+                    appendLabel(record, label, field);
 
-                for (String s : uniqueFields) {
-                    if (s.equalsIgnoreCase("delivery")) {
-                        label.append(record.getDeliverySystemType() + " ");
-                    }
-                    if (s.equalsIgnoreCase("editor")) {
-                        label.append(record.getEditorSymbol() + " ");
-                    }
-                    if (s.equalsIgnoreCase("guide") || s.equalsIgnoreCase("targetLocus")) {
-                        for (Guide g : guideDao.getGuidesByExpRecId(record.getExperimentRecordId()))
-                            // labels.add("\"" + record.getExperimentName() + "\"");
-                            label.append(g.getGuide()).append(" ");
-                    }
-                    if (s.equalsIgnoreCase("vector")) {
-                        for (edu.mcw.scge.datamodel.Vector v : vectorDao.getVectorsByExpRecId(record.getExperimentRecordId()))
-                            label.append(v.getName() + " ");
-
-                    }
-                    if(s.equalsIgnoreCase("applicationMethod") || s.equalsIgnoreCase("dosage")){
-
-                        if(record.getInjectionFrequency()!=null) {
-
-                            label.append(record.getInjectionFrequency());
-                            label.append(" ");
-                        }
-                        label.append(record.getDosage());
-                    }
-                    if(s.equalsIgnoreCase("model")){
-                        label.append(record.getModelId());
-
-                    }
-                    if(s.equalsIgnoreCase("tissue")){
-                        label.append( record.getTissueTerm() + " ");
-
-                    }
-                    if(s.equalsIgnoreCase("cellType")){
-                        label.append( record.getCellType() + " ");
-
-                    }
-                    if(s.equalsIgnoreCase("samples")){
-                        label.append( experimentResultDao.getResultsByExperimentRecId(record.getExperimentId()).get(0).getNumberOfSamples() + " Samples ");
-
-                    }
-                    if(s.equalsIgnoreCase("sex")){
-                        if(record.getSex()!=null && record.getSex().equalsIgnoreCase("F"))
-                            label.append(  "Female ");
-                        if(record.getSex()!=null && record.getSex().equalsIgnoreCase("M"))
-                            label.append(  "Male ");
-                    }
                 }
         }
         if(label.toString().equals("")){
             System.out.println("LABEL EMPTY: "+ initiative);
+            for (String field : uniqueFields) {
+                appendLabel(record, label, field);
 
-            for (String s : uniqueFields) {
-                if (s.equalsIgnoreCase("delivery")) {
-                    label.append(record.getDeliverySystemType() + " ");
-                }
-                if (s.equalsIgnoreCase("editor")) {
-                    label.append(record.getEditorSymbol() + " ");
-                }
-                if (s.equalsIgnoreCase("guide") || s.equalsIgnoreCase("targetLocus")) {
-                    for (Guide g : guideDao.getGuidesByExpRecId(record.getExperimentRecordId()))
-                        // labels.add("\"" + record.getExperimentName() + "\"");
-                        label.append(g.getGuide()).append(" ");
-                }
-                if (s.equalsIgnoreCase("vector")) {
-                    for (Vector v : vectorDao.getVectorsByExpRecId(record.getExperimentRecordId()))
-                        label.append(v.getName() + " ");
-
-                }
-                if(s.equalsIgnoreCase("applicationMethod") || s.equalsIgnoreCase("dosage")){
-                    if(record.getInjectionFrequency()!=null) {
-
-                        label.append(record.getInjectionFrequency());
-                        label.append(" ");
-                    }
-                    label.append(record.getDosage());
-
-                }
-                if(s.equalsIgnoreCase("model")){
-                    label.append(record.getModelId());
-
-                }
-                if(s.equalsIgnoreCase("tissue")){
-                    label.append( record.getTissueTerm() + " ");
-
-                }
-                if(s.equalsIgnoreCase("cellType")){
-                    label.append( record.getCellType() + " ");
-
-                }
-                if(s.equalsIgnoreCase("sex")){
-                    if(record.getSex()!=null && record.getSex().equalsIgnoreCase("F"))
-                        label.append(  "Female ");
-                    if(record.getSex()!=null && record.getSex().equalsIgnoreCase("M"))
-                        label.append(  "Male ");
-                }
-                if(s.equalsIgnoreCase("samples")){
-                    label.append( experimentResultDao.getResultsByExperimentRecId(record.getExperimentId()).get(0).getNumberOfSamples() + " Samples ");
-
-                }
             }
 
         }
+
         System.out.println("label:"+label);
         return label;
     }
+    public void appendLabel(ExperimentRecord record, StringBuilder label, String field) throws Exception {
+        if (field.equalsIgnoreCase("editor")){
+            appendEditor(record, label);
+        }
+        if (field.equalsIgnoreCase("guide")){
+            appendGuide(record, label);
+        }
+        if( field.equalsIgnoreCase("targetLocus")){
+            appendTargetLocus(record,label);
+        }
+        if(field.equalsIgnoreCase("delivery")) {
+            appendDelivery(record, label);
+        }
+        if (field.equalsIgnoreCase("vector")){
+            appendVector(record,label);
 
-}
+        }
+        if(field.equalsIgnoreCase("applicationMethod") || field.equalsIgnoreCase("dosage") ){
+
+            appendDosage(record, label);
+        }
+        if(field.equalsIgnoreCase("model")){
+
+            appendModel(record, label);
+        }
+        if(field.equalsIgnoreCase("tissue")){
+
+            appendTissue(record, label);
+        }
+        if(field.equalsIgnoreCase("cellType")){
+            appendCellType(record,label);
+        }
+    /*    if(field.equalsIgnoreCase("samples")){
+            appendSamples(record,label);
+        }
+        if(field.equalsIgnoreCase("resultType")){
+            appendResultType(record, label);
+        }*/
+        if(field.equalsIgnoreCase("sex")){
+            appendSex(record,label);
+        }
+    }
+    public void appendEditor(ExperimentRecord record, StringBuilder label) throws Exception {
+        EditorDao editorDao=new EditorDao();
+            String editor= new String();
+            if(record.getEditorId()==0 || editorDao.getEditorById(record.getEditorId())==null ||
+                    editorDao.getEditorById(record.getEditorId()).size()==0 ){
+                editor="No Editor";
+            }else {
+                editor=record.getEditorSymbol();
+            }
+         label.append(editor).append( " ");
+
+    }
+    public void appendDelivery(ExperimentRecord record, StringBuilder label){
+         label.append(record.getDeliverySystemName()).append( " ");
+    }
+    public void appendGuide(ExperimentRecord record, StringBuilder label) throws Exception {
+      label.append( guideDao.getGuidesByExpRecId(record.getExperimentRecordId()).stream()
+                .map(g->g.getGuide()).collect(Collectors.joining(" "))).append(" ");
+
+    }
+    public void appendTargetLocus(ExperimentRecord record, StringBuilder label) throws Exception {
+        label.append( guideDao.getGuidesByExpRecId(record.getExperimentRecordId()).stream()
+                .map(g->g.getTargetLocus()).collect(Collectors.joining(" "))).append(" ");
+
+    }
+    public void appendVector(ExperimentRecord record, StringBuilder label) throws Exception {
+       label.append (vectorDao.getVectorsByExpRecId(record.getExperimentRecordId()).stream()
+               .map(vector->vector.getName()).collect(Collectors.joining(" "))).append(" ");
+
+    }
+    public void  appendModel(ExperimentRecord record, StringBuilder label){
+        label.append( record.getModelName()).append(" ");
+    }
+    public void appendDosage(ExperimentRecord record, StringBuilder label) {
+        if(record.getInjectionFrequency()!=null) {
+            label.append(record.getInjectionFrequency());
+            label.append(" ");
+        }
+        label.append(record.getDosage()).append(" ");
+
+    }
+
+    public void appendTissue(ExperimentRecord record, StringBuilder label){
+      label.append(record.getTissueTerm()).append(" ");
+    }
+    public void appendCellType(ExperimentRecord record, StringBuilder label){
+        label.append( record.getCellType()).append(" ");
+    }
+    public void appendSex(ExperimentRecord record,StringBuilder label){
+        if(record.getSex()!=null && record.getSex().equalsIgnoreCase("F"))
+            label.append(  "Female").append(" ");
+        if(record.getSex()!=null && record.getSex().equalsIgnoreCase("M"))
+            label.append(  "Male").append(" ");
+
+    }
+ /*   public void appendResultType(ExperimentRecord record,StringBuilder label) throws Exception {
+
+        label.append(" (").append(experimentResultDao.getResultsByExperimentRecId(record.getExperimentRecordId()).get(0).getResultType()).append(") ");
+
+    }*/
+    public void appendSamples(ExperimentRecord record,StringBuilder label) throws Exception {
+        label.append(experimentResultDao.getResultsByExperimentRecId(record.getExperimentId()).get(0).getNumberOfSamples()).append(" Samples ");
+
+    }
+    }
+

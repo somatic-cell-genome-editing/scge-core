@@ -27,7 +27,6 @@ public class AccessDao extends AbstractDAO {
         IntListQuery q=new IntListQuery(this.getDataSource(), sql);
         List<Integer> found = execute(q,p.getId(),e.getId());
 
-        System.out.println("running sql " + sql);
 
         if (found.size()>0) {
             return true;
@@ -45,7 +44,6 @@ public class AccessDao extends AbstractDAO {
         IntListQuery q=new IntListQuery(this.getDataSource(), sql);
         List<Integer> found = execute(q,p.getId(),m.getModelId());
 
-        System.out.println("running sql " + sql);
 
         if (found.size()>0) {
             return true;
@@ -63,7 +61,6 @@ public class AccessDao extends AbstractDAO {
         IntListQuery q=new IntListQuery(this.getDataSource(), sql);
         List<Integer> found = execute(q,p.getId(),d.getId());
 
-        System.out.println("running sql " + sql);
 
         if (found.size()>0) {
             return true;
@@ -84,7 +81,6 @@ public class AccessDao extends AbstractDAO {
         IntListQuery q=new IntListQuery(this.getDataSource(), sql);
         List<Integer> found = execute(q,p.getId(),v.getVectorId());
 
-        System.out.println("running sql " + sql);
 
         if (found.size()>0) {
             return true;
@@ -105,7 +101,6 @@ public class AccessDao extends AbstractDAO {
         IntListQuery q=new IntListQuery(this.getDataSource(), sql);
         List<Integer> found = execute(q,p.getId(),g.getGuide_id());
 
-        System.out.println("running sql " + sql);
 
         if (found.size()>0) {
             return true;

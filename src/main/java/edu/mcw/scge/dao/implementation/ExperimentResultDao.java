@@ -63,4 +63,9 @@ public class ExperimentResultDao extends AbstractDAO {
 
         update(sql, expDetail.getResultId(),expDetail.getReplicate(),expDetail.getResult());
     }
+    public List<ExperimentResultDetail> getResultsByResultId(long resultId) throws Exception {
+        String sql="select * from experiment_result where result_id=?";
+        ExperimentResultDetailQuery q=new ExperimentResultDetailQuery(this.getDataSource(), sql);
+        return execute(q, resultId);
+    }
 }

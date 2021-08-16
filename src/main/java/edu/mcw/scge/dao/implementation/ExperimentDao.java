@@ -82,7 +82,6 @@ public class ExperimentDao extends AbstractDAO {
 
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         List<String> returnVal = execute(q, experimentId);
-        System.out.println("size = " + returnVal.size());
 
         return returnVal;
     }

@@ -21,7 +21,6 @@ public class GrantDao extends AbstractDAO {
 
     public Grant getGrantByGroupId(int groupId) throws Exception {
         String sql="select * from scge_grants where group_id=?" ;
-        System.out.println(sql);
         GrantQuery q=new GrantQuery(this.getDataSource(), sql);
         List<Grant> grantList=execute(q, groupId);
         return (grantList!=null && grantList.size()>0)?grantList.get(0):null;

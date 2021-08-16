@@ -61,7 +61,6 @@ public class PersonDao extends AbstractDAO {
     public void update(Person p) throws Exception {
         String sql="update person set name=?, name_lc=?,institution_id=?,email=?,email_lc=?,status=?, other_id=?, modified_date=current_date where person_id=?";
 
-        System.out.println("institution = " + p.getInstitution());
         update(sql, p.getName(), p.getName().toLowerCase(), p.getInstitution(),p.getEmail(), p.getEmail().toLowerCase(),p.getStatus(),p.getOtherId(), p.getId());
     }
 
