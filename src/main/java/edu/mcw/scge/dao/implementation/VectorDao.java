@@ -40,9 +40,9 @@ public class VectorDao extends AbstractDAO {
 
     public long getVectorId(Vector vector) throws Exception {
 
-        String sql = "select * from vector where subtype=? and capsid_variant = ?";
+        String sql = "select * from vector where subtype=? and name = ?";
 
-        List<Vector> list = VectorQuery.execute(this,sql, vector.getSubtype(),vector.getCapsidVariant());
+        List<Vector> list = VectorQuery.execute(this,sql, vector.getSubtype(),vector.getName());
         return list.isEmpty() ? 0 : list.get(0).getVectorId();
     }
     public List<Vector> getVectorsByExpRecId(long expRecId) throws Exception {

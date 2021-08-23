@@ -38,6 +38,17 @@ public class EditorQuery extends MappingSqlQuery {
         e.setAnnotatedMap(rs.getString("annotated_map"));
         e.setEditorDescription(rs.getString("editor_description"));
         e.setTier(rs.getInt("tier"));
+        try {
+            e.setAssembly(rs.getString("assembly"));
+            e.setChr(rs.getString("chromosome"));
+            e.setStart(rs.getString("start"));
+            e.setStop(rs.getString("stop"));
+            e.setStrand(rs.getString("strand"));
+            e.setTargetLocus(rs.getString("target_locus"));
+        } catch(Exception ignored) {
+
+        }
+
         return e;
     }
 

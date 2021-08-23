@@ -12,13 +12,14 @@ import java.util.List;
  */
 public class EditorDao extends AbstractDAO {
     public List<Editor> getAllEditors() throws Exception {
-        String sql="select * from editor";
+        String sql="select * from editor e left outer join genome_info g  on e.editor_id=g.genome_id ";
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
         return (List<Editor>)q.execute();
     }
 
     public List<Editor> getAllEditors(int personId) throws Exception {
         String sql="(select e.* from editor e left outer join experiment_record r on e.editor_id=r.editor_id" +
+                "    left outer join genome_info g  on e.editor_id=g.genome_id" +
                 "    left outer join experiment x on x.experiment_id=r.experiment_id" +
                 "    left outer join study s on s.study_id =x.study_id" +
                 "    left outer join study_associations sa on s.study_id=sa.study_id" +
@@ -37,6 +38,7 @@ public class EditorDao extends AbstractDAO {
     }
 	public List<Editor> getEditorByGuide(long guideId) throws Exception {
         String sql="select distinct(ed.*) from editor ed  inner join experiment_record e on e.editor_id=ed.editor_id\n" +
+                "left outer join genome_info g  on e.editor_id=g.genome_id " +
                 "inner join guide_associations ga on e.experiment_record_id=ga.experiment_record_id and ga.guide_id=?";
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
         return execute(q, guideId);
@@ -60,6 +62,15 @@ public class EditorDao extends AbstractDAO {
         return editorId;
     }
 
+    public void insertGenomeInfo(Editor editor) throws Exception{
+        String sql = "insert into genome_info (genome_id, target_locus, target_sequence, assembly, " +
+                "chromosome, start, stop, strand, species) " +
+                "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        update(sql, editor.getId(),editor.getTargetLocus(),editor.getTarget_sequence(),editor.getAssembly(),
+                editor.getChr(),editor.getStart(),editor.getStop(),editor.getStrand(),editor.getSpecies());
+
+    }
     public long getEditorId(Editor editor) throws Exception {
 
         String sql = "select * from editor where species =? and type=? and subtype=? and symbol = ?";

@@ -21,6 +21,13 @@ public class Editor {
     private String proteinSequence;
     private String editorDescription;
     private String annotatedMap;
+    private String targetLocus;
+    private String assembly;
+    private String chr;
+    private String start;
+    private String stop;
+    private String strand;
+
     private int tier;
 
     public int getTier() {
@@ -165,5 +172,53 @@ public class Editor {
 
     public void setAnnotatedMap(String annotatedMap) {
         this.annotatedMap = annotatedMap;
+    }
+
+    public String getTargetLocus() {
+        return targetLocus;
+    }
+
+    public void setTargetLocus(String targetLocus) {
+        this.targetLocus = targetLocus;
+    }
+
+    public String getAssembly() {
+        return assembly;
+    }
+
+    public void setAssembly(String assembly) {
+        this.assembly = assembly;
+    }
+
+    public String getChr() {
+        return chr;
+    }
+
+    public void setChr(String chr) {
+        this.chr = chr;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public String getStop() {
+        return stop;
+    }
+
+    public void setStop(String stop) {
+        this.stop = stop;
+    }
+
+    public String getStrand() {
+        return strand;
+    }
+
+    public void setStrand(String strand) {
+        this.strand = strand;
     }
 }
