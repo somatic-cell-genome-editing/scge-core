@@ -50,7 +50,7 @@ public class GuideQuery extends MappingSqlQuery<Guide> {
             g.setTargetLocus(rs.getString("target_locus"));
             g.setTargetSequence(rs.getString("target_sequence"));
             g.setAssembly(rs.getString("assembly"));
-            g.setChr(rs.getString("chr"));
+            g.setChr(rs.getString("chromosome"));
             g.setStart(rs.getString("start"));
             g.setStop(rs.getString("stop"));
             g.setStrand(rs.getString("strand"));
