@@ -313,7 +313,7 @@ public class CustomUniqueLabels {
     public Map<String, Integer> getObjectSizeMap(List<ExperimentRecord> records){
         Map<String, Integer> objectSizeMap=new HashMap<>();
         Set<String> names=records.stream().map(r->r.getExperimentName())
-                .filter(name-> !name.contains("condition")).collect(Collectors.toSet());
+                .filter(name-> !name.contains("Condition")).collect(Collectors.toSet());
         System.out.println("NAMES:"+ names.toString());
         Set<Long> editors=records.stream().map(r->r.getEditorId()).collect(Collectors.toSet());
         Set<Long> deliveries=records.stream().map(d->d.getDeliverySystemId()).collect(Collectors.toSet());
