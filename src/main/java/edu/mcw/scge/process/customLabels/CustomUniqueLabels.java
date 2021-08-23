@@ -16,6 +16,7 @@ public class CustomUniqueLabels {
     ExperimentResultDao experimentResultDao = new ExperimentResultDao();
 
     public List<String> getLabelFields(List<ExperimentRecord> records, Map<String, Integer> objectSizeMap, String initiative) throws Exception {
+       System.out.println("OBJECT MAP SIZE KEY SET:"+ objectSizeMap.keySet().toString());
         List<String> uniqueFields=new ArrayList<>();
         boolean flag=false;
         for(Map.Entry e:objectSizeMap.entrySet()){
@@ -63,6 +64,10 @@ public class CustomUniqueLabels {
                         }
                         if(s.equalsIgnoreCase("tissue")){
                             uniqueLabels.add( record.getTissueTerm() + " ");
+
+                        }
+                        if(s.equalsIgnoreCase("name")){
+                            uniqueLabels.add( record.getExperimentName() + " ");
 
                         }
                     }
@@ -307,6 +312,9 @@ public class CustomUniqueLabels {
     }
     public Map<String, Integer> getObjectSizeMap(List<ExperimentRecord> records){
         Map<String, Integer> objectSizeMap=new HashMap<>();
+        Set<String> names=records.stream().map(r->r.getExperimentName())
+                .filter(name-> !name.contains("condition")).collect(Collectors.toSet());
+        System.out.println("NAMES:"+ names.toString());
         Set<Long> editors=records.stream().map(r->r.getEditorId()).collect(Collectors.toSet());
         Set<Long> deliveries=records.stream().map(d->d.getDeliverySystemId()).collect(Collectors.toSet());
         Set<Long> models=records.stream().map(d->d.getModelId()).collect(Collectors.toSet());
@@ -407,6 +415,9 @@ public class CustomUniqueLabels {
        }*/
         if(sex.size()>0){
             objectSizeMap.put("sex", sex.size());
+        }
+        if(names.size()>0){
+            objectSizeMap.put("name", names.size());
         }
         return objectSizeMap;
     }
@@ -613,6 +624,9 @@ public class CustomUniqueLabels {
         if(field.equalsIgnoreCase("sex")){
             appendSex(record,label);
         }
+        if(field.equalsIgnoreCase("name")){
+            appendName(record,label);
+        }
     }
     public void appendEditor(ExperimentRecord record, StringBuilder label) throws Exception {
         EditorDao editorDao=new EditorDao();
@@ -668,6 +682,9 @@ public class CustomUniqueLabels {
         if(record.getSex()!=null && record.getSex().equalsIgnoreCase("M"))
             label.append(  "Male").append(" ");
 
+    }
+    public void appendName(ExperimentRecord record, StringBuilder label){
+        label.append( record.getExperimentName()).append(" ");
     }
  /*   public void appendResultType(ExperimentRecord record,StringBuilder label) throws Exception {
 

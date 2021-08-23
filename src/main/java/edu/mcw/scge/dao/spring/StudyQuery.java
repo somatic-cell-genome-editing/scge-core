@@ -19,6 +19,8 @@ public class StudyQuery extends MappingSqlQuery {
         s.setStudy(rs.getString("study"));
         s.setTier(rs.getInt("tier"));
         s.setSubmissionDate(rs.getDate("submission_date"));
+        s.setLastModifiedDate(rs.getDate("last_modified_date"));
+
         s.setSubmitterId(rs.getInt("submitter_id"));
         s.setRawData(rs.getString("raw_data"));
         s.setReference(rs.getString("reference"));

@@ -11,6 +11,7 @@ public class Study {
     private String labName;
     private int tier;
     private Date submissionDate;
+    private Date lastModifiedDate;
     private int submitterId;
     private String submitter;
     private int piId;
@@ -19,6 +20,14 @@ public class Study {
     private String reference;
     private List<Integer> associatedGroups;
     private int groupId;
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
 
     public int getStudyId() {
         return studyId;
