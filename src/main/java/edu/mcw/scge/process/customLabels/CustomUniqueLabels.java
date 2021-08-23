@@ -70,6 +70,10 @@ public class CustomUniqueLabels {
                             uniqueLabels.add( record.getExperimentName() + " ");
 
                         }
+                        if(s.equalsIgnoreCase("sex")){
+                            uniqueLabels.add( record.getSex() + " ");
+
+                        }
                     }
                 }
                 if(uniqueLabels.size()==records.size()){
@@ -308,6 +312,43 @@ public class CustomUniqueLabels {
                 uniqueFields.add((String) field.getKey());
             }
         }
+        Set<String> uniqueLabels=new HashSet<>();
+            for (ExperimentRecord record : records) {
+                StringBuilder label=new StringBuilder();
+                for(String s:uniqueFields){
+                    if(s.equalsIgnoreCase("delivery"))
+                       appendDelivery(record, label);
+                    if(s.equalsIgnoreCase("editor"))
+                       appendEditor(record, label);
+                    if(s.equalsIgnoreCase("vector")) {
+                       appendVector(record, label);
+                    }
+                    if(s.equalsIgnoreCase("guide")) {
+                       appendGuide(record, label);
+                    }
+                    if(s.equalsIgnoreCase("applicationMethod") ){
+                        appendDosage(record, label);
+                    }
+                    if(s.equalsIgnoreCase("model")){
+                    appendModel(record, label);
+                    }
+                    if(s.equalsIgnoreCase("tissue")){
+                        appendTissue(record, label);
+
+                    }
+                    if(s.equalsIgnoreCase("sex")){
+                        appendSex(record, label);
+
+                    }
+            }
+               uniqueLabels.add(label.toString());
+        }
+            if(uniqueLabels.size()==records.size()){
+                return uniqueFields;
+            }else{
+                uniqueFields=new ArrayList<>(Arrays.asList("name"));
+            }
+
         return uniqueFields;
     }
     public Map<String, Integer> getObjectSizeMap(List<ExperimentRecord> records){
