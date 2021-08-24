@@ -62,8 +62,9 @@ public class ExperimentDao extends AbstractDAO {
         return execute(q, experimentId);
     }
     public List<String> getExperimentRecordGuideTargetLocusList(long experimentId) throws Exception {
-        String sql="select distinct g.target_locus from guide g, experiment e, experiment_record er, guide_associations ga " +
-                "     where e.experiment_id=? and e.experiment_id=er.experiment_id and ga.guide_id=g.guide_id and ga.experiment_record_id=er.experiment_record_id order by g.target_locus ";
+        String sql="select distinct gi.target_locus from guide g, experiment e, experiment_record er, guide_associations ga,genome_info gi " +
+                "     where g.guide_id = gi.genome_id and e.experiment_id=? and e.experiment_id=er.experiment_id and ga.guide_id=g.guide_id " +
+                "and ga.experiment_record_id=er.experiment_record_id order by gi.target_locus ";
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
     }
@@ -82,6 +83,7 @@ public class ExperimentDao extends AbstractDAO {
 
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         List<String> returnVal = execute(q, experimentId);
+        System.out.println("size = " + returnVal.size());
 
         return returnVal;
     }
