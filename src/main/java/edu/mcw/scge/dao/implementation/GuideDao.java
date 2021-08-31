@@ -8,18 +8,19 @@ import java.util.List;
 
 public class GuideDao extends AbstractDAO {
     public List<Guide> getGuideById(long guideId) throws Exception {
-        String sql="select * from guide where guide_id=?";
+        String sql="select * from guide g left outer join genome_info gi on g.guide_id=gi.genome_id where g.guide_id=?";
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
         return execute(q, guideId);
     }
 
 	public List<Guide> getGuides() throws Exception {
-        String sql="select * from guide";
+        String sql="select * from guide g left outer join genome_info gi on g.guide_id=gi.genome_id";
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
         return execute(q);
     }
     public List<Guide> getGuidesByEditor(long editorId) throws Exception {
-        String sql="select distinct(g.*) from guide g inner join guide_associations ga on ga.guide_id=g.guide_id\n" +
+        String sql="select distinct(g.*) from guide g left outer join genome_info gi on g.guide_id=gi.genome_id\n" +
+                "inner join guide_associations ga on ga.guide_id=g.guide_id\n" +
                 "inner join experiment_record e on e.experiment_record_id=ga.experiment_record_id and e.editor_id=?";
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
         return execute(q,editorId);
@@ -36,7 +37,7 @@ public class GuideDao extends AbstractDAO {
                 "vector_id,vector_name,vector_description,vector_type,annotated_map,specificity_ratio ) " +
                 "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        long guideId = this.getNextKeyFromSequence("guide_seq");
+        long guideId = this.getNextKeyFromSequenceLong("guide_seq");
 
 
         update(sql, guideId, guide.getSpecies(), guide.getSource(), guide.getTargetLocus(),guide.getTargetSequence(),
@@ -59,10 +60,10 @@ public class GuideDao extends AbstractDAO {
 
     public long getGuideId(Guide guide) throws Exception {
 
-        String sql = "select * from guide where species =? and target_locus=? and target_sequence=? and pam=? and spacer_sequence=? and spacer_length=?";
+        String sql = "select * from guide where species =? and target_locus=? and target_sequence=? and pam=? and modifications = ?";
 
         List<Guide> list = GuideQuery.execute(this,sql,guide.getSpecies(),  guide.getTargetLocus(),guide.getTargetSequence(),
-                guide.getPam(),guide.getSpacerSequence(),guide.getSpacerLength() );
+                guide.getPam(), guide.getModifications());
         return list.isEmpty() ? 0 : list.get(0).getGuide_id();
     }
     public void updateGuideTier(int tier, long guideId) throws Exception{
@@ -71,8 +72,16 @@ public class GuideDao extends AbstractDAO {
     }
 
     public List<Guide> getGuidesByExpRecId(long expRecId) throws Exception {
-        String sql="select distinct g.* from guide g inner join guide_associations ga on g.guide_id = ga.guide_id where ga.experiment_record_id=?";
+        String sql="select distinct g.*, gi.* from guide g left outer join genome_info gi on g.guide_id=gi.genome_id" +
+                " inner join guide_associations ga on g.guide_id = ga.guide_id where ga.experiment_record_id=?";
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
         return execute(q, expRecId);
+    }
+    public List<Guide> getAllGuidesByRange(int start , int stop) throws Exception {
+        String sql="select * from guide g left outer join genome_info gi on g.guide_id=gi.genome_id where CAST (gi.start AS int8) >= ? and gi.start <> ''\n" +
+                "and CAST (gi.start AS int8) < ? and CAST (gi.stop AS int8) > ? and gi.start <> ''\n" +
+                "and CAST (gi.start AS int8) <= ? ";
+        GuideQuery q= new GuideQuery(this.getDataSource(), sql);
+        return execute(q, start,stop,start, stop);
     }
 }

@@ -7,7 +7,6 @@ import java.util.List;
 
 public class TermMapper {
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello world");
         OntologyXDAO dao=new OntologyXDAO();
         String system="Reproductive System";
         String parent_term="Ovary";

@@ -54,7 +54,6 @@ public class TierUpdateDao extends AbstractDAO {
                         return updates.size();
                     }
                 });
-        System.out.println("Records updated!" +updateCounts.length);
     }
     public void delete(int studyId) throws Exception {
         String sql="delete from study_tier_updates where study_id=?";

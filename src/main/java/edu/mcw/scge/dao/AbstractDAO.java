@@ -1,5 +1,6 @@
 package edu.mcw.scge.dao;
 
+import edu.mcw.scge.dao.spring.CountLongQuery;
 import edu.mcw.scge.dao.spring.CountQuery;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.object.BatchSqlUpdate;
@@ -72,18 +73,44 @@ public class AbstractDAO implements DAO {
         // execute the statement
         return q.execute(params);
     }
+
     public int getNextKey(String seqName) throws Exception {
         return this.getNextKeyFromSequence(seqName);
     }
+
     public int getNextKeyFromSequence(String seqName) throws Exception {
         String query = "SELECT nextval('"+seqName+"')";
         return this.getCount(query, new Object[0]);
     }
+
+    public long getNextKeyLong(String seqName) throws Exception {
+        return this.getNextKeyFromSequenceLong(seqName);
+    }
+
+    public long getNextKeyFromSequenceLong(String seqName) throws Exception {
+        String query = "SELECT nextval('"+seqName+"')";
+        return this.getLongCount(query, new Object[0]);
+    }
+
     public int getCount(String sqlQuery, Object... params) throws Exception {
         CountQuery q = new CountQuery(this.getDataSource(), sqlQuery);
         List results = this.execute(q, params);
         return ((Integer)results.get(0)).intValue();
     }
+
+    /**
+     * execute sql query and return a single long integer
+     * f.e. as in a query SELECT COUNT(LENGTH(gene_symbol)) FROM GENES
+     * @param sqlQuery sql query returning a single row: a long integer
+     * @return long integer value, result of the query
+     * @throws Exception
+     */
+    public long getLongCount(String sqlQuery, Object... params) throws Exception {
+        CountLongQuery q = new CountLongQuery(this.getDataSource(), sqlQuery);
+        List<Long> results = execute(q, params);
+        return results.get(0);
+    }
+
     public int executeBatch(BatchSqlUpdate bsu) {
         bsu.flush();
 

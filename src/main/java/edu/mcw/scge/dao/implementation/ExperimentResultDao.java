@@ -48,7 +48,7 @@ public class ExperimentResultDao extends AbstractDAO {
                 " assay_description, experiment_record_id, result_type,edit_type  )" +
                 " values (?,?,?,?,?,?,?)";
 
-        long resultId = this.getNextKeyFromSequence("result_seq");
+        long resultId = this.getNextKeyFromSequenceLong("result_seq");
         
         update(sql, resultId,
                 expResult.getNumberOfSamples(),expResult.getUnits(),expResult.getAssayDescription(),
@@ -62,5 +62,10 @@ public class ExperimentResultDao extends AbstractDAO {
         String sql = "insert into experiment_result_detail (result_id,replicate,result) values (?,?,?)";
 
         update(sql, expDetail.getResultId(),expDetail.getReplicate(),expDetail.getResult());
+    }
+    public List<ExperimentResultDetail> getResultsByResultId(long resultId) throws Exception {
+        String sql="select * from experiment_result where result_id=?";
+        ExperimentResultDetailQuery q=new ExperimentResultDetailQuery(this.getDataSource(), sql);
+        return execute(q, resultId);
     }
 }

@@ -25,14 +25,7 @@ public class GuideQuery extends MappingSqlQuery<Guide> {
         g.setSource(rs.getString("source"));
         g.setSpecies(rs.getString("species"));
         g.setGrnaLabId(rs.getString("grna_lab_id"));
-        g.setTargetLocus(rs.getString("target_locus"));
-        g.setTargetSequence(rs.getString("target_sequence"));
         g.setPam(rs.getString("pam"));
-        g.setAssembly(rs.getString("assembly"));
-        g.setChr(rs.getString("chr"));
-        g.setStart(rs.getString("start"));
-        g.setStop(rs.getString("stop"));
-        g.setStrand(rs.getString("strand"));
         g.setSpacerSequence(rs.getString("spacer_sequence"));
         g.setSpacerLength(rs.getString("spacer_length"));
         g.setForwardPrimer(rs.getString("forward_primer"));
@@ -53,7 +46,17 @@ public class GuideQuery extends MappingSqlQuery<Guide> {
         g.setVectorType(rs.getString("vector_type"));
         g.setAnnotatedMap(rs.getString("annotated_map"));
         g.setSpecificityRatio(rs.getString("specificity_ratio"));
+        try {
+            g.setTargetLocus(rs.getString("target_locus"));
+            g.setTargetSequence(rs.getString("target_sequence"));
+            g.setAssembly(rs.getString("assembly"));
+            g.setChr(rs.getString("chromosome"));
+            g.setStart(rs.getString("start"));
+            g.setStop(rs.getString("stop"));
+            g.setStrand(rs.getString("strand"));
+        } catch(Exception ignored) {
 
+        }
         return g;
     }
 

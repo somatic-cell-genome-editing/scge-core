@@ -32,8 +32,7 @@ public class ModelDao extends AbstractDAO {
                 "transgene_description, transgene_reporter,model_description,parental_origin,strain_code,strain_alias,tier )" +
                 "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        long modelId = this.getNextKeyFromSequence("model_seq");
-
+        long modelId = this.getNextKeyFromSequenceLong("model_seq");
 
         update(sql, modelId, model.getType(), model.getName(), model.getOrganism(),model.getSex(), model.getRrid(),
                 model.getSource(),model.getTransgene(),model.getSubtype(),model.getAnnotatedMap(),
