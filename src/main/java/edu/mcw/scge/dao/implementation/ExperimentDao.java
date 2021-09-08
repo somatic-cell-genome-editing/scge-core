@@ -160,6 +160,22 @@ public class ExperimentDao extends AbstractDAO {
         ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
         return execute(q, editorId);
     }
+    public List<ExperimentRecord> getExperimentsByEditorNExperiment(long editorId, long experimentId) throws Exception {
+        String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
+                " left outer join experiment x on x.experiment_id=ex.experiment_id " +
+                "left outer join editor e on ex.editor_id = e.editor_id " +
+                "left outer join delivery_system d on ex.ds_id = d.ds_id " +
+                "left outer join model m on ex.model_id = m.model_id " +
+                "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
+                "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
+                // "left outer join guide g on ex.guide_id = g.guide_id " +
+                "left outer join study s on ex.study_id = s.study_id " +
+                // "left outer join vector v on ex.vector_id = v.vector_id " +
+                "where ex.editor_id=?" +
+                " and ex.experiment_id=? ";
+        ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
+        return execute(q, editorId, experimentId);
+    }
 
     public List<ExperimentRecord> getExperimentsByModel(long modelId) throws Exception {
         String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
