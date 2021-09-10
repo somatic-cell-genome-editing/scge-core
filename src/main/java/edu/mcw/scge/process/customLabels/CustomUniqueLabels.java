@@ -16,7 +16,6 @@ public class CustomUniqueLabels {
     ExperimentResultDao experimentResultDao = new ExperimentResultDao();
 
     public List<String> getLabelFields(List<ExperimentRecord> records, Map<String, Integer> objectSizeMap, String initiative) throws Exception {
-       System.out.println("OBJECT MAP SIZE KEY SET:"+ objectSizeMap.keySet().toString());
         List<String> uniqueFields=new ArrayList<>();
         boolean flag=false;
         for(Map.Entry e:objectSizeMap.entrySet()){
@@ -77,7 +76,6 @@ public class CustomUniqueLabels {
                     }
                 }
                 if(uniqueLabels.size()==records.size()){
-                    System.out.println("UNIQUE LABELS SIZE:"+uniqueLabels.size() +"\tRECORDS:"+ records.size());
                     uniqueFields.add(s);
                     return uniqueFields;
                 }
@@ -355,7 +353,6 @@ public class CustomUniqueLabels {
         Map<String, Integer> objectSizeMap=new HashMap<>();
         Set<String> names=records.stream().map(r->r.getExperimentName())
                 .filter(name-> !name.contains("Condition")).collect(Collectors.toSet());
-        System.out.println("NAMES:"+ names.toString());
         Set<Long> editors=records.stream().map(r->r.getEditorId()).collect(Collectors.toSet());
         Set<Long> deliveries=records.stream().map(d->d.getDeliverySystemId()).collect(Collectors.toSet());
         Set<Long> models=records.stream().map(d->d.getModelId()).collect(Collectors.toSet());
@@ -464,7 +461,6 @@ public class CustomUniqueLabels {
     }
     public StringBuilder getLabel(ExperimentRecord record,String initiative, Map<String, Integer> objectMapSize) throws Exception {
         StringBuilder label=new StringBuilder();
-        System.out.println("INITIATIVE:"+ initiative);
         switch (initiative.toLowerCase()){
             case "delivery vehicle initiative":
                 if(objectMapSize.get("delivery")!=null && objectMapSize.get("delivery")>1){
@@ -573,7 +569,6 @@ public class CustomUniqueLabels {
                 }
         }
 
-        System.out.println("label:"+label);
         return label;
     }
     public StringBuilder getLabel(ExperimentRecord record,String initiative, Map<String, Integer> objectMapSize, List<String> uniqueFields, long resultId) throws Exception {
@@ -581,7 +576,6 @@ public class CustomUniqueLabels {
         switch (initiative.toLowerCase()){
             case "rodent testing center":
             case "delivery vehicle initiative":
-                System.out.println("CASE: "+ initiative);
                 if(uniqueFields.contains("delivery")) {
                     appendDelivery(record, label);
                 }
@@ -593,7 +587,6 @@ public class CustomUniqueLabels {
 
                 break;
             case "new editors initiative":
-                System.out.println("CASE: "+ initiative);
                 if(uniqueFields.contains("editor")) {
                    appendEditor(record, label);
                 }
@@ -606,14 +599,12 @@ public class CustomUniqueLabels {
 
                 break;
             default:
-                System.out.println("CASE: DEFAULT:"+ initiative);
                 for (String field : uniqueFields) {
                     appendLabel(record, label, field);
 
                 }
         }
         if(label.toString().equals("")){
-            System.out.println("LABEL EMPTY: "+ initiative);
             for (String field : uniqueFields) {
                 appendLabel(record, label, field);
 
@@ -621,7 +612,6 @@ public class CustomUniqueLabels {
 
         }
 
-        System.out.println("label:"+label);
         return label;
     }
     public void appendLabel(ExperimentRecord record, StringBuilder label, String field) throws Exception {
@@ -671,14 +661,13 @@ public class CustomUniqueLabels {
     }
     public void appendEditor(ExperimentRecord record, StringBuilder label) throws Exception {
         EditorDao editorDao=new EditorDao();
-            String editor= new String();
             if(record.getEditorId()==0 || editorDao.getEditorById(record.getEditorId())==null ||
                     editorDao.getEditorById(record.getEditorId()).size()==0 ){
-                editor="No Editor";
+                label.append("No Editor").append(" ");
             }else {
-                editor=record.getEditorSymbol();
+                label.append(record.getEditorSymbol()).append(" ");
             }
-         label.append(editor).append( " ");
+      //   label.append(editor).append( " ");
 
     }
     public void appendDelivery(ExperimentRecord record, StringBuilder label){
@@ -725,7 +714,7 @@ public class CustomUniqueLabels {
 
     }
     public void appendName(ExperimentRecord record, StringBuilder label){
-        label.append( record.getExperimentName()).append(" ");
+        label.append(record.getExperimentName()).append(" ");
     }
  /*   public void appendResultType(ExperimentRecord record,StringBuilder label) throws Exception {
 

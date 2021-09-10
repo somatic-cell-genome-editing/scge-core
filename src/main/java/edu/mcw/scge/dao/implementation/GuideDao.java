@@ -19,13 +19,28 @@ public class GuideDao extends AbstractDAO {
         return execute(q);
     }
     public List<Guide> getGuidesByEditor(long editorId) throws Exception {
-        String sql="select distinct(g.*) from guide g left outer join genome_info gi on g.guide_id=gi.genome_id\n" +
+      /*  String sql="select * from guide g left outer join genome_info gi on g.guide_id=gi.genome_id\n" +
                 "inner join guide_associations ga on ga.guide_id=g.guide_id\n" +
                 "inner join experiment_record e on e.experiment_record_id=ga.experiment_record_id and e.editor_id=?";
+       */ String sql="select * from guide g" +
+                " left outer join genome_info gi on g.guide_id=gi.genome_id" +
+                " where guide_id in ( " +
+                "select distinct(guide_id) from guide_associations where experiment_record_id in " +
+                "(select experiment_record_id from experiment_record where editor_id =? " +
+                ") " +
+                ")";
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
         return execute(q,editorId);
 	}
-	
+	public List<Guide> getDistinctGuidesByExperimentId(long experimentId) throws Exception {
+        String sql="select * from guide where guide_id in ( " +
+                "select distinct(guide_id) from guide_associations where experiment_record_id in " +
+                "(select experiment_record_id from experiment_record where experiment_id =? " +
+                ") " +
+                ")";
+        GuideQuery q= new GuideQuery(this.getDataSource(), sql);
+        return execute(q,experimentId);
+    }
     public long insertGuide(Guide guide) throws Exception{
 
         String sql = "insert into guide ( guide_id, species, source, target_locus, target_sequence, " +
