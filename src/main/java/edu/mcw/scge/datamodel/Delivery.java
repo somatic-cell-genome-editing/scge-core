@@ -13,6 +13,9 @@ public class Delivery {
     private String npSize;
     private String molTargetingAgent;
     private int tier;
+    private String sequence;
+    private String zetaPotential;
+    private String npPolydispersityIndex;
 
     public int getTier() {
         return tier;
@@ -108,5 +111,29 @@ public class Delivery {
 
     public void setMolTargetingAgent(String molTargetingAgent) {
         this.molTargetingAgent = molTargetingAgent;
+    }
+
+    public String getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(String sequence) {
+        this.sequence = sequence;
+    }
+
+    public String getZetaPotential() {
+        return zetaPotential;
+    }
+
+    public void setZetaPotential(String zetaPotential) {
+        this.zetaPotential = zetaPotential;
+    }
+
+    public String getNpPolydispersityIndex() {
+        return npPolydispersityIndex;
+    }
+
+    public void setNpPolydispersityIndex(String npPolydispersityIndex) {
+        this.npPolydispersityIndex = npPolydispersityIndex;
     }
 }
