@@ -25,7 +25,7 @@ public class AccessDao extends AbstractDAO {
 
         String sql = "select distinct er.editor_id from person_info pi, study s, experiment_record er where pi.person_id=? and er.editor_id=? and pi.group_id=s.group_id and er.study_id=s.study_id and s.tier in (0, 1, 2)";
         IntListQuery q=new IntListQuery(this.getDataSource(), sql);
-        List<Integer> found = execute(q,p.getId(),e.getId());
+        List<Long> found = execute(q,p.getId(),e.getId());
 
 
         if (found.size()>0) {
@@ -42,7 +42,7 @@ public class AccessDao extends AbstractDAO {
 
         String sql = "select distinct er.model_id from person_info pi, study s, experiment_record er where pi.person_id=? and er.model_id=? and pi.group_id=s.group_id and er.study_id=s.study_id and s.tier in (0,1,2)";
         IntListQuery q=new IntListQuery(this.getDataSource(), sql);
-        List<Integer> found = execute(q,p.getId(),m.getModelId());
+        List<Long> found = execute(q,p.getId(),m.getModelId());
 
 
         if (found.size()>0) {
@@ -59,7 +59,7 @@ public class AccessDao extends AbstractDAO {
 
         String sql = "select distinct er.ds_id from person_info pi, study s, experiment_record er where pi.person_id=? and er.ds_id=? and pi.group_id=s.group_id and er.study_id=s.study_id and s.tier in (0,1,2)";
         IntListQuery q=new IntListQuery(this.getDataSource(), sql);
-        List<Integer> found = execute(q,p.getId(),d.getId());
+        List<Long> found = execute(q,p.getId(),d.getId());
 
 
         if (found.size()>0) {
@@ -79,7 +79,7 @@ public class AccessDao extends AbstractDAO {
                 "inner join vector_associations va on er.experiment_record_id = va.experiment_record_id " +
                 "where pi.person_id=? and va.vector_id=? and s.tier in (0, 1, 2 )";
         IntListQuery q=new IntListQuery(this.getDataSource(), sql);
-        List<Integer> found = execute(q,p.getId(),v.getVectorId());
+        List<Long> found = execute(q,p.getId(),v.getVectorId());
 
 
         if (found.size()>0) {

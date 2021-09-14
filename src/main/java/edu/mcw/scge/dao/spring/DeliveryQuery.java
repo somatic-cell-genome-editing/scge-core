@@ -28,6 +28,9 @@ public class DeliveryQuery extends MappingSqlQuery {
         d.setNpSize(rs.getString("ds_np_size"));
         d.setMolTargetingAgent(rs.getString("ds_mol_targeting_agent"));
         d.setTier(rs.getInt("tier"));
+        d.setSequence(rs.getString("ds_sequence"));
+        d.setZetaPotential(rs.getString("ds_zeta_potential"));
+        d.setNpPolydispersityIndex(rs.getString("ds_np_polydispersity_index"));
         return d;
     }
 
