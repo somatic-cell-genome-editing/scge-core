@@ -2,6 +2,7 @@ package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
 import edu.mcw.scge.dao.spring.IntListQuery;
+import edu.mcw.scge.dao.spring.LongListQuery;
 import edu.mcw.scge.dao.spring.StringListQuery;
 import edu.mcw.scge.datamodel.*;
 
@@ -24,7 +25,7 @@ public class AccessDao extends AbstractDAO {
         }
 
         String sql = "select distinct er.editor_id from person_info pi, study s, experiment_record er where pi.person_id=? and er.editor_id=? and pi.group_id=s.group_id and er.study_id=s.study_id and s.tier in (0, 1, 2)";
-        IntListQuery q=new IntListQuery(this.getDataSource(), sql);
+        LongListQuery q=new LongListQuery(this.getDataSource(), sql);
         List<Long> found = execute(q,p.getId(),e.getId());
 
 
@@ -41,7 +42,7 @@ public class AccessDao extends AbstractDAO {
         }
 
         String sql = "select distinct er.model_id from person_info pi, study s, experiment_record er where pi.person_id=? and er.model_id=? and pi.group_id=s.group_id and er.study_id=s.study_id and s.tier in (0,1,2)";
-        IntListQuery q=new IntListQuery(this.getDataSource(), sql);
+        LongListQuery q=new LongListQuery(this.getDataSource(), sql);
         List<Long> found = execute(q,p.getId(),m.getModelId());
 
 
@@ -58,7 +59,7 @@ public class AccessDao extends AbstractDAO {
         }
 
         String sql = "select distinct er.ds_id from person_info pi, study s, experiment_record er where pi.person_id=? and er.ds_id=? and pi.group_id=s.group_id and er.study_id=s.study_id and s.tier in (0,1,2)";
-        IntListQuery q=new IntListQuery(this.getDataSource(), sql);
+        LongListQuery q=new LongListQuery(this.getDataSource(), sql);
         List<Long> found = execute(q,p.getId(),d.getId());
 
 
@@ -78,7 +79,7 @@ public class AccessDao extends AbstractDAO {
                 "inner join experiment_record er on er.study_id=s.study_id " +
                 "inner join vector_associations va on er.experiment_record_id = va.experiment_record_id " +
                 "where pi.person_id=? and va.vector_id=? and s.tier in (0, 1, 2 )";
-        IntListQuery q=new IntListQuery(this.getDataSource(), sql);
+        LongListQuery q=new LongListQuery(this.getDataSource(), sql);
         List<Long> found = execute(q,p.getId(),v.getVectorId());
 
 
@@ -98,7 +99,7 @@ public class AccessDao extends AbstractDAO {
                 "inner join experiment_record er on er.study_id=s.study_id \n" +
                 "inner join guide_associations ga on er.experiment_record_id = ga.experiment_record_id \n" +
                 "where pi.person_id=? and ga.guide_id=? and s.tier in (0, 1, 2 ) ";
-        IntListQuery q=new IntListQuery(this.getDataSource(), sql);
+        LongListQuery q=new LongListQuery(this.getDataSource(), sql);
         List<Integer> found = execute(q,p.getId(),g.getGuide_id());
 
 
