@@ -38,6 +38,10 @@ public class StudyQuery extends MappingSqlQuery {
         }catch (Exception e){}
         try {
             s.setPi(rs.getString("piName"));
+            s.setPiFirstName(rs.getString("piFirstName"));
+
+            s.setPiLastName(rs.getString("piLastName"));
+
         }catch (Exception e){}
 
         return s;
