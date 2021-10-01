@@ -20,6 +20,14 @@ public class StudyDao extends AbstractDAO {
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q,personId, experimentId);
     }
+    public List<Study> getStudyByExperimentId(long experimentId) throws Exception {
+        String sql = "select s.* from study s inner join experiment e on s.study_id=e.study_id " +
+                "                where e.experiment_id=? " +
+                "                " ;
+
+        StudyQuery q=new StudyQuery(this.getDataSource(), sql);
+        return execute(q, experimentId);
+    }
     public List<Study> getStudiesByLab(int labId) throws Exception{
         String sql="select * from study where lab_id=?";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
