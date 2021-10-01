@@ -21,10 +21,9 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by jthota on 8/20/2019.
@@ -59,9 +58,9 @@ public class PersonDao extends AbstractDAO {
 
     }
     public void update(Person p) throws Exception {
-        String sql="update person set name=?, name_lc=?,institution_id=?,email=?,email_lc=?,status=?, other_id=?, modified_date=current_date where person_id=?";
+        String sql="update person set name=?, first_name=?, last_name=?, name_lc=?,institution_id=?,email=?,email_lc=?,status=?, other_id=?, modified_date=current_date where person_id=?";
 
-        update(sql, p.getName(), p.getName().toLowerCase(), p.getInstitution(),p.getEmail(), p.getEmail().toLowerCase(),p.getStatus(),p.getOtherId(), p.getId());
+        update(sql, p.getName(), p.getFirstName(), p.getLastName(), p.getName().toLowerCase(), p.getInstitution(),p.getEmail(), p.getEmail().toLowerCase(),p.getStatus(),p.getOtherId(), p.getId());
     }
 
     public List<Person> getPerson(Person p) throws Exception{
@@ -445,5 +444,61 @@ public class PersonDao extends AbstractDAO {
             return execute(q, personId);
 
     }
+    public Map<String, String> getFirstAndLastName(String name){
+        Map<String, String> splitMap=new HashMap<>();
+        if(name!=null) {
+            if (name.contains(",")) {
+                Pattern p = Pattern.compile("[^,]*,(.*)");
+                Matcher m = p.matcher(name);
+                if (m.find()) {
+                    name = name.replace(m.group(1), "").replace(",", "");
 
+                    //      System.out.println(m.group(1)+"\t" +name +"\tLast Name:"+ name.trim().substring(name.trim().lastIndexOf(" ") + 1));
+              /* System.out.println("LAST NAME:"+ (name.trim().substring(name.trim().lastIndexOf(" ") + 1))
+                        +", First Name:"
+                        +name.substring(0,name.trim().lastIndexOf(" "))) ;*/
+                   try {
+                       splitMap.put("firstName", name.substring(0, name.trim().lastIndexOf(" ")));
+                       splitMap.put("lastName", name.trim().substring(name.trim().lastIndexOf(" ") + 1));
+                   }catch (Exception e){
+                       System.err.println("Name:"+ name);
+                       e.printStackTrace();
+                   }
+                } else {
+                    try {
+                        splitMap.put("firstName", name.substring(0, name.trim().lastIndexOf(" ")));
+                        splitMap.put("lastName", name.trim().substring(name.trim().lastIndexOf(" ") + 1));
+                    }catch (Exception e){
+                        System.err.println("Name:"+ name);
+                        e.printStackTrace();
+                    }
+                    }
+            } else {
+                try {
+                    splitMap.put("firstName", name.substring(0, name.trim().lastIndexOf(" ")));
+                    splitMap.put("lastName", name.trim().substring(name.trim().lastIndexOf(" ") + 1));
+                }catch (Exception e){
+                    System.err.println("Name:"+ name);
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        return splitMap;
+    }
+    public static void main(String[] args) throws Exception {
+        PersonDao personDao=new PersonDao();
+        List<Person> personList=personDao.getAllActiveMembers();
+       for(Person person:personList){
+            String personFullName=person.getName();
+            Map<String, String> nameMap=personDao.getFirstAndLastName(personFullName);
+            String firstName=nameMap.get("firstName");
+            String lastName=nameMap.get("lastName");
+            System.out.println("FULLNAME:"+ personFullName+"\tFIRST:"+ nameMap.get("firstName") +"\tLAST:"+ nameMap.get("lastName"));
+            person.setFirstName(firstName);
+            person.setLastName(lastName);
+            personDao.update(person);
+      }
+       System.out.println("DONE!!");
+    }
 }

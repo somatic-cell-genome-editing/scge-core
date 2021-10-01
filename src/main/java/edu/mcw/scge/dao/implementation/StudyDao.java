@@ -111,7 +111,10 @@ public class StudyDao extends AbstractDAO {
            // groups.append(pi.getGroupId());
         }
 
-        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id " +
+        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId," +
+                " pi.name as piName, " +
+                " pi.first_name as piFirstName , pi.last_name as piLastName"+
+                " from study s, institution i, person p, person pi where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id " +
                 " and s.group_id in (" + groups + ") order by s.tier desc, s.submission_date desc";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q);
@@ -119,13 +122,20 @@ public class StudyDao extends AbstractDAO {
     }
 
     public List<Study> getStudies() throws Exception{
-        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id order by s.tier desc, s.submission_date desc";
+        String sql="select s.*, i.institution_name, p.name as submitterName, " +
+                " pi.person_id as piId, pi.name as piName, " +
+                " pi.first_name as piFirstName , pi.last_name as piLastName"+
+                " from study s, institution i, person p, person pi " +
+                " where s.lab_id=i.institution_id and s.submitter_id=p.person_id " +
+                " and s.pi_id=pi.person_id order by s.tier desc, s.submission_date desc";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q);
     }
 
     public List<Study> getSharedTier2Studies(int personId) throws Exception{
-        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, " +
+        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName" +
+                ", pi.first_name as piFirstName , pi.last_name as piLastName "+
+                " from study s, " +
                 " institution i, person p, person pi, study_associations sa, person_info pinfo" +
                 " where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id and s.study_id=sa.study_id and (pinfo.group_id=s.group_id or pinfo.group_id=sa.group_id) and pinfo.person_id=?" +
                 " order by s.tier desc, s.submission_date desc";
@@ -136,7 +146,9 @@ public class StudyDao extends AbstractDAO {
 
 
     public List<Study> getStudiesByInitiative(String initiativeName) throws Exception{
-        String sql = "select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id and s.group_id in (select group_id from scge_grants where grant_initiative = ?) order by s.tier desc, s.submission_date desc";
+        String sql = "select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName " +
+                " ,pi.first_name as piFirstName , pi.last_name as piLastName"+
+                " from study s, institution i, person p, person pi where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id and s.group_id in (select group_id from scge_grants where grant_initiative = ?) order by s.tier desc, s.submission_date desc";
 
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q, initiativeName);
