@@ -18,6 +18,7 @@ public class ExperimentQuery extends MappingSqlQuery<Experiment> {
         e.setStudyId(rs.getInt("study_id"));
         e.setType(rs.getString("type"));
         e.setName(rs.getString("name"));
+        e.setDescription(rs.getString("description"));
 
         try {
             e.setStudyName(rs.getString("study"));
