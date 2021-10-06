@@ -620,12 +620,21 @@ public class OntologyXDAO extends AbstractDAO {
      * @throws Exception if something wrong happens in spring framework
      */
     public List<Term> getAllActiveTermAncestors(String termAcc) throws Exception {
-        String sql = "SELECT t.* FROM ont_terms t "+
-                "WHERE term_acc IN( "+
-                "  SELECT parent_term_acc FROM ont_dag "+
-                "  START WITH child_term_acc=? "+
-                "  CONNECT BY PRIOR parent_term_acc=child_term_acc"+
-                ") AND is_obsolete=0";
+        String sql = "SELECT t.* FROM ont_terms t \n" +
+                "                WHERE term_acc IN (\n" +
+                "\n" +
+                "WITH RECURSIVE cte AS (\n" +
+                " SELECT child_term_acc, parent_term_acc, 1 as level FROM ont_dag \n" +
+                "where child_term_acc=? " +
+                "\n" +
+                " UNION  ALL\n" +
+                "   SELECT t.child_term_acc, t.parent_term_acc, c.level + 1\n" +
+                "   FROM   cte      c\n" +
+                "   JOIN   ont_dag t ON t.child_term_acc = c.parent_term_acc\n" +
+                "   )\n" +
+                "SELECT parent_term_acc\n" +
+                "FROM   cte\n" +
+                "ORDER  BY level) AND is_obsolete=0 ;";
         return executeTermQuery(sql, termAcc);
     }
 
