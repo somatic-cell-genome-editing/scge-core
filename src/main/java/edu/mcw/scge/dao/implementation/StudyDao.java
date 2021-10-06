@@ -160,7 +160,11 @@ public class StudyDao extends AbstractDAO {
 
 
     public List<Study> getStudiesByGrantId(int grantId) throws Exception{
-        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi, scge_grants sg " +
+        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, " +
+                "pi.name as piName, " +
+                "pi.first_name as piFirstName, " +
+                "pi.last_name as piLastName " +
+                "from study s, institution i, person p, person pi, scge_grants sg " +
                 "    where s.lab_id=i.institution_id " +
                 "    and s.submitter_id=p.person_id and s.pi_id=pi.person_id " +
                 "    and sg.group_id=s.group_id " +
@@ -278,8 +282,8 @@ public class StudyDao extends AbstractDAO {
     public List<Study> getStudiesByGroupId(int groupId) throws Exception {
         String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, " +
                 "pi.name as piName, " +
-                "pi.last_name as piLastName, " +
-                "pi.first_name as piFirstName " +
+                "pi.first_name as piFirstName, " +
+                "pi.last_name as piLastName " +
                 "from study s, institution i, person p, person pi " +
                 "where s.lab_id=i.institution_id " +
                 "and s.submitter_id=p.person_id " +
