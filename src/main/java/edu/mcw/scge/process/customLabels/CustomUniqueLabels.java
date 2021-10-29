@@ -310,6 +310,7 @@ public class CustomUniqueLabels {
                 uniqueFields.add((String) field.getKey());
             }
         }
+        System.out.println("UNIQUE FIELDS:"+ uniqueFields);
         Set<String> uniqueLabels=new HashSet<>();
             for (ExperimentRecord record : records) {
                 StringBuilder label=new StringBuilder();
@@ -344,21 +345,27 @@ public class CustomUniqueLabels {
             if(uniqueLabels.size()==records.size()){
                 return uniqueFields;
             }else{
-                uniqueFields=new ArrayList<>(Arrays.asList("name"));
+                if(records.get(0).getExperimentId()!=18000000011L && records.get(0).getExperimentId()!=18000000018L )
+              uniqueFields=new ArrayList<>(Arrays.asList("name"));
             }
 
         return uniqueFields;
     }
     public Map<String, Integer> getObjectSizeMap(List<ExperimentRecord> records){
         Map<String, Integer> objectSizeMap=new HashMap<>();
-        Set<String> names=records.stream().map(r->r.getExperimentName())
+        Set<String> names=new HashSet<>();
+        if(records.get(0).getExperimentId()!= 18000000018L && records.get(0).getExperimentId()!= 18000000011L)
+             names=   records.stream().map(r->r.getExperimentName())
                 .filter(name-> !name.contains("Condition")).collect(Collectors.toSet());
         Set<Long> editors=records.stream().map(r->r.getEditorId()).collect(Collectors.toSet());
         Set<Long> deliveries=records.stream().map(d->d.getDeliverySystemId()).collect(Collectors.toSet());
         Set<Long> models=records.stream().map(d->d.getModelId()).collect(Collectors.toSet());
         Set<String> tissueIds=records.stream().map(d->d.getTissueId()).collect(Collectors.toSet());
-        Set<String> cellTypes=records.stream().map(d->d.getCellType()).collect(Collectors.toSet());
 
+        Set<String> cellTypes=new HashSet<>();
+        if(records.get(0).getCellType()!=null) {
+            cellTypes     = records.stream().filter(d -> d != null && !d.getCellType().isEmpty()).map(d -> d.getCellType()).collect(Collectors.toSet());
+        }
         Set<Integer> applicationMethods=records.stream().map(r->r.getApplicationMethodId()).collect(Collectors.toSet());
         Set<String> dosage=records.stream().map(r->r.getDosage()).filter(p->p!=null && !p.equals("")).collect(Collectors.toSet());
         Set<String> sex=records.stream().map(d->d.getSex()).collect(Collectors.toSet());
@@ -459,7 +466,7 @@ public class CustomUniqueLabels {
         }
         return objectSizeMap;
     }
-    public StringBuilder getLabel(ExperimentRecord record,String initiative, Map<String, Integer> objectMapSize) throws Exception {
+  /*  public StringBuilder getLabel(ExperimentRecord record,String initiative, Map<String, Integer> objectMapSize) throws Exception {
         StringBuilder label=new StringBuilder();
         switch (initiative.toLowerCase()){
             case "delivery vehicle initiative":
@@ -497,7 +504,8 @@ public class CustomUniqueLabels {
 
                 }
                 if(objectMapSize.get("cellType")!=null && objectMapSize.get("cellType")>1){
-                    label.append( record.getCellType() + " ");
+                    if(!record.getCellType().isEmpty())
+                    label.append( record.getCellTypeTerm() + " ");
 
                 }
                 break;
@@ -527,7 +535,7 @@ public class CustomUniqueLabels {
 
                 }
                 if(objectMapSize.get("cellType")!=null && objectMapSize.get("cellType")>1){
-                    label.append( record.getCellType() + " ");
+                    label.append( record.getCellTypeTerm() + " ");
 
                 }
                 break;
@@ -564,15 +572,19 @@ public class CustomUniqueLabels {
 
                 }
                 if(objectMapSize.get("cellType")!=null && objectMapSize.get("cellType")>1){
-                    label.append( record.getCellType() + " ");
+                    if(record.getCellType()!=null)
+                    label.append( record.getCellTypeTerm() + " ");
 
                 }
         }
 
         return label;
-    }
+    }*/
     public StringBuilder getLabel(ExperimentRecord record,String initiative, Map<String, Integer> objectMapSize, List<String> uniqueFields, long resultId) throws Exception {
         StringBuilder label=new StringBuilder();
+        if(record==null){
+            return null;
+        }
         switch (initiative.toLowerCase()){
             case "rodent testing center":
             case "delivery vehicle initiative":
@@ -644,6 +656,7 @@ public class CustomUniqueLabels {
             appendTissue(record, label);
         }
         if(field.equalsIgnoreCase("cellType")){
+            if(record!=null && record.getCellType()!=null)
             appendCellType(record,label);
         }
     /*    if(field.equalsIgnoreCase("samples")){
@@ -704,7 +717,8 @@ public class CustomUniqueLabels {
       label.append(record.getTissueTerm()).append(" ");
     }
     public void appendCellType(ExperimentRecord record, StringBuilder label){
-        label.append( record.getCellType()).append(" ");
+        if(record.getCellType()!=null && record.getCellTypeTerm()!=null && !record.getCellTypeTerm().equals(""))
+        label.append( record.getCellTypeTerm()).append(" ");
     }
     public void appendSex(ExperimentRecord record,StringBuilder label){
         if(record.getSex()!=null && record.getSex().equalsIgnoreCase("F"))

@@ -16,6 +16,9 @@ public class Study {
     private String submitter;
     private int piId;
     private String pi;
+    private String piFirstName;
+    private String piLastName;
+
     private String rawData;
     private String reference;
     private List<Integer> associatedGroups;
@@ -142,4 +145,19 @@ public class Study {
         this.groupId = groupId;
     }
 
+    public String getPiFirstName() {
+        return piFirstName;
+    }
+
+    public void setPiFirstName(String piFirstName) {
+        this.piFirstName = piFirstName;
+    }
+
+    public String getPiLastName() {
+        return piLastName;
+    }
+
+    public void setPiLastName(String piLastName) {
+        this.piLastName = piLastName;
+    }
 }

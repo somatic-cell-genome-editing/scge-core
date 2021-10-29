@@ -11,7 +11,7 @@ import java.util.List;
 public class OffTargetSiteDao extends AbstractDAO {
 
     public List<OffTargetSite> getOffTargetSitesByGuide(long guideId) throws Exception {
-        String sql="select * from off_target_site where guide_id=?";
+        String sql="select * from off_target_site where guide_id=? order by sort_key,start";
         OffTargetSiteQuery q= new OffTargetSiteQuery(this.getDataSource(), sql);
         return execute(q, guideId);
     }
