@@ -22,7 +22,9 @@ public class StudyDao extends AbstractDAO {
     }
     public List<Study> getStudyByExperimentId(long experimentId) throws Exception {
         String sql = "select s.* from study s inner join experiment e on s.study_id=e.study_id " +
-                "                where e.experiment_id=? " +
+                "                inner join person_info p on p.group_id=s.group_id " +
+                "                where " +
+                "                 e.experiment_id=? " +
                 "                " ;
 
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
@@ -278,7 +280,11 @@ public class StudyDao extends AbstractDAO {
     }
 
     public List<Study> getStudiesByGroupId(int groupId) throws Exception {
-        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName from study s, institution i, person p, person pi " +
+        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, " +
+                "pi.name as piName, " +
+                "pi.first_name as piFirstName, " +
+                "pi.last_name as piLastName " +
+                "from study s, institution i, person p, person pi " +
                 "where s.lab_id=i.institution_id " +
                 "and s.submitter_id=p.person_id " +
                 " and s.pi_id=pi.person_id " +
