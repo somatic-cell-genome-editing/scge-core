@@ -342,10 +342,11 @@ public class CustomUniqueLabels {
             }
                uniqueLabels.add(label.toString());
         }
+            Set<String> names=records.stream().map(record -> record.getExperimentName()).collect(Collectors.toSet());
             if(uniqueLabels.size()==records.size()){
                 return uniqueFields;
             }else{
-                if(records.get(0).getExperimentId()!=18000000003L && records.get(0).getExperimentId()!=18000000004L )
+                if(names.size()==records.size() )
               uniqueFields=new ArrayList<>(Arrays.asList("name"));
             }
 
@@ -354,9 +355,11 @@ public class CustomUniqueLabels {
     public Map<String, Integer> getObjectSizeMap(List<ExperimentRecord> records){
         Map<String, Integer> objectSizeMap=new HashMap<>();
         Set<String> names=new HashSet<>();
-        if(records.get(0).getExperimentId()!= 18000000003L && records.get(0).getExperimentId()!= 18000000004L)
-             names=   records.stream().map(r->r.getExperimentName())
+        names=  records.stream().map(ExperimentRecord::getExperimentName)
                 .filter(name-> !name.contains("Condition")).collect(Collectors.toSet());
+       /* if(records.get(0).getExperimentId()!= 18000000003L && records.get(0).getExperimentId()!= 18000000004L)
+             names=   records.stream().map(r->r.getExperimentName())
+                .filter(name-> !name.contains("Condition")).collect(Collectors.toSet());*/
         Set<Long> editors=records.stream().map(r->r.getEditorId()).collect(Collectors.toSet());
         Set<Long> deliveries=records.stream().map(d->d.getDeliverySystemId()).collect(Collectors.toSet());
         Set<Long> models=records.stream().map(d->d.getModelId()).collect(Collectors.toSet());
@@ -461,7 +464,7 @@ public class CustomUniqueLabels {
         if(sex.size()>0){
             objectSizeMap.put("sex", sex.size());
         }
-        if(names.size()>0){
+        if(names.size()>0 && names.size()==records.size()){
             objectSizeMap.put("name", names.size());
         }
         return objectSizeMap;
