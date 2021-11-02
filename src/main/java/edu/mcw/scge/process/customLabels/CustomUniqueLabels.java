@@ -345,7 +345,7 @@ public class CustomUniqueLabels {
             if(uniqueLabels.size()==records.size()){
                 return uniqueFields;
             }else{
-                if(records.get(0).getExperimentId()!=18000000011L && records.get(0).getExperimentId()!=18000000018L )
+                if(records.get(0).getExperimentId()!=18000000003L && records.get(0).getExperimentId()!=18000000004L )
               uniqueFields=new ArrayList<>(Arrays.asList("name"));
             }
 
@@ -354,7 +354,7 @@ public class CustomUniqueLabels {
     public Map<String, Integer> getObjectSizeMap(List<ExperimentRecord> records){
         Map<String, Integer> objectSizeMap=new HashMap<>();
         Set<String> names=new HashSet<>();
-        if(records.get(0).getExperimentId()!= 18000000018L && records.get(0).getExperimentId()!= 18000000011L)
+        if(records.get(0).getExperimentId()!= 18000000003L && records.get(0).getExperimentId()!= 18000000004L)
              names=   records.stream().map(r->r.getExperimentName())
                 .filter(name-> !name.contains("Condition")).collect(Collectors.toSet());
         Set<Long> editors=records.stream().map(r->r.getEditorId()).collect(Collectors.toSet());
