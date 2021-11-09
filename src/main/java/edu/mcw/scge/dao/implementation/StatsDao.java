@@ -59,4 +59,9 @@ public class StatsDao extends AbstractDAO {
         return (Integer) q.execute().get(0);
     }
 
+    public Integer getProtocolCount() throws Exception {
+        String sql="select count(*) from protocol";
+        CountQuery q=new CountQuery(this.getDataSource(), sql);
+        return (Integer) q.execute().get(0);
+    }
 }
