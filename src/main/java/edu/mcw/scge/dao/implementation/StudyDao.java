@@ -117,7 +117,7 @@ public class StudyDao extends AbstractDAO {
                 " pi.name as piName, " +
                 " pi.first_name as piFirstName , pi.last_name as piLastName"+
                 " from study s, institution i, person p, person pi where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id " +
-                " and s.group_id in (" + groups + ") order by s.tier desc, s.submission_date desc";
+                " and s.group_id in (" + groups + ") order by piLastName";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q);
 
@@ -129,7 +129,7 @@ public class StudyDao extends AbstractDAO {
                 " pi.first_name as piFirstName , pi.last_name as piLastName"+
                 " from study s, institution i, person p, person pi " +
                 " where s.lab_id=i.institution_id and s.submitter_id=p.person_id " +
-                " and s.pi_id=pi.person_id order by s.tier desc, s.submission_date desc";
+                " and s.pi_id=pi.person_id order by piLastName";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q);
     }

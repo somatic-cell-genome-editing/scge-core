@@ -13,7 +13,7 @@ public class DeliveryDao extends AbstractDAO {
         return execute(q, deliverySystemId);
     }
 	public List<Delivery> getDeliverySystems() throws  Exception{
-        String sql="select * from delivery_system";
+        String sql="select * from delivery_system order by ds_name";
         DeliveryQuery q=new DeliveryQuery(this.getDataSource(), sql);
         return execute(q);
 	}	

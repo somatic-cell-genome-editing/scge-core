@@ -14,7 +14,7 @@ public class GuideDao extends AbstractDAO {
     }
 
 	public List<Guide> getGuides() throws Exception {
-        String sql="select * from guide g left outer join genome_info gi on g.guide_id=gi.genome_id";
+        String sql="select * from guide g left outer join genome_info gi on g.guide_id=gi.genome_id order by guide";
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
         return execute(q);
     }

@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class VectorDao extends AbstractDAO {
     public List<Vector> getAllVectors() throws Exception {
-        String sql="select * from vector";
+        String sql="select * from vector order by name";
         VectorQuery q=new VectorQuery(this.getDataSource(), sql);
         return (List<Vector>)q.execute();
     }

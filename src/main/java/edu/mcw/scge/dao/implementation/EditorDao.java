@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class EditorDao extends AbstractDAO {
     public List<Editor> getAllEditors() throws Exception {
-        String sql="select * from editor e left outer join genome_info g  on e.editor_id=g.genome_id ";
+        String sql="select * from editor e left outer join genome_info g  on e.editor_id=g.genome_id order by e.symbol";
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
         return (List<Editor>)q.execute();
     }
@@ -25,7 +25,7 @@ public class EditorDao extends AbstractDAO {
                 "    left outer join study_associations sa on s.study_id=sa.study_id" +
                 "    left outer join person_info p on (p.group_id=s.group_id or p.group_id=sa.group_id)" +
                 "    where p.person_id=? ) union" +
-                "            (select ed.* from editor ed  where ed.tier=4 )";
+                "            (select ed.* from editor ed  where ed.tier=4 ) order by e.symbol";
 
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
         return execute(q, personId);

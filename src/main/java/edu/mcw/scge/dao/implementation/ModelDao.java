@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ModelDao extends AbstractDAO {
     public List<Model> getModels() throws Exception {
-        String sql="select * from model";
+        String sql="select * from model order by name";
         ModelQuery q=new ModelQuery(this.getDataSource(), sql);
         List<Model> models=execute(q);
         return models;
