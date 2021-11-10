@@ -47,18 +47,18 @@ public class ImageDao extends AbstractDAO {
                 "," + image.getPosIndex() + ")";
 
 
-//        update(sql, image.getScgeId(),image.getFileName(),image.getImage(), image.getBucket(),image.getLegend(),image.getTitle(),image.getFileType(),image.getPosIndex() );
+        Connection conn=null;
+        PreparedStatement pst =null;
 
-
-        Connection conn = this.getDataSource().getConnection();
-
-        PreparedStatement pst = conn.prepareStatement(sql);
-
-        pst.setBinaryStream(1,new ByteArrayInputStream(image.getImage()),image.getImage().length);
-
-        pst.executeUpdate();
-
-        System.out.println("inserted image");
+        try {
+            conn = this.getDataSource().getConnection();
+            pst = conn.prepareStatement(sql);
+            pst.setBinaryStream(1, new ByteArrayInputStream(image.getImage()), image.getImage().length);
+            pst.executeUpdate();
+        } finally {
+            pst.close();
+            conn.close();
+        }
 
         //return editorId;
     }
