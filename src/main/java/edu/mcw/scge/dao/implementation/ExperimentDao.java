@@ -87,7 +87,15 @@ public class ExperimentDao extends AbstractDAO {
 
         return returnVal;
     }
+    public List<String> getExperimentRecordSexList(long experimentId) throws Exception {
+        String sql="select distinct ex.sex from experiment_record ex " +
+                "where ex.experiment_id=?";
 
+        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+        List<String> returnVal = execute(q, experimentId);
+
+        return returnVal;
+    }
     public List<ExperimentRecord> getExperimentRecords(long experimentId) throws Exception {
         String sql="select ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, x.type, ot.term, ct.term as cellTerm, a.*  from experiment_record ex " +
                 " left outer join experiment x on x.experiment_id=ex.experiment_id " +
