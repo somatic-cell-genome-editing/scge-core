@@ -724,10 +724,8 @@ public class CustomUniqueLabels {
         label.append( record.getCellTypeTerm()).append(" ");
     }
     public void appendSex(ExperimentRecord record,StringBuilder label){
-        if(record.getSex()!=null && record.getSex().equalsIgnoreCase("F"))
-            label.append(  "Female").append(" ");
-        if(record.getSex()!=null && record.getSex().equalsIgnoreCase("M"))
-            label.append(  "Male").append(" ");
+        if(record.getSex()!=null )
+            label.append( record.getSex()).append(" ");
 
     }
     public void appendName(ExperimentRecord record, StringBuilder label){
