@@ -37,6 +37,15 @@ public class Guide  {
     private String vectorType;
     private String annotatedMap;
     private String specificityRatio;
+    private String fullGuide;
+
+    public String getFullGuide() {
+        return fullGuide;
+    }
+
+    public void setFullGuide(String fullGuide) {
+        this.fullGuide = fullGuide;
+    }
 
     public int getTier() {
         return tier;
