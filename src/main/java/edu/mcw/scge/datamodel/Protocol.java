@@ -4,6 +4,42 @@ public class Protocol {
     String title;
     String description;
     long id;
+    private int tier;
+    private String filename;
+    private String xref;
+    private String keywords;
+
+    public int getTier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getXref() {
+        return xref;
+    }
+
+    public void setXref(String xref) {
+        this.xref = xref;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
 
     public String getTitle() {
         return title;

@@ -20,7 +20,10 @@ public class ProtocolQuery extends MappingSqlQuery<Protocol> {
         p.setDescription(rs.getString("description"));
         p.setId(rs.getLong("protocol_id"));
         p.setTitle(rs.getString("title"));
-
+        p.setTier(rs.getInt("tier"));
+        p.setFilename(rs.getString("filename"));
+        p.setXref(rs.getString("xref"));
+        p.setKeywords(rs.getString("keywords"));
         return p;
     }
 
