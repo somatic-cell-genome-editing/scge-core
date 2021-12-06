@@ -28,6 +28,17 @@ public class ApplicationMethodDao extends AbstractDAO {
 
         return methodId;
     }
+    public void updateApplicationMethod(ApplicationMethod method) throws Exception{
+
+        String sql = "update application_method set application_type=?, site_of_application=?," +
+                "editor_format=?, dosage=?, days_post_injection=?, injection_rate=?, injection_frequency=?, injection_volume=?," +
+                "antidote_id=?, antidote_description=? where application_method_id=?";
+
+
+        update(sql, method.getApplicationType(),method.getSiteOfApplication(),method.getEditorFormat(),
+                method.getDosage(),method.getDaysPostInjection(),method.getInjectionRate(),method.getInjectionFrequency(),
+                method.getInjectionVolume(),method.getAntidoteId(),method.getAntidoteDescription(),method.getApplicationId());
+    }
 
     public int getAppMethodId(ApplicationMethod method) throws Exception {
 

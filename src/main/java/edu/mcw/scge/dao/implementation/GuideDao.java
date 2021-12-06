@@ -43,21 +43,19 @@ public class GuideDao extends AbstractDAO {
     }
     public long insertGuide(Guide guide) throws Exception{
 
-        String sql = "insert into guide ( guide_id, species, source, target_locus, target_sequence, " +
-                "pam, assembly, chr,start, stop, strand," +
-                " grna_lab_id , guide_format, spacer_sequence, spacer_length, repeat_sequence," +
+        String sql = "insert into guide ( guide_id, species, source,  " +
+                "pam,grna_lab_id , guide_format, spacer_sequence, spacer_length, repeat_sequence," +
                 " guide,guide_description, forward_primer, reverse_primer, linker_sequence, " +
                 "anti_repeat_sequence, stemloop_1_sequence, stemloop_2_sequence, stemloop_3_sequence, " +
                 "standard_scaffold_sequence, modifications,tier,ivt_construct_source," +
                 "vector_id,vector_name,vector_description,vector_type,annotated_map,specificity_ratio ) " +
-                "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         long guideId = this.getNextKeyFromSequenceLong("guide_seq");
 
 
-        update(sql, guideId, guide.getSpecies(), guide.getSource(), guide.getTargetLocus(),guide.getTargetSequence(),
-                guide.getPam(),guide.getAssembly(),guide.getChr(),guide.getStart(),guide.getStop(), guide.getStrand(),
-                guide.getGrnaLabId(),guide.getGuideFormat(),guide.getSpacerSequence(),guide.getSpacerLength(),guide.getRepeatSequence(),
+        update(sql, guideId, guide.getSpecies(), guide.getSource(),
+                guide.getPam(),guide.getGrnaLabId(),guide.getGuideFormat(),guide.getSpacerSequence(),guide.getSpacerLength(),guide.getRepeatSequence(),
                 guide.getGuide(),guide.getGuideDescription(), guide.getForwardPrimer(), guide.getReversePrimer(), guide.getLinkerSequence(),
                 guide.getAntiRepeatSequence(),guide.getStemloop1Sequence(),guide.getStemloop2Sequence(),guide.getStemloop3Sequence(),
                 guide.getStandardScaffoldSequence(), guide.getModifications(),guide.getTier(),guide.getIvtConstructSource(),
@@ -67,6 +65,15 @@ public class GuideDao extends AbstractDAO {
         return guideId;
     }
 
+    public void insertGenomeInfo(Guide guide) throws Exception{
+        String sql = "insert into genome_info (genome_id, target_locus, target_sequence, assembly, " +
+                "chromosome, start, stop, strand, species) " +
+                "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        update(sql, guide.getGuide_id(),guide.getTargetLocus(),guide.getTargetSequence(),guide.getAssembly(),
+                guide.getChr(),guide.getStart(),guide.getStop(),guide.getStrand(),guide.getSpecies());
+
+    }
     public void insertGuideAssoc(long expRecId,long guideId) throws Exception{
         String sql = "insert into guide_associations ( experiment_record_id, guide_id ) values (?,?)";
 
@@ -75,9 +82,9 @@ public class GuideDao extends AbstractDAO {
 
     public long getGuideId(Guide guide) throws Exception {
 
-        String sql = "select * from guide where species =? and target_locus=? and target_sequence=? and pam=? and modifications = ?";
+        String sql = "select * from guide where species =? and guide=? and pam=? and modifications = ?";
 
-        List<Guide> list = GuideQuery.execute(this,sql,guide.getSpecies(),  guide.getTargetLocus(),guide.getTargetSequence(),
+        List<Guide> list = GuideQuery.execute(this,sql,guide.getSpecies(),  guide.getGuide(),
                 guide.getPam(), guide.getModifications());
         return list.isEmpty() ? 0 : list.get(0).getGuide_id();
     }
