@@ -38,14 +38,7 @@ public class Guide  {
     private String annotatedMap;
     private String specificityRatio;
     private String fullGuide;
-
-    public String getFullGuide() {
-        return fullGuide;
-    }
-
-    public void setFullGuide(String fullGuide) {
-        this.fullGuide = fullGuide;
-    }
+    private String guideCompatibility;
 
     public int getTier() {
         return tier;
@@ -325,5 +318,21 @@ public class Guide  {
 
     public void setSpecificityRatio(String specificityRatio) {
         this.specificityRatio = specificityRatio;
+    }
+
+    public String getFullGuide() {
+        return fullGuide;
+    }
+
+    public void setFullGuide(String fullGuide) {
+        this.fullGuide = fullGuide;
+    }
+
+    public String getGuideCompatibility() {
+        return guideCompatibility;
+    }
+
+    public void setGuideCompatibility(String guideCompatibility) {
+        this.guideCompatibility = guideCompatibility;
     }
 }
