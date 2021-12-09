@@ -15,7 +15,6 @@ public class ProtocolDao extends AbstractDAO {
         if (protocols.size() == 0) {
             throw new Exception ("Protocol " + protocolId + " not found");
         }
-
         return protocols.get(0);
     }
 
@@ -29,7 +28,6 @@ public class ProtocolDao extends AbstractDAO {
         String sql="select * from protocol p, protocol_associations pa where p.protocol_id=pa.protocol_scge_id and pa.object_scge_id=?";
         ProtocolQuery q= new ProtocolQuery(this.getDataSource(), sql);
         return  execute(q, protocolId);
-
     }
 
 }

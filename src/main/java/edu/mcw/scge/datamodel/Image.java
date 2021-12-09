@@ -11,6 +11,11 @@ public class Image {
     private String fileType;
     private int posIndex;
 
+    //http://localhost:8080/toolkit/store/18000000013/aboveExperimentTable1/sonth.jpg
+    public String getPath() {
+        return "/toolkit/store/" + this.scgeId + "/" + this.bucket + "/" + this.fileName;
+    }
+
     public int getPosIndex() {
         return posIndex;
     }
