@@ -41,6 +41,20 @@ public class ModelDao extends AbstractDAO {
 
         return modelId;
     }
+    public void updateModel(Model model) throws Exception{
+
+        String sql = "update model set type=?, name=?, organism=?, sex=?, rrid=?, source=?, transgene=?, subtype=?, annotated_map=?," +
+                "transgene_description=?, transgene_reporter=?,model_description=?,parental_origin=?,strain_code=?,strain_alias=?,tier=? " +
+                "where model_id = ?";
+
+
+
+        update(sql, model.getType(), model.getName(), model.getOrganism(),model.getSex(), model.getRrid(),
+                model.getSource(),model.getTransgene(),model.getSubtype(),model.getAnnotatedMap(),
+                model.getTransgeneDescription(),model.getTransgeneReporter(),model.getDescription(),model.getParentalOrigin(),
+                model.getStrainCode(),model.getStrainAlias(),model.getTier(),model.getModelId());
+
+    }
 
     public long getModelId(Model model) throws Exception {
 

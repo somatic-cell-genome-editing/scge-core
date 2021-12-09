@@ -37,7 +37,17 @@ public class VectorDao extends AbstractDAO {
 
         return vectorId;
     }
+    public void updateVector(Vector vector) throws Exception{
 
+        String sql = "update vector set name=?,type=?,subtype=?,genome_serotype=?," +
+                "description=?,capsid_variant=?,source=?,lab_id=?,annotated_map=?,titer_method=?," +
+                "capsid_serotype=? where vector_id=?";
+
+
+        update(sql, vector.getName(),vector.getType(),vector.getSubtype(),vector.getGenomeSerotype(),
+                vector.getDescription(),vector.getCapsidVariant(),vector.getSource(),vector.getLabId(),vector.getAnnotatedMap(),
+                vector.getTiterMethod(),vector.getCapsidSerotype(),vector.getVectorId());
+    }
     public long getVectorId(Vector vector) throws Exception {
 
         String sql = "select * from vector where subtype=? and name = ?";

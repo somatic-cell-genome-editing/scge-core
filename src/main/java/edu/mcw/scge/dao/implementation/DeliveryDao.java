@@ -33,7 +33,18 @@ public class DeliveryDao extends AbstractDAO {
 
         return deliveryId;
     }
+    public void updateDelivery(Delivery delivery) throws Exception{
 
+        String sql = "update delivery_system set ds_type=?, ds_subtype=?, ds_name=?, ds_source=?, " +
+                "ds_description=?, ds_lab_id=?, ds_annotated_map=?, ds_rrid=?, " +
+                "ds_np_size=?, ds_mol_targeting_agent=?,tier=? where ds_id=?";
+
+        update(sql,delivery.getType(),delivery.getSubtype(),delivery.getName(),
+                delivery.getSource(),delivery.getDescription(),
+                delivery.getLabId(),delivery.getAnnotatedMap(),
+                delivery.getRrid(),delivery.getNpSize(),delivery.getMolTargetingAgent(),delivery.getTier(),delivery.getId());
+
+    }
     public long getDeliveryId(Delivery delivery) throws Exception {
 
         String sql = "select * from delivery_system where ds_type =? and ds_name=?";
