@@ -29,7 +29,7 @@ public class ModelQuery extends MappingSqlQuery {
         m.setTransgeneReporter(rs.getString("transgene_reporter"));
         m.setAnnotatedMap(rs.getString("annotated_map"));
         m.setParentalOrigin(rs.getString("parental_origin"));
-        m.setStrainCode(rs.getString("strain_code"));
+        m.setDisplayName(rs.getString("display_name"));
       //  m.setStrainAlias(rs.getString("starin_alias"));
         m.setDescription(rs.getString("model_description"));
         m.setTier(rs.getInt("tier"));

@@ -29,22 +29,22 @@ public class ModelDao extends AbstractDAO {
     public long insertModel(Model model) throws Exception{
 
         String sql = "insert into model ( model_id, type, name, organism, sex, rrid, source, transgene, subtype, annotated_map," +
-                "transgene_description, transgene_reporter,model_description,parental_origin,strain_code,strain_alias,tier )" +
-                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "transgene_description, transgene_reporter,model_description,parental_origin,display_name,strain_alias,tier )" +
+                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         long modelId = this.getNextKeyFromSequenceLong("model_seq");
 
         update(sql, modelId, model.getType(), model.getName(), model.getOrganism(),model.getSex(), model.getRrid(),
                 model.getSource(),model.getTransgene(),model.getSubtype(),model.getAnnotatedMap(),
                 model.getTransgeneDescription(),model.getTransgeneReporter(),model.getDescription(),model.getParentalOrigin(),
-                model.getStrainCode(),model.getStrainAlias(),model.getTier());
+                model.getDisplayName(),model.getStrainAlias(),model.getTier());
 
         return modelId;
     }
     public void updateModel(Model model) throws Exception{
 
         String sql = "update model set type=?, name=?, organism=?, sex=?, rrid=?, source=?, transgene=?, subtype=?, annotated_map=?," +
-                "transgene_description=?, transgene_reporter=?,model_description=?,parental_origin=?,strain_code=?,strain_alias=?,tier=? " +
+                "transgene_description=?, transgene_reporter=?,model_description=?,parental_origin=?,display_name=?,strain_alias=?,tier=? " +
                 "where model_id = ?";
 
 
@@ -52,7 +52,7 @@ public class ModelDao extends AbstractDAO {
         update(sql, model.getType(), model.getName(), model.getOrganism(),model.getSex(), model.getRrid(),
                 model.getSource(),model.getTransgene(),model.getSubtype(),model.getAnnotatedMap(),
                 model.getTransgeneDescription(),model.getTransgeneReporter(),model.getDescription(),model.getParentalOrigin(),
-                model.getStrainCode(),model.getStrainAlias(),model.getTier(),model.getModelId());
+                model.getDisplayName(),model.getStrainAlias(),model.getTier(),model.getModelId());
 
     }
 

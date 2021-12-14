@@ -16,7 +16,7 @@ public class Model {
      private String transgeneReporter;
     private String parentalOrigin;
     private String description;
-    private String strainCode;
+    private String displayName;
     private String strainAlias;
     private int tier;
 
@@ -140,19 +140,19 @@ public class Model {
         this.description = description;
     }
 
-    public String getStrainCode() {
-        return strainCode;
-    }
-
-    public void setStrainCode(String strainCode) {
-        this.strainCode = strainCode;
-    }
-
     public String getStrainAlias() {
         return strainAlias;
     }
 
     public void setStrainAlias(String strainAlias) {
         this.strainAlias = strainAlias;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }
