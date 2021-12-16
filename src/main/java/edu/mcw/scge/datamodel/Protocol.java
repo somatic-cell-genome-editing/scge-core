@@ -1,5 +1,9 @@
 package edu.mcw.scge.datamodel;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+
 public class Protocol {
     String title;
     String description;
@@ -8,6 +12,7 @@ public class Protocol {
     private String filename;
     private String xref;
     private String keywords;
+    private MultipartFile file;
 
     public int getTier() {
         return tier;
@@ -63,5 +68,13 @@ public class Protocol {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 }
