@@ -27,6 +27,13 @@ public class ImageDao extends AbstractDAO {
         return execute(q, scgeId, bucket);
     }
 
+    public List<Image> getImage(long scgeId) throws Exception {
+        String sql="select * from images where scge_id=?";
+        ImageQuery q=new ImageQuery(this.getDataSource(), sql);
+        return execute(q, scgeId);
+    }
+
+
     public void deleteImage(long scgeId, String bucket) throws Exception {
         String sql="delete from images where scge_id=? and bucket=?";
         //ImageQuery q=new ImageQuery(this.getDataSource(), sql);
