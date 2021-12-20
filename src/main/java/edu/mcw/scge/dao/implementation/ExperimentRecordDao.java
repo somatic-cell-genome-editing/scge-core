@@ -85,15 +85,23 @@ public class ExperimentRecordDao extends AbstractDAO {
 
         String sql = "insert into experiment_record (experiment_id,name,study_id, " +
                 "editor_id,ds_id,model_id,sample_prep,application_method_id,experiment_record_id,age, genotype,sex," +
-                "tissue_id, cell_type  ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "tissue_id, cell_type,organ_system  ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         long experimentId = this.getNextKeyFromSequenceLong("experiment_seq");
         
         update(sql, expRecord.getExperimentId(),expRecord.getExperimentName(),expRecord.getStudyId(), expRecord.getEditorId(),
                 expRecord.getDeliverySystemId(),expRecord.getModelId(),expRecord.getSamplePrep(),
                 expRecord.getApplicationMethodId(),experimentId, expRecord.getAge(),expRecord.getGenotype(),
-                expRecord.getSex(),expRecord.getTissueId(),expRecord.getCellType());
+                expRecord.getSex(),expRecord.getTissueId(),expRecord.getCellType(),expRecord.getOrganSystemID());
 
         return experimentId;
+    }
+    public long getExpRecordId(ExperimentRecord experimentRecord) throws Exception {
+        String sql="select * from experiment_record where name =? and study_id=? and editor_id = ? and ds_id = ?  and model_id = ? and sex = ?" +
+                "and application_method_id = ? and tissue_id = ? and cell_type = ? ";
+        ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
+        List<ExperimentRecord> list = execute(q,sql,experimentRecord.getExperimentName(),  experimentRecord.getStudyId(),experimentRecord.getEditorId(),experimentRecord.getDeliverySystemId(),
+                experimentRecord.getModelId(),experimentRecord.getSex(),experimentRecord.getApplicationMethodId(),experimentRecord.getTissueId(),experimentRecord.getCellType());
+        return list.isEmpty() ? 0 : list.get(0).getExperimentRecordId();
     }
 }

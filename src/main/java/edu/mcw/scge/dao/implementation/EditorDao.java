@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class EditorDao extends AbstractDAO {
     public List<Editor> getAllEditors() throws Exception {
-        String sql="select * from editor e left outer join genome_info g  on e.editor_id=g.genome_id ";
+        String sql="select * from editor e left outer join genome_info g  on e.editor_id=g.genome_id order by e.symbol";
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
         return (List<Editor>)q.execute();
     }
@@ -25,7 +25,7 @@ public class EditorDao extends AbstractDAO {
                 "    left outer join study_associations sa on s.study_id=sa.study_id" +
                 "    left outer join person_info p on (p.group_id=s.group_id or p.group_id=sa.group_id)" +
                 "    where p.person_id=? ) union" +
-                "            (select ed.* from editor ed  where ed.tier=4 )";
+                "            (select ed.* from editor ed  where ed.tier=4 ) order by e.symbol";
 
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
         return execute(q, personId);
@@ -66,7 +66,20 @@ public class EditorDao extends AbstractDAO {
 
         return editorId;
     }
+    public void updateEditor(Editor editor) throws Exception{
 
+        String sql = "update editor set subtype=?, species=?, pam_preference=?, editor_variant=?, \n" +
+                "fusion=?, activity=?, dsb_cleavage_type=?, target_sequence=?, source=?, \n" +
+                "type=?, symbol=?, alias=?,  substrate_target=?, protein_sequence=?, editor_description=?, annotated_map=?,tier=? " +
+                "where editor_id=?";
+
+        update(sql,editor.getSubType(),editor.getSpecies(),editor.getPamPreference(),
+                editor.getEditorVariant(),editor.getFusion(),editor.getActivity(),editor.getDsbCleavageType(),
+                editor.getTarget_sequence(),editor.getSource(),editor.getType(),
+                editor.getSymbol(),editor.getAlias(),editor.getSubstrateTarget(), editor.getProteinSequence(),
+                editor.getEditorDescription(),editor.getAnnotatedMap(),editor.getTier(),editor.getId());
+
+    }
     public void insertGenomeInfo(Editor editor) throws Exception{
         String sql = "insert into genome_info (genome_id, target_locus, target_sequence, assembly, " +
                 "chromosome, start, stop, strand, species) " +
@@ -74,6 +87,15 @@ public class EditorDao extends AbstractDAO {
 
         update(sql, editor.getId(),editor.getTargetLocus(),editor.getTarget_sequence(),editor.getAssembly(),
                 editor.getChr(),editor.getStart(),editor.getStop(),editor.getStrand(),editor.getSpecies());
+
+    }
+    public void updateGenomeInfo(Editor editor) throws Exception{
+        String sql = "update genome_info set target_locus=?, target_sequence=?, assembly=?, " +
+                "chromosome=?, start=?, stop=?, strand=?, species=? " +
+                "where genome_id = ? ";
+
+        update(sql, editor.getTargetLocus(),editor.getTarget_sequence(),editor.getAssembly(),
+                editor.getChr(),editor.getStart(),editor.getStop(),editor.getStrand(),editor.getSpecies(),editor.getId());
 
     }
     public long getEditorId(Editor editor) throws Exception {

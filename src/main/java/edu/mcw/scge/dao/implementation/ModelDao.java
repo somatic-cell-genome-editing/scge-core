@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ModelDao extends AbstractDAO {
     public List<Model> getModels() throws Exception {
-        String sql="select * from model";
+        String sql="select * from model order by name";
         ModelQuery q=new ModelQuery(this.getDataSource(), sql);
         List<Model> models=execute(q);
         return models;
@@ -29,17 +29,31 @@ public class ModelDao extends AbstractDAO {
     public long insertModel(Model model) throws Exception{
 
         String sql = "insert into model ( model_id, type, name, organism, sex, rrid, source, transgene, subtype, annotated_map," +
-                "transgene_description, transgene_reporter,model_description,parental_origin,strain_code,strain_alias,tier )" +
-                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "transgene_description, transgene_reporter,model_description,parental_origin,display_name,strain_alias,tier )" +
+                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         long modelId = this.getNextKeyFromSequenceLong("model_seq");
 
         update(sql, modelId, model.getType(), model.getName(), model.getOrganism(),model.getSex(), model.getRrid(),
                 model.getSource(),model.getTransgene(),model.getSubtype(),model.getAnnotatedMap(),
                 model.getTransgeneDescription(),model.getTransgeneReporter(),model.getDescription(),model.getParentalOrigin(),
-                model.getStrainCode(),model.getStrainAlias(),model.getTier());
+                model.getDisplayName(),model.getStrainAlias(),model.getTier());
 
         return modelId;
+    }
+    public void updateModel(Model model) throws Exception{
+
+        String sql = "update model set type=?, name=?, organism=?, sex=?, rrid=?, source=?, transgene=?, subtype=?, annotated_map=?," +
+                "transgene_description=?, transgene_reporter=?,model_description=?,parental_origin=?,display_name=?,strain_alias=?,tier=? " +
+                "where model_id = ?";
+
+
+
+        update(sql, model.getType(), model.getName(), model.getOrganism(),model.getSex(), model.getRrid(),
+                model.getSource(),model.getTransgene(),model.getSubtype(),model.getAnnotatedMap(),
+                model.getTransgeneDescription(),model.getTransgeneReporter(),model.getDescription(),model.getParentalOrigin(),
+                model.getDisplayName(),model.getStrainAlias(),model.getTier(),model.getModelId());
+
     }
 
     public long getModelId(Model model) throws Exception {
