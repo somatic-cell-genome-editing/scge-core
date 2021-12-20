@@ -25,7 +25,7 @@ public class EditorDao extends AbstractDAO {
                 "    left outer join study_associations sa on s.study_id=sa.study_id" +
                 "    left outer join person_info p on (p.group_id=s.group_id or p.group_id=sa.group_id)" +
                 "    where p.person_id=? ) union" +
-                "            (select ed.* from editor ed  where ed.tier=4 ) order by e.symbol";
+                "            (select ed.* from editor ed  where ed.tier=4 ) order by symbol";
 
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
         return execute(q, personId);
