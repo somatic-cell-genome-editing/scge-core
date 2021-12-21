@@ -40,6 +40,11 @@ public class ImageDao extends AbstractDAO {
         update(sql, scgeId, bucket);
     }
 
+    public void updateImageLegend(long scgeId, String bucket, String legend) throws Exception{
+        String sql = "update images set legend=? where scge_id=? and bucket=?";
+        update(sql, legend,scgeId,bucket );
+    }
+
     public void insertImage(Image image) throws Exception{
 
         String sql = "insert into images ( scge_id, file_name, image, bucket, legend, title, file_type, pos_index )\n" +
