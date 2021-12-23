@@ -86,6 +86,31 @@ public class ImageDao extends AbstractDAO {
         update(sql, legend,scgeId,bucket );
     }
 
+    public void updateImage(Image image) throws Exception {
+        String sql = "update images set file_name='" + image.getFileName() + "', image=?, thumbnail=?,image_700_wide=?, legend='" + image.getLegend() + "', " +
+                " title='" + image.getTitle() + "', file_type='" + image.getFileType() + "', pos_index=" + image.getPosIndex() + " where scge_id=" + image.getScgeId() + " and bucket='" + image.getBucket() + "'";
+
+        Connection conn=null;
+        PreparedStatement pst =null;
+
+        try {
+            conn = this.getDataSource().getConnection();
+            pst = conn.prepareStatement(sql);
+            pst.setBinaryStream(1, new ByteArrayInputStream(image.getImage()), image.getImage().length);
+            pst.setBinaryStream(2, new ByteArrayInputStream(image.getThumbnail()), image.getThumbnail().length);
+            pst.setBinaryStream(3, new ByteArrayInputStream(image.getImage700Wide()), image.getImage700Wide().length);
+            pst.executeUpdate();
+        } finally {
+            pst.close();
+            conn.close();
+        }
+
+        //return editorId;
+
+
+    }
+
+
     public void insertImage(Image image) throws Exception{
 
         String sql = "insert into images ( scge_id, file_name, image, thumbnail,image_700_wide,bucket, legend, title, file_type, pos_index )\n" +
