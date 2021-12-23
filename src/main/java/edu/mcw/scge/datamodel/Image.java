@@ -5,11 +5,29 @@ public class Image {
     private long scgeId;
     private String fileName;
     private byte[] image;
+    private byte[] thumbnail;
+    private byte[] image700Wide;
     private String bucket;
     private String legend;
     private String title;
     private String fileType;
     private int posIndex;
+
+    public byte[] getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(byte[] thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public byte[] getImage700Wide() {
+        return image700Wide;
+    }
+
+    public void setImage700Wide(byte[] image700Wide) {
+        this.image700Wide = image700Wide;
+    }
 
     //http://localhost:8080/toolkit/store/18000000013/aboveExperimentTable1/sonth.jpg
     public String getPath() {
