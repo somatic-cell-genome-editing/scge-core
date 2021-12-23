@@ -22,6 +22,8 @@ public class ImageQuery extends MappingSqlQuery {
         i.setScgeId(rs.getLong("scge_id"));
         i.setFileName(rs.getString("file_name"));
         i.setImage(rs.getBytes("image"));
+        i.setThumbnail(rs.getBytes("thumbnail"));
+        i.setImage700Wide(rs.getBytes("image_700_wide"));
         i.setBucket(rs.getString("bucket"));
         i.setLegend(rs.getString("legend"));
         i.setTitle(rs.getString("title"));
