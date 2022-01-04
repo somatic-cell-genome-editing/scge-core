@@ -39,6 +39,15 @@ public class ExperimentRecord {
   //  private String vector;
     private String dosage;
     private String injectionFrequency;
+    private String condition;
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
 
     public String getInjectionFrequency() {
         return injectionFrequency;
