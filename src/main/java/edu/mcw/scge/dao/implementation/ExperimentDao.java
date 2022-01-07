@@ -89,7 +89,7 @@ public class ExperimentDao extends AbstractDAO {
     }
     public List<String> getExperimentRecordSexList(long experimentId) throws Exception {
         String sql="select distinct ex.sex from experiment_record ex " +
-                "where ex.experiment_id=?";
+                "where ex.experiment_id=? and ex.sex is not null and ex.sex != ''";
 
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         List<String> returnVal = execute(q, experimentId);
