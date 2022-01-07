@@ -19,7 +19,7 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         try {
             e.setExperimentName(rs.getString("name"));
         }catch (Exception exception){}
-     //   e.setExperimentRecordName(rs.getString("name"));
+        e.setExperimentRecordName(rs.getString("name"));
         e.setStudyId(rs.getInt("study_id"));
      //   e.setGuideId(rs.getInt("guide_id"));
         e.setDeliverySystemId(rs.getLong("ds_id"));
