@@ -2,6 +2,7 @@ package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
 import edu.mcw.scge.dao.spring.IntListQuery;
+import edu.mcw.scge.dao.spring.PersonQuery;
 import edu.mcw.scge.dao.spring.StudyAssociationQuery;
 import edu.mcw.scge.dao.spring.StudyQuery;
 import edu.mcw.scge.datamodel.*;
@@ -291,6 +292,14 @@ public class StudyDao extends AbstractDAO {
                 " and s.group_id=?";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q, groupId);
+    }
+    public List<Person> getStudyPOC(int studyId) throws Exception{
+        String sql="select * from person where person_id in " +
+                "(select person_id from person_info where role_key in (" +
+                "select role_key from scge_roles where role='poc' or role='POC') " +
+                "and group_id in (select group_id from study where study_id=?))";
+        PersonQuery query=new PersonQuery(this.getDataSource(), sql);
+        return execute(query, studyId);
     }
     public static void main(String[] args){
         StudyDao sdao=new StudyDao();
