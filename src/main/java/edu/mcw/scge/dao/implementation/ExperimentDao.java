@@ -113,7 +113,7 @@ public class ExperimentDao extends AbstractDAO {
                 "left outer join application_method a on ex.application_method_id = a.application_method_id " +
 
                 "left outer join model m on ex.model_id = m.model_id " +
-                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
+                "left outer join hr_donor h on (h.hrdonor_id= ex.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
                 "where ex.experiment_id=? order by ex.name";
@@ -128,7 +128,7 @@ public class ExperimentDao extends AbstractDAO {
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +
                 "left outer join model m on ex.model_id = m.model_id " +
-                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
+                "left outer join hr_donor h on (h.hrdonor_id= ex.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
                 "inner join experiment_result r on ex.experiment_record_id = r.experiment_record_id";
@@ -170,7 +170,7 @@ public class ExperimentDao extends AbstractDAO {
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +
                 "left outer join model m on ex.model_id = m.model_id " +
-                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
+                "left outer join hr_donor h on (h.hrdonor_id= ex.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
                 // "left outer join guide g on ex.guide_id = g.guide_id " +
@@ -186,7 +186,7 @@ public class ExperimentDao extends AbstractDAO {
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +
                 "left outer join model m on ex.model_id = m.model_id " +
-                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
+                "left outer join hr_donor h on (h.hrdonor_id= ex.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
                 // "left outer join guide g on ex.guide_id = g.guide_id " +
@@ -204,7 +204,7 @@ public class ExperimentDao extends AbstractDAO {
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +
                 "left outer join model m on ex.model_id = m.model_id " +
-                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
+                "left outer join hr_donor h on (h.hrdonor_id= ex.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 // "left outer join guide g on ex.guide_id = g.guide_id " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
@@ -256,7 +256,7 @@ public class ExperimentDao extends AbstractDAO {
                 "inner join editor e on ex.editor_id = e.editor_id \n" +
                 "inner join delivery_system d on ex.ds_id = d.ds_id " +
                 "inner join model m on ex.model_id = m.model_id \n" +
-                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
+                "left outer join hr_donor h on (h.hrdonor_id= ex.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
                 //    "inner join vector v on ex.vector_id = v.vector_id " +
