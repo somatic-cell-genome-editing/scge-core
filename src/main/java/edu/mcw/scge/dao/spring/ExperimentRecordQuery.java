@@ -69,6 +69,10 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         try {
             e.setSex(rs.getString("sex"));
         }catch (Exception e1){}
+        try{
+            e.setHrdonorId(Long.valueOf(rs.getString("hrdonor_id")));
+            e.setHrdonorName("hrdonorName");
+        }catch (Exception e1){}
         return e;
 
 

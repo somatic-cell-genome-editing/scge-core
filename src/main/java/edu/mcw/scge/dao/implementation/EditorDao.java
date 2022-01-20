@@ -52,8 +52,8 @@ public class EditorDao extends AbstractDAO {
 
         String sql = "insert into editor ( editor_id, subtype, species, pam_preference, editor_variant, \n" +
                 "fusion, activity, dsb_cleavage_type, target_sequence, source, \n" +
-                "type, symbol, alias,  substrate_target, protein_sequence, editor_description, annotated_map,tier ) " +
-                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "type, symbol, alias,  substrate_target, protein_sequence, editor_description, annotated_map,tier,orientation ) " +
+                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         long editorId = this.getNextKeyFromSequenceLong("editor_seq");
 
@@ -62,7 +62,7 @@ public class EditorDao extends AbstractDAO {
                 editor.getEditorVariant(),editor.getFusion(),editor.getActivity(),editor.getDsbCleavageType(),
                 editor.getTarget_sequence(),editor.getSource(),editor.getType(),
                 editor.getSymbol(),editor.getAlias(),editor.getSubstrateTarget(), editor.getProteinSequence(),
-                editor.getEditorDescription(),editor.getAnnotatedMap(),editor.getTier());
+                editor.getEditorDescription(),editor.getAnnotatedMap(),editor.getTier(),editor.getOrientation());
 
         return editorId;
     }
@@ -70,14 +70,14 @@ public class EditorDao extends AbstractDAO {
 
         String sql = "update editor set subtype=?, species=?, pam_preference=?, editor_variant=?, \n" +
                 "fusion=?, activity=?, dsb_cleavage_type=?, target_sequence=?, source=?, \n" +
-                "type=?, symbol=?, alias=?,  substrate_target=?, protein_sequence=?, editor_description=?, annotated_map=?,tier=? " +
+                "type=?, symbol=?, alias=?,  substrate_target=?, protein_sequence=?, editor_description=?, annotated_map=?,tier=?,orientation=? " +
                 "where editor_id=?";
 
         update(sql,editor.getSubType(),editor.getSpecies(),editor.getPamPreference(),
                 editor.getEditorVariant(),editor.getFusion(),editor.getActivity(),editor.getDsbCleavageType(),
                 editor.getTarget_sequence(),editor.getSource(),editor.getType(),
                 editor.getSymbol(),editor.getAlias(),editor.getSubstrateTarget(), editor.getProteinSequence(),
-                editor.getEditorDescription(),editor.getAnnotatedMap(),editor.getTier(),editor.getId());
+                editor.getEditorDescription(),editor.getAnnotatedMap(),editor.getTier(),editor.getOrientation(),editor.getId());
 
     }
     public void insertGenomeInfo(Editor editor) throws Exception{

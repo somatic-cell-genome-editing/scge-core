@@ -96,14 +96,24 @@ public class ExperimentDao extends AbstractDAO {
 
         return returnVal;
     }
+    public List<String> getExperimentRecordHrdonorList(long experimentId) throws Exception {
+        String sql="select distinct h.lab_id from experiment_record ex " +
+                " inner join experiment x on x.experiment_id=ex.experiment_id " +
+                " inner join hr_donor h on ex.hrdonor_id = h.hrdonor_id " +
+                " where ex.experiment_id=? order by h.lab_id";
+
+        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+        return execute(q, experimentId);
+    }
     public List<ExperimentRecord> getExperimentRecords(long experimentId) throws Exception {
-        String sql="select ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, x.type, ot.term, ct.term as cellTerm, a.*  from experiment_record ex " +
+        String sql="select ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm, a.*  from experiment_record ex " +
                 " left outer join experiment x on x.experiment_id=ex.experiment_id " +
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +
                 "left outer join application_method a on ex.application_method_id = a.application_method_id " +
 
                 "left outer join model m on ex.model_id = m.model_id " +
+                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
                 "where ex.experiment_id=? order by ex.name";
@@ -113,11 +123,12 @@ public class ExperimentDao extends AbstractDAO {
     }
 
     public List<ExperimentRecord> getAllExperimentRecords() throws Exception {
-        String sql="select ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
+        String sql="select ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, h.lab_id as hrdonorName,x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
                 " left outer join experiment x on x.experiment_id=ex.experiment_id " +
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +
                 "left outer join model m on ex.model_id = m.model_id " +
+                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
                 "inner join experiment_result r on ex.experiment_record_id = r.experiment_record_id";
@@ -154,11 +165,12 @@ public class ExperimentDao extends AbstractDAO {
     }
 
     public List<ExperimentRecord> getExperimentsByEditor(long editorId) throws Exception {
-        String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
+        String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
                 " left outer join experiment x on x.experiment_id=ex.experiment_id " +
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +
                 "left outer join model m on ex.model_id = m.model_id " +
+                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
                 // "left outer join guide g on ex.guide_id = g.guide_id " +
@@ -169,11 +181,12 @@ public class ExperimentDao extends AbstractDAO {
         return execute(q, editorId);
     }
     public List<ExperimentRecord> getExperimentsByEditorNExperiment(long editorId, long experimentId) throws Exception {
-        String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
+        String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
                 " left outer join experiment x on x.experiment_id=ex.experiment_id " +
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +
                 "left outer join model m on ex.model_id = m.model_id " +
+                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
                 // "left outer join guide g on ex.guide_id = g.guide_id " +
@@ -186,11 +199,12 @@ public class ExperimentDao extends AbstractDAO {
     }
 
     public List<ExperimentRecord> getExperimentsByModel(long modelId) throws Exception {
-        String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
+        String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, h.lab_id as hrdonorName,x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
                 " left outer join experiment x on x.experiment_id=ex.experiment_id " +
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +
                 "left outer join model m on ex.model_id = m.model_id " +
+                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 // "left outer join guide g on ex.guide_id = g.guide_id " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
@@ -202,11 +216,12 @@ public class ExperimentDao extends AbstractDAO {
     }
 
     public List<ExperimentRecord> getExperimentsByDeliverySystem(long dsId) throws Exception {
-        String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
+        String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
                 " left outer join experiment x on x.experiment_id=ex.experiment_id " +
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +
                 "left outer join model m on ex.model_id = m.model_id " +
+                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 //  "left outer join guide g on ex.guide_id = g.guide_id " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
@@ -218,11 +233,12 @@ public class ExperimentDao extends AbstractDAO {
     }
 
     public List<ExperimentRecord> getExperimentsByVector(long vectorId) throws Exception {
-        String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, x.type, ot.term, ct.term as cellTerm from experiment_record ex \n" +
+        String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm from experiment_record ex \n" +
                 "left outer join experiment x on x.experiment_id=ex.experiment_id \n" +
                 "left outer join editor e on ex.editor_id = e.editor_id \n" +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id \n" +
                 "left outer join model m on ex.model_id = m.model_id \n" +
+                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
                 "left outer join study s on ex.study_id = s.study_id \n" +
@@ -233,13 +249,14 @@ public class ExperimentDao extends AbstractDAO {
     }
 
     public List<ExperimentRecord> getExperimentsByGuide(long guideId) throws Exception {
-        String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
+        String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
                 "inner join guide_associations ga on ex.experiment_record_id=ga.experiment_record_id \n" +
                 //"inner join guide g on ga.guide_id = g.guide_id\n" +
                 "inner join experiment x on x.experiment_id=ex.experiment_id " +
                 "inner join editor e on ex.editor_id = e.editor_id \n" +
                 "inner join delivery_system d on ex.ds_id = d.ds_id " +
                 "inner join model m on ex.model_id = m.model_id \n" +
+                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
                 //    "inner join vector v on ex.vector_id = v.vector_id " +
