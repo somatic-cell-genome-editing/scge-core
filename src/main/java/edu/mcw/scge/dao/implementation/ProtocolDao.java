@@ -53,7 +53,7 @@ public class ProtocolDao extends AbstractDAO {
                 "filename,xref,keywords )" +
                 "values (?,?,?,?,?,?,?)";
 
-        long protocolId = this.getNextKeyFromSequenceLong("protocol_seq");
+        long protocolId = this.getNextKeyFromSequence("protocol_seq");
 
         update(sql, protocol.getTitle(),protocol.getDescription(),protocolId,protocol.getTier(),protocol.getFilename(),
                 protocol.getXref(),protocol.getKeywords());

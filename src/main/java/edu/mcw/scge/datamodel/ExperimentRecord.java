@@ -9,6 +9,7 @@ public class ExperimentRecord {
     private int studyId;
     private long editorId;
     private long deliverySystemId;
+    private long hrdonorId;
 
     public String getOrganSystemID() {
         return organSystemID;
@@ -21,7 +22,6 @@ public class ExperimentRecord {
     //  private int vectorId;
     private long modelId;
     //private int guideId;
-    private String samplePrep;
     private int applicationMethodId;
     private String editorSymbol;
     private String deliverySystemType;
@@ -41,6 +41,7 @@ public class ExperimentRecord {
     private String dosage;
     private String injectionFrequency;
     private String condition;
+    private String hrdonorName;
 
     public String getExperimentRecordName() {
         return experimentRecordName;
@@ -210,13 +211,6 @@ public class ExperimentRecord {
         this.guideId = guideId;
     }
 */
-    public String getSamplePrep() {
-        return samplePrep;
-    }
-
-    public void setSamplePrep(String samplePrep) {
-        this.samplePrep = samplePrep;
-    }
 
     public int getApplicationMethodId() {
         return applicationMethodId;
@@ -282,4 +276,20 @@ public class ExperimentRecord {
         this.vector = vector;
     }
     */
+
+    public long getHrdonorId() {
+        return hrdonorId;
+    }
+
+    public void setHrdonorId(long hrdonorId) {
+        this.hrdonorId = hrdonorId;
+    }
+
+    public String getHrdonorName() {
+        return hrdonorName;
+    }
+
+    public void setHrdonorName(String hrdonorName) {
+        this.hrdonorName = hrdonorName;
+    }
 }

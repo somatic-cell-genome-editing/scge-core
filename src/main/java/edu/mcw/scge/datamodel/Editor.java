@@ -27,6 +27,7 @@ public class Editor {
     private String start;
     private String stop;
     private String strand;
+    private String orientation;
 
     private int tier;
 
@@ -220,5 +221,13 @@ public class Editor {
 
     public void setStrand(String strand) {
         this.strand = strand;
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation;
     }
 }

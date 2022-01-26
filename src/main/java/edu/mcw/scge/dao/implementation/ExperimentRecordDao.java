@@ -41,10 +41,11 @@ public class ExperimentRecordDao extends AbstractDAO {
     */
 
     public List<ExperimentRecord> getExperimentRecordsByStudyId(int studyId) throws Exception {
-        String sql="select s.study, r.*, app.*, e.symbol, d.ds_type, m.name as modelName, x.type from study s join experiment x on (s.study_id=x.study_id) \n" +
+        String sql="select s.study, r.*, app.*, e.symbol, d.ds_type, m.name as modelName,h.lab_id as hrdonorName, x.type from study s join experiment x on (s.study_id=x.study_id) \n" +
                 "inner join experiment_record r on (r.experiment_id=x.experiment_id) \n" +
                 "left outer join editor e on (e.editor_id= r.editor_id) \n" +
                 "left outer join delivery_system d on (d.ds_id= r.ds_id) \n" +
+                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
                 "left outer join application_method app on (app.application_method_id= r.application_method_id) \n" +
                 "left outer join model m on (m.model_id =r.model_id) \n" +
                 "where s.study_id=?";
@@ -67,13 +68,14 @@ public class ExperimentRecordDao extends AbstractDAO {
     */
 
    public List<ExperimentRecord> getExperimentRecordById(long expRecId) throws Exception {
-        String sql="select s.study, r.*, e.symbol, d.ds_type, m.name as modelName, g.guide, x.type" +
+        String sql="select s.study, r.*, e.symbol, d.ds_type, m.name as modelName, g.guide, h.lab_id as hrdonorName, x.type" +
                 " from  experiment x  " +
                 "left join experiment_record r on (r.experiment_id=x.experiment_id) " +
                 " left outer join study s on r.study_id = s.study_id " +
                 "left join editor e on (e.editor_id= r.editor_id) " +
                 "left join delivery_system d on (d.ds_id= r.ds_id) " +
                 "left join guide g on (r.guide_id=g.guide_id) " +
+                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
                 //  "left join target t on (t.target_id=r.target_id) " +
                 "left join model m on (m.model_id =r.model_id) " +
                 "where r.experiment_record_id=?";
@@ -84,13 +86,13 @@ public class ExperimentRecordDao extends AbstractDAO {
 	public long insertExperimentRecord(ExperimentRecord expRecord) throws Exception{
 
         String sql = "insert into experiment_record (experiment_id,name,study_id, " +
-                "editor_id,ds_id,model_id,sample_prep,application_method_id,experiment_record_id,age, genotype,sex," +
+                "editor_id,ds_id,model_id,hrdonor_id,application_method_id,experiment_record_id,age, genotype,sex," +
                 "tissue_id, cell_type,organ_system  ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         long experimentId = this.getNextKeyFromSequenceLong("experiment_seq");
         
         update(sql, expRecord.getExperimentId(),expRecord.getExperimentName(),expRecord.getStudyId(), expRecord.getEditorId(),
-                expRecord.getDeliverySystemId(),expRecord.getModelId(),expRecord.getSamplePrep(),
+                expRecord.getDeliverySystemId(),expRecord.getModelId(),expRecord.getHrdonorId(),
                 expRecord.getApplicationMethodId(),experimentId, expRecord.getAge(),expRecord.getGenotype(),
                 expRecord.getSex(),expRecord.getTissueId(),expRecord.getCellType(),expRecord.getOrganSystemID());
 

@@ -69,7 +69,23 @@ public class AccessDao extends AbstractDAO {
             return false;
         }
     }
+    public boolean verifyHrdonorAccess(HRDonor h, Person p) throws Exception {
+        if (h.getTier() == 3 || h.getTier()==4) {
+            return true;
+        }
 
+        String sql = "select distinct er.hrdonor_id from person_info pi, study s, experiment_record er " +
+                "where pi.person_id=? and er.hrdonor_id=? and pi.group_id=s.group_id and er.study_id=s.study_id and s.tier in (0,1,2)";
+        LongListQuery q=new LongListQuery(this.getDataSource(), sql);
+        List<Long> found = execute(q,p.getId(),h.getId());
+
+
+        if (found.size()>0) {
+            return true;
+        }else {
+            return false;
+        }
+    }
     public boolean verifyVectorAccess(Vector v, Person p) throws Exception {
         if (v.getTier() == 3 || v.getTier()==4) {
             return true;
