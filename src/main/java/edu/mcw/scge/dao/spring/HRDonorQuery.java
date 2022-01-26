@@ -20,13 +20,14 @@ public class HRDonorQuery extends MappingSqlQuery {
     @Override
     protected Object mapRow(ResultSet rs, int rowNum) throws SQLException {
         HRDonor h = new HRDonor();
-        h.setId(rs.getInt("hrdonor_id"));
+        h.setId(rs.getLong("hrdonor_id"));
         h.setSequence(rs.getString("sequence"));
         h.setSource(rs.getString("source"));
         h.setLabId(rs.getString("lab_id"));
         h.setDescription(rs.getString("description"));
         h.setModification(rs.getString("modification"));
         h.setType(rs.getString("type"));
+        h.setTier(rs.getInt("tier"));
         return h;
     }
 

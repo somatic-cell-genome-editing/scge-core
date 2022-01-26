@@ -227,6 +227,14 @@ public class StudyDao extends AbstractDAO {
         return execute(q, modelId);
     }
 
+    public List<Study> getStudiesByHrDonor(long hrdonorId) throws Exception{
+        String sql = "select distinct s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName " +
+                "from study s, institution i, person p, person pi, hr_donor h, experiment_record ex " +
+                "where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id and h.hrdonor_id=? and ex.hrdonor_id=h.hrdonor_id and ex.study_id=s.study_id ";
+        StudyQuery q=new StudyQuery(this.getDataSource(), sql);
+        return execute(q, hrdonorId);
+    }
+
     public List<Study> getStudiesByGuide(long guideId) throws Exception{
         String sql = "select distinct s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName \n" +
                 "from study s inner join institution i on s.lab_id=i.institution_id \n" +

@@ -17,18 +17,18 @@ public class HRDonorDao extends AbstractDAO {
         HRDonorQuery q=new HRDonorQuery(this.getDataSource(), sql);
         return (List<HRDonor>)q.execute();
     }
-    public List<HRDonor> getHRDonorById(int id) throws Exception {
+    public List<HRDonor> getHRDonorById(long id) throws Exception {
         String sql="select * from HR_Donor where hrdonor_id=?";
         HRDonorQuery q=new HRDonorQuery(this.getDataSource(), sql);
         return execute(q, id);
     }
 
-    public int insertHRDonor(HRDonor hrdonor) throws Exception{
+    public long insertHRDonor(HRDonor hrdonor) throws Exception{
 
         String sql = "insert into hr_donor (hrdonor_id,type,lab_id,source,sequence,modification,description  )" +
                 " values (?,?,?,?,?,?,?)";
 
-        int donorId = this.getNextKeyFromSequence("donor_seq");
+        long donorId = this.getNextKeyFromSequence("donor_seq");
 
 
         update(sql, donorId,hrdonor.getType(),hrdonor.getLabId(),hrdonor.getSource(),hrdonor.getSequence(),
@@ -37,7 +37,7 @@ public class HRDonorDao extends AbstractDAO {
         return donorId;
     }
 
-    public int getHRDonorId(HRDonor hrdonor) throws Exception {
+    public long getHRDonorId(HRDonor hrdonor) throws Exception {
 
         String sql = "select * from hr_donor where sequence=? and modification = ?";
 

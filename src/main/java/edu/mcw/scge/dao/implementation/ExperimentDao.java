@@ -221,7 +221,7 @@ public class ExperimentDao extends AbstractDAO {
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +
                 "left outer join model m on ex.model_id = m.model_id " +
-                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
+                "left outer join hr_donor h on (h.hrdonor_id= ex.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 //  "left outer join guide g on ex.guide_id = g.guide_id " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
@@ -232,13 +232,30 @@ public class ExperimentDao extends AbstractDAO {
         return execute(q, dsId);
     }
 
+    public List<ExperimentRecord> getExperimentsByHrdonor(long hrdonorId) throws Exception {
+        String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
+                " left outer join experiment x on x.experiment_id=ex.experiment_id " +
+                "left outer join editor e on ex.editor_id = e.editor_id " +
+                "left outer join delivery_system d on ex.ds_id = d.ds_id " +
+                "left outer join model m on ex.model_id = m.model_id " +
+                "left outer join hr_donor h on (h.hrdonor_id= ex.hrdonor_id) \n" +
+                "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
+                //  "left outer join guide g on ex.guide_id = g.guide_id " +
+                "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
+                "left outer join study s on ex.study_id = s.study_id " +
+                // "left outer join vector v on ex.vector_id = v.vector_id " +
+                "where ex.hrdonor_id=?";
+        ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
+        return execute(q, hrdonorId);
+    }
+
     public List<ExperimentRecord> getExperimentsByVector(long vectorId) throws Exception {
         String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm from experiment_record ex \n" +
                 "left outer join experiment x on x.experiment_id=ex.experiment_id \n" +
                 "left outer join editor e on ex.editor_id = e.editor_id \n" +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id \n" +
                 "left outer join model m on ex.model_id = m.model_id \n" +
-                "left outer join hr_donor h on (h.hrdonor_id= r.hrdonor_id) \n" +
+                "left outer join hr_donor h on (h.hrdonor_id= ex.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
                 "left outer join study s on ex.study_id = s.study_id \n" +
