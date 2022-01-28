@@ -310,7 +310,6 @@ public class CustomUniqueLabels {
                 uniqueFields.add((String) field.getKey());
             }
         }
-        System.out.println("UNIQUE FIELDS:"+ uniqueFields);
         Set<String> uniqueLabels=new HashSet<>();
             for (ExperimentRecord record : records) {
                 StringBuilder label=new StringBuilder();
