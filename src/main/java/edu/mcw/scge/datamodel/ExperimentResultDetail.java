@@ -8,10 +8,19 @@ public class ExperimentResultDetail {
     private String units;
     private String assayDescription;
     private long experimentRecordId;
+    private String experimentConditionName;
     private String resultType;
     private int replicate;
     private String result;
     private String editType;
+
+    public String getExperimentConditionName() {
+        return experimentConditionName;
+    }
+
+    public void setExperimentConditionName(String experimentConditionName) {
+        this.experimentConditionName = experimentConditionName;
+    }
 
     public long getExperimentRecordId() {
         return experimentRecordId;
