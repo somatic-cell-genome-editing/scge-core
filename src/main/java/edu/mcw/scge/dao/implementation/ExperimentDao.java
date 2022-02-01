@@ -116,7 +116,7 @@ public class ExperimentDao extends AbstractDAO {
                 "left outer join hr_donor h on (h.hrdonor_id= ex.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
-                "where ex.experiment_id=? order by ex.name";
+                "where ex.experiment_id=? order by ex.record_order";
 
         ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
         return execute(q, experimentId);

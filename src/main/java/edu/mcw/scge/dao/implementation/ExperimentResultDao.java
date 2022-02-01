@@ -20,7 +20,8 @@ public class ExperimentResultDao extends AbstractDAO {
                 " inner join experiment_result_detail d " +
                 " on r.result_id = d.result_id " +
                 " inner join experiment_record e on r.experiment_record_id = e.experiment_record_id" +
-                " where e.experiment_id=? ";
+                " where e.experiment_id=? order by e.record_order";
+
         ExperimentResultDetailQuery q=new ExperimentResultDetailQuery(this.getDataSource(), sql);
         return execute(q, expId);
     }
