@@ -5,19 +5,20 @@ package edu.mcw.scge.datamodel;
  */
 public class HRDonor {
 
-    private int id;
+    private long id;
     private String source;
     private String description;
     private String type;
     private String sequence;
     private String labId;
     private String modification;
+    private int tier;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -67,5 +68,13 @@ public class HRDonor {
 
     public void setModification(String modification) {
         this.modification = modification;
+    }
+
+    public int getTier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
     }
 }

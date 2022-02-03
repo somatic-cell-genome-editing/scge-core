@@ -25,10 +25,25 @@ public class ProtocolDao extends AbstractDAO {
         return execute(q);
     }
 
-    public List<Protocol> getProtocolsForObject(long protocolId) throws Exception {
+    public List<Protocol> getProtocolsForObject(long objectId) throws Exception {
         String sql="select * from protocol p, protocol_associations pa where p.protocol_id=pa.protocol_scge_id and pa.object_scge_id=?";
         ProtocolQuery q= new ProtocolQuery(this.getDataSource(), sql);
-        return  execute(q, protocolId);
+        return  execute(q, objectId);
+
+    }
+
+    public List<Protocol> getProtocolsNotAssociatedToObject(long objectId) throws Exception {
+        //String sql="select * from protocol p, protocol_associations pa where p.protocol_id=pa.protocol_scge_id and pa.object_scge_id=?";
+        String sql = "select * from protocol p where p.protocol_id not in ( ";
+
+         sql += " select p.protocol_id from protocol p, protocol_associations pa where p.protocol_id=pa.protocol_scge_id and pa.object_scge_id=? ";
+
+        sql += ")";
+
+
+
+        ProtocolQuery q= new ProtocolQuery(this.getDataSource(), sql);
+        return  execute(q, objectId);
 
     }
 
@@ -45,6 +60,27 @@ public class ProtocolDao extends AbstractDAO {
 
         return protocolId;
     }
+
+    public long insertProtocolAssociation(long protocolId, long objectId) throws Exception{
+
+        String sql = "insert into protocol_associations ( object_scge_id, protocol_scge_id )" +
+                "values (?,?)";
+
+        update(sql, objectId, protocolId);
+
+        return protocolId;
+    }
+
+    public long deleteProtocolAssociation(long protocolId, long objectId) throws Exception{
+
+        String sql = "delete from protocol_associations where object_scge_id=? and protocol_scge_id=?";
+
+        update(sql, objectId, protocolId);
+
+        return protocolId;
+    }
+
+
     public void updateProtocol(Protocol protocol) throws Exception{
 
         String sql = "update protocol set title=?,description=?,tier=?," +

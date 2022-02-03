@@ -23,6 +23,24 @@ public class Study {
     private String reference;
     private List<Integer> associatedGroups;
     private int groupId;
+    private int deliveryPiId;
+    private String deliveryPiName;
+
+    public int getDeliveryPiId() {
+        return deliveryPiId;
+    }
+
+    public void setDeliveryPiId(int deliveryPiId) {
+        this.deliveryPiId = deliveryPiId;
+    }
+
+    public String getDeliveryPiName() {
+        return deliveryPiName;
+    }
+
+    public void setDeliveryPiName(String deliveryPiName) {
+        this.deliveryPiName = deliveryPiName;
+    }
 
     public Date getLastModifiedDate() {
         return lastModifiedDate;

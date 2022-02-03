@@ -2,6 +2,7 @@ package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
 import edu.mcw.scge.dao.spring.IntListQuery;
+import edu.mcw.scge.dao.spring.PersonQuery;
 import edu.mcw.scge.dao.spring.StudyAssociationQuery;
 import edu.mcw.scge.dao.spring.StudyQuery;
 import edu.mcw.scge.datamodel.*;
@@ -226,6 +227,14 @@ public class StudyDao extends AbstractDAO {
         return execute(q, modelId);
     }
 
+    public List<Study> getStudiesByHrDonor(long hrdonorId) throws Exception{
+        String sql = "select distinct s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName " +
+                "from study s, institution i, person p, person pi, hr_donor h, experiment_record ex " +
+                "where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id and h.hrdonor_id=? and ex.hrdonor_id=h.hrdonor_id and ex.study_id=s.study_id ";
+        StudyQuery q=new StudyQuery(this.getDataSource(), sql);
+        return execute(q, hrdonorId);
+    }
+
     public List<Study> getStudiesByGuide(long guideId) throws Exception{
         String sql = "select distinct s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName \n" +
                 "from study s inner join institution i on s.lab_id=i.institution_id \n" +
@@ -291,6 +300,14 @@ public class StudyDao extends AbstractDAO {
                 " and s.group_id=?";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q, groupId);
+    }
+    public List<Person> getStudyPOC(int studyId) throws Exception{
+        String sql="select * from person where person_id in " +
+                "(select person_id from person_info where role_key in (" +
+                "select role_key from scge_roles where role='poc' or role='POC') " +
+                "and group_id in (select group_id from study where study_id=?))";
+        PersonQuery query=new PersonQuery(this.getDataSource(), sql);
+        return execute(query, studyId);
     }
     public static void main(String[] args){
         StudyDao sdao=new StudyDao();
