@@ -35,6 +35,12 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         } catch(Exception ignored) {
 
         }
+        try {
+            e.setIsTargetTissue(rs.getInt("is_target_tissue"));
+        } catch(Exception ignored) {
+
+        }
+
         e.setModelId(rs.getLong("model_id"));
         e.setModelName(rs.getString("modelName"));
         e.setEditorId(rs.getLong("editor_id"));

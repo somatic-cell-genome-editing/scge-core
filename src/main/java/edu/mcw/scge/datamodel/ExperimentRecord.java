@@ -43,6 +43,16 @@ public class ExperimentRecord {
     private String condition;
     private String hrdonorName;
 
+    private int isTargetTissue;
+
+    public int getIsTargetTissue() {
+        return isTargetTissue;
+    }
+
+    public void setIsTargetTissue(int isTargetTissue) {
+        this.isTargetTissue = isTargetTissue;
+    }
+
     public String getExperimentRecordName() {
         return experimentRecordName;
     }
