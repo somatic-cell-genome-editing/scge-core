@@ -2,9 +2,12 @@ package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
 import edu.mcw.scge.dao.spring.ExperimentRecordQuery;
+import edu.mcw.scge.datamodel.Editor;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ExperimentRecordDao extends AbstractDAO {
 
@@ -105,5 +108,30 @@ public class ExperimentRecordDao extends AbstractDAO {
         List<ExperimentRecord> list = execute(q,sql,experimentRecord.getExperimentName(),  experimentRecord.getStudyId(),experimentRecord.getEditorId(),experimentRecord.getDeliverySystemId(),
                 experimentRecord.getModelId(),experimentRecord.getSex(),experimentRecord.getApplicationMethodId(),experimentRecord.getTissueId(),experimentRecord.getCellType());
         return list.isEmpty() ? 0 : list.get(0).getExperimentRecordId();
+    }
+    public void addTargetTissue( List<Long> experimentRecordIds) throws Exception{
+
+        String sql = "update experiment_record set is_target_tissue=1 "+
+                " where experiment_record_id in (";
+        String ids=  experimentRecordIds.stream().map(Object::toString).collect(Collectors.joining(","));
+
+        sql=sql+ ids +")";
+     //   System.out.println("SQL:"+sql);
+        update(sql);
+
+    }
+    public void deleteTargetTissue(long experimentId) throws Exception{
+
+        String sql = "update experiment_record set is_target_tissue=null"+
+                " where experiment_id=?";
+     //   System.out.println("SQL DELETE:"+ sql);
+       update(sql, experimentId);
+
+    }
+    public void updateTargetTissue(long experimentId, List<Long> experimentRecordIds) throws Exception{
+
+        deleteTargetTissue(experimentId);
+        addTargetTissue(experimentRecordIds);
+
     }
 }
