@@ -113,6 +113,7 @@ public class ExperimentRecordDao extends AbstractDAO {
 
         String sql = "update experiment_record set is_target_tissue=1 "+
                 " where experiment_record_id in (";
+
         String ids=  experimentRecordIds.stream().map(Object::toString).collect(Collectors.joining(","));
 
         sql=sql+ ids +")";
@@ -131,6 +132,7 @@ public class ExperimentRecordDao extends AbstractDAO {
     public void updateTargetTissue(long experimentId, List<Long> experimentRecordIds) throws Exception{
 
         deleteTargetTissue(experimentId);
+        if(experimentRecordIds.size()>0)
         addTargetTissue(experimentRecordIds);
 
     }
