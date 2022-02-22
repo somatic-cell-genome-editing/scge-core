@@ -1,14 +1,12 @@
 package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
-import edu.mcw.scge.dao.spring.ExperimentQuery;
-import edu.mcw.scge.dao.spring.ExperimentRecordQuery;
-import edu.mcw.scge.dao.spring.StringListQuery;
-import edu.mcw.scge.dao.spring.VectorQuery;
+import edu.mcw.scge.dao.spring.*;
 import edu.mcw.scge.datamodel.Experiment;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 
 import java.util.List;
+import java.util.stream.LongStream;
 
 public class ExperimentDao extends AbstractDAO {
 
@@ -297,5 +295,31 @@ public class ExperimentDao extends AbstractDAO {
         
         update(sql, experimentId,experiment.getName(),experiment.getStudyId(),experiment.getType());
     }
+    /**
+     *
+     * @param validationExperimentId =validation experiment id
+     * @return
+     * @throws Exception
+     */
 
+    public List<Long> getExperimentsValidated(long validationExperimentId) throws Exception {
+        String sql="select distinct(v.experiment_id) from validation_experiments v" +
+               // " inner join experiment_record er on er.experiment_id=v.experiment_id " +
+                " where v.validation_experiment_id=? ";
+        LongListQuery q=new LongListQuery(this.getDataSource(), sql);
+        return execute(q, validationExperimentId);
+    }
+    /**
+     *
+     * @param experimentId=experiment Id validated
+     * @return
+     * @throws Exception
+     */
+    public List<Long> getValidationExperiments(long experimentId) throws Exception {
+        String sql="select distinct(v.validation_experiment_id) from validation_experiments v " +
+               // " inner join experiment_record er on er.experiment_id=v.validation_experiment_id " +
+                " where v.experiment_id=? ";
+        LongListQuery q=new LongListQuery(this.getDataSource(), sql);
+        return execute(q, experimentId);
+    }
 }

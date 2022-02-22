@@ -26,6 +26,34 @@ public class Study {
     private int deliveryPiId;
     private String deliveryPiName;
 
+    private int isValidationStudy;
+    private Study validationStudy;
+    private List<Study> validatedStudies;
+
+    public int getIsValidationStudy() {
+        return isValidationStudy;
+    }
+
+    public void setIsValidationStudy(int isValidationStudy) {
+        this.isValidationStudy = isValidationStudy;
+    }
+
+    public Study getValidationStudy() {
+        return validationStudy;
+    }
+
+    public void setValidationStudy(Study validationStudy) {
+        this.validationStudy = validationStudy;
+    }
+
+    public List<Study> getValidatedStudies() {
+        return validatedStudies;
+    }
+
+    public void setValidatedStudies(List<Study> validatedStudies) {
+        this.validatedStudies = validatedStudies;
+    }
+
     public int getDeliveryPiId() {
         return deliveryPiId;
     }
