@@ -161,6 +161,18 @@ public class ExperimentDao extends AbstractDAO {
         return (Experiment) execute(q, experimentId).get(0);
 
     }
+    public Experiment getExperimentByStudyIdNExperimentId(int studyId,long experimentId) throws Exception {
+        String sql="select ex.* from experiment ex " +
+
+                "where ex.experiment_id=? and ex.study_id=?";
+
+        ExperimentQuery q=new ExperimentQuery(this.getDataSource(), sql);
+        List<Experiment> experiments=execute(q, experimentId, studyId);
+        if(experiments.size()>0)
+        return experiments .get(0);
+        else return null;
+
+    }
 
     public List<ExperimentRecord> getExperimentsByEditor(long editorId) throws Exception {
         String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
