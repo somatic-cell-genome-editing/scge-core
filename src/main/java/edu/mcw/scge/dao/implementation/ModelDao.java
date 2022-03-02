@@ -1,14 +1,13 @@
 package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
-import edu.mcw.scge.dao.spring.EditorQuery;
 import edu.mcw.scge.dao.spring.ModelQuery;
-import edu.mcw.scge.datamodel.Editor;
 import edu.mcw.scge.datamodel.Model;
 
 import java.util.List;
 
 public class ModelDao extends AbstractDAO {
+
     public List<Model> getModels() throws Exception {
         String sql="select * from model order by name";
         ModelQuery q=new ModelQuery(this.getDataSource(), sql);
@@ -30,7 +29,7 @@ public class ModelDao extends AbstractDAO {
 
         String sql = "insert into model ( model_id, type, name, organism, sex, rrid, source, transgene, subtype, annotated_map," +
                 "transgene_description, transgene_reporter,model_description,parental_origin,display_name,strain_alias,tier )" +
-                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         long modelId = this.getNextKeyFromSequenceLong("model_seq");
 
@@ -41,6 +40,7 @@ public class ModelDao extends AbstractDAO {
 
         return modelId;
     }
+
     public void updateModel(Model model) throws Exception{
 
         String sql = "update model set type=?, name=?, organism=?, sex=?, rrid=?, source=?, transgene=?, subtype=?, annotated_map=?," +
