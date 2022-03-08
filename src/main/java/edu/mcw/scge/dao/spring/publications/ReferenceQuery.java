@@ -1,6 +1,6 @@
-package edu.mcw.scge.dao.spring;
+package edu.mcw.scge.dao.spring.publications;
 
-import edu.mcw.scge.datamodel.Reference;
+import edu.mcw.scge.datamodel.publications.Reference;
 import org.springframework.jdbc.object.MappingSqlQuery;
 
 import javax.sql.DataSource;
@@ -32,7 +32,7 @@ public class ReferenceQuery extends MappingSqlQuery {
         ref.setPublisher(rs.getString("publisher"));
         ref.setPublisherCity(rs.getString("publisher_city"));
         ref.setUrlWebReference(rs.getString("url_web_reference"));
-        ref.setSpeciesTypeKey(rs.getInt("species_type_key"));
+
         ref.setDoi(rs.getString("doi"));
 
         return ref;

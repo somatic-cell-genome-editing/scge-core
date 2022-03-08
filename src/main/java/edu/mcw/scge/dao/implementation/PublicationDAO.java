@@ -1,13 +1,18 @@
 package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
+import edu.mcw.scge.dao.spring.publications.AuthorQuery;
 import edu.mcw.scge.dao.spring.IntListQuery;
 import edu.mcw.scge.dao.spring.LongListQuery;
-import edu.mcw.scge.dao.spring.ReferenceQuery;
-import edu.mcw.scge.datamodel.Author;
-import edu.mcw.scge.datamodel.Reference;
+import edu.mcw.scge.dao.spring.publications.ReferenceQuery;
+import edu.mcw.scge.dao.spring.publications.ArticleIdQuery;
+import edu.mcw.scge.datamodel.publications.ArticleId;
+import edu.mcw.scge.datamodel.publications.Author;
+import edu.mcw.scge.datamodel.publications.Reference;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PublicationDAO extends AbstractDAO {
     public List<Long> getAllPMIDs() throws Exception {
@@ -15,6 +20,30 @@ public class PublicationDAO extends AbstractDAO {
         LongListQuery query=new LongListQuery(this.getDataSource(), sql);
         return query.execute();
     }
+    public List<Reference> getAllReferences() throws Exception {
+        String sql="select * from publications";
+        ReferenceQuery referenceQuery=new ReferenceQuery(this.getDataSource(), sql);
+        return referenceQuery.execute();
+    }
+    public List<Author> getAuthorsByRefKey(int refKey) throws Exception {
+        String sql="Select * from pub_authors authors, pub_author_associations assoc where authors.author_Key=assoc.author_key and assoc.ref_key=?";
+        AuthorQuery authorQuery=new AuthorQuery(this.getDataSource(), sql);
+        return execute(authorQuery,refKey);
+    }
+    public  List<ArticleId> getArticleIdsByRefKey(int refKey) throws Exception {
+        String sql="select * from pub_associations where ref_Key=?";
+        return getArticleIds(refKey, sql);
+    }
+    public List<ArticleId> getArticleIdsSCGEID(int scgeId) throws Exception {
+        String sql="select * from pub_associations where scge_id=?";
+        return getArticleIds(scgeId, sql);
+    }
+
+    private List<ArticleId> getArticleIds(int id, String sql) throws Exception {
+        ArticleIdQuery query=new ArticleIdQuery(this.getDataSource(),sql);
+         return execute(query,id);
+    }
+
     public void updatePubAssociations(String idType, String id, int refKey )throws Exception{
         String sql="update pub_associations set identifier_type=?, identifier=? , ref_key where ref_key=?";
         update(sql,idType,id,refKey);
