@@ -57,9 +57,7 @@ public class PublicationDAO extends AbstractDAO {
         update(sql, refKey,scgeId, idType, identifier);
     }
     public Reference getPublicationsBySCGEId(int scgeId) throws Exception {
-
-        String query = "";
-
+        String query = "select * from publications p where ref_key in (select distinct(ref_key) from pub_associations where scge_id=?) ";
         List<Reference> refs = executeRefQuery(query, scgeId);
         return refs.isEmpty() ? null : refs.get(0);
     }
