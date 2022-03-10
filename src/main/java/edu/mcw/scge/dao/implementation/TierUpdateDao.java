@@ -59,6 +59,19 @@ public class TierUpdateDao extends AbstractDAO {
         String sql="delete from study_tier_updates where study_id=?";
         update(sql,studyId );
     }
+    public void insertTierLog(int studyId) throws Exception {
+        String sql="insert into study_tier_log  select study_tier_update_id, " +
+                "study_id, " +
+                "tier, " +
+                "modified_date, " +
+                "associated_group_id, " +
+                "status, " +
+                "action, " +
+                "modified_by, " +
+                "modified_time " +
+                "from study_tier_updates where study_id=?";
+        update(sql,studyId );
+    }
 
     public List<StudyTierUpdate> getStudyTierUpdatesByStudyId(int studyId) throws Exception {
         String sql="select * from study_tier_updates where study_id=?";
