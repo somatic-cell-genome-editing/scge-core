@@ -136,6 +136,7 @@ public class UpdateUtils {
         if(disabled){
             sdao.updateStudyTier(updateList.get(0));
             updateOtherExperimentalObjects(updateList.get(0));
+            tierUpdateDao.insertTierLog(studyId);
             tierUpdateDao.delete(studyId);
         }
     }
