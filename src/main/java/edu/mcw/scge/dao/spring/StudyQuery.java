@@ -46,6 +46,9 @@ public class StudyQuery extends MappingSqlQuery {
         try{
             s.setDeliveryPiId(rs.getInt("delivery_pi_id"));
         }catch (Exception e){}
+        try{
+            s.setIsValidationStudy(rs.getInt("is_validation_study"));
+        }catch (Exception e){}
         return s;
     }
 }
