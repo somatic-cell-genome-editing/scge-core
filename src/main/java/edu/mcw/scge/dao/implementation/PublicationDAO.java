@@ -294,4 +294,28 @@ public class PublicationDAO extends AbstractDAO {
         }
         return publications;
     }
+    public List<Publication> getAssociatedPublications(long scge_id) throws Exception {
+        List<Reference> references = getAssociatedPublicationsBySCGEId(scge_id);
+        List<Publication> publications=new ArrayList<>();
+        for(Reference ref:references){
+            Publication publication=new Publication();
+            publication.setReference(ref);
+            publication.setAuthorList(getAuthorsByRefKey(ref.getKey()));
+            publication.setArticleIds(getArticleIdsByRefKey(ref.getKey()));
+            publications.add(publication);
+        }
+        return publications;
+    }
+    public List<Publication> getRelatedPublications(long scge_id) throws Exception {
+        List<Reference> references = getRelatedPublicationsBySCGEId(scge_id);
+        List<Publication> publications=new ArrayList<>();
+        for(Reference ref:references){
+            Publication publication=new Publication();
+            publication.setReference(ref);
+            publication.setAuthorList(getAuthorsByRefKey(ref.getKey()));
+            publication.setArticleIds(getArticleIdsByRefKey(ref.getKey()));
+            publications.add(publication);
+        }
+        return publications;
+    }
 }
