@@ -139,7 +139,7 @@ public class PublicationDAO extends AbstractDAO {
      */
     public Reference getPublicationByDOI(String doi) throws Exception {
 
-        String query = "SELECT ref.* FROM references ref  WHERE  ref.DOI=?";
+        String query = "SELECT ref.* FROM publications ref  WHERE  ref.DOI=?";
 
         List<Reference> refs = executeRefQuery(query, doi);
         return refs.isEmpty() ? null : refs.get(0);
@@ -153,7 +153,7 @@ public class PublicationDAO extends AbstractDAO {
      */
     public Reference getReferenceByKey(int key) throws Exception {
 
-        String query = "SELECT ref.* FROM references ref "+
+        String query = "SELECT ref.* FROM publications ref "+
                 "WHERE ref.ref_key=?";
 
         List<Reference> refs = executeRefQuery(query, key);
