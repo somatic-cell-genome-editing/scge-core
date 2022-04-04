@@ -15,7 +15,7 @@ import java.util.List;
 public class InstitutionDAO extends AbstractDAO {
 
     public List<Institution> getAll() throws Exception {
-        String sql="select * from institution";
+        String sql="select * from institution order by institution_name";
         InstitutionQuery q=new InstitutionQuery(this.getDataSource(), sql);
         q.compile();
 

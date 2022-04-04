@@ -69,7 +69,7 @@ public class ImageDao extends AbstractDAO {
     }
 
     public List<Image> getImage(long scgeId) throws Exception {
-        String sql="select * from images where scge_id=?";
+        String sql="select * from images where scge_id=? order by bucket";
         ImageQuery q=new ImageQuery(this.getDataSource(), sql);
         return execute(q, scgeId);
     }
