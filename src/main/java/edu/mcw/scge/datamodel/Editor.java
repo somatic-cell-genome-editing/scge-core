@@ -28,8 +28,26 @@ public class Editor {
     private String stop;
     private String strand;
     private String orientation;
+    private String catalog;
+    private String rrid;
 
     private int tier;
+
+    public String getCatalog() {
+        return catalog;
+    }
+
+    public void setCatalog(String catalog) {
+        this.catalog = catalog;
+    }
+
+    public String getRrid() {
+        return rrid;
+    }
+
+    public void setRrid(String rrid) {
+        this.rrid = rrid;
+    }
 
     public int getTier() {
         return tier;
