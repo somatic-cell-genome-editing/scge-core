@@ -24,7 +24,7 @@ public class ArticleIdQuery extends MappingSqlQuery {
         id.setId(rs.getString("identifier"));
         id.setIdType(rs.getString("identifier_type"));
         id.setUrl(rs.getString("url"));
-        id.setScgeId(rs.getLong("scge_id"));
+
         return id;
     }
 }

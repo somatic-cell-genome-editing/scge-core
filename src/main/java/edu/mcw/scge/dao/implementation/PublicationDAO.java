@@ -1,6 +1,7 @@
 package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
+import edu.mcw.scge.dao.spring.StringListQuery;
 import edu.mcw.scge.dao.spring.publications.AuthorQuery;
 import edu.mcw.scge.dao.spring.IntListQuery;
 import edu.mcw.scge.dao.spring.LongListQuery;
@@ -8,16 +9,25 @@ import edu.mcw.scge.dao.spring.publications.ReferenceQuery;
 import edu.mcw.scge.dao.spring.publications.ArticleIdQuery;
 import edu.mcw.scge.datamodel.publications.ArticleId;
 import edu.mcw.scge.datamodel.publications.Author;
+import edu.mcw.scge.datamodel.publications.Publication;
 import edu.mcw.scge.datamodel.publications.Reference;
+import edu.mcw.scge.process.pubmedProcessor.Extractor;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class PublicationDAO extends AbstractDAO {
     public List<Long> getAllPMIDs() throws Exception {
-        String sql="select identifier from pub_associations where identifier_type='pubmed'";
+        String sql="select identifier from publication_ids where identifier_type='pubmed'";
         LongListQuery query=new LongListQuery(this.getDataSource(), sql);
+        return query.execute();
+    }
+    public List<ArticleId> getAllPubmedIDs() throws Exception {
+        String sql="select * from publication_ids where identifier_type='pubmed'";
+        ArticleIdQuery query=new ArticleIdQuery(this.getDataSource(), sql);
         return query.execute();
     }
     public List<Reference> getAllReferences() throws Exception {
@@ -25,17 +35,30 @@ public class PublicationDAO extends AbstractDAO {
         ReferenceQuery referenceQuery=new ReferenceQuery(this.getDataSource(), sql);
         return referenceQuery.execute();
     }
+    public List<Reference> getReferencesNotAssociatedByObjectId(long objectId) throws Exception {
+        String sql="select * from publications where ref_key not in " +
+                "(select ref_key from pub_associations where scge_id=?)";
+        ReferenceQuery referenceQuery=new ReferenceQuery(this.getDataSource(), sql);
+        return execute(referenceQuery, objectId);
+    }
+    public boolean existsAssociation(int refkey, long scgdId) throws Exception {
+        String sql="select ref_key from pub_associations where ref_key=? and scge_id=?";
+        IntListQuery referenceQuery=new IntListQuery(this.getDataSource(), sql);
+        List<Integer> refKeys=execute(referenceQuery,refkey, scgdId);
+        return refKeys.size() > 0;
+    }
     public List<Author> getAuthorsByRefKey(int refKey) throws Exception {
         String sql="Select * from pub_authors authors, pub_author_associations assoc where authors.author_Key=assoc.author_key and assoc.ref_key=?";
         AuthorQuery authorQuery=new AuthorQuery(this.getDataSource(), sql);
         return execute(authorQuery,refKey);
     }
     public  List<ArticleId> getArticleIdsByRefKey(int refKey) throws Exception {
-        String sql="select * from pub_associations where ref_Key=?";
+        String sql="select * from publication_ids where ref_Key=?";
         return getArticleIds(refKey, sql);
     }
     public List<ArticleId> getArticleIdsSCGEID(int scgeId) throws Exception {
-        String sql="select * from pub_associations where scge_id=?";
+        String sql="select * from publication_ids  where ref_key in (select ref_key from publications p , pub_associations a " +
+                " where p.ref_key=a.ref_key and a.scge_id=?" ;
         return getArticleIds(scgeId, sql);
     }
 
@@ -44,22 +67,68 @@ public class PublicationDAO extends AbstractDAO {
          return execute(query,id);
     }
 
-    public void updatePubAssociations(String idType, String id, int refKey )throws Exception{
-        String sql="update pub_associations set identifier_type=?, identifier=? , ref_key where ref_key=?";
-        update(sql,idType,id,refKey);
+
+    public void deletePubAssociation(long scgeId, int refKey )throws Exception{
+        String sql="delete from pub_associations  where ref_key=? and scge_id=?";
+        update(sql,refKey, scgeId);
     }
-    public void insertPubAssociations(int refKey, long scgeId, String identifier, String idType) throws Exception {
-        String sql="insert into pub_associations (ref_key, " +
-                "scge_id, " +
+
+    public void insertPubIds(int pubIdKey, int refKey, String identifier, String idType) throws Exception {
+        String sql="insert into publication_ids (pub_id_key, ref_key, " +
                 "identifier_type, " +
                 "identifier " +
                 ") values (?,?,?,?) ";
-        update(sql, refKey,scgeId, idType, identifier);
+        update(sql, pubIdKey, refKey,idType, identifier);
     }
-    public Reference getPublicationsBySCGEId(int scgeId) throws Exception {
-        String query = "select * from publications p where ref_key in (select distinct(ref_key) from pub_associations where scge_id=?) ";
-        List<Reference> refs = executeRefQuery(query, scgeId);
-        return refs.isEmpty() ? null : refs.get(0);
+    public void updatePubIds(int pubIdKey, int refKey, String identifier, String idType) throws Exception {
+        String sql="update publication_ids set  ref_key=?, " +
+                "identifier_type=?, " +
+                "identifier =? where pub_id_key=?";
+        update(sql, refKey,idType, identifier,pubIdKey);
+    }
+    public void insertXDB(int xdbKey,  String xdbName, String xdbURL) throws Exception {
+        String sql="insert into xdb_urls (xdb_key, xdb_name, " +
+                "xdb_url " +
+                ") values (?,?,?) ";
+        update(sql, xdbKey, xdbName,xdbURL);
+    }
+    public String getXDBUrl(String xdbName) throws Exception {
+        String sql="select xdb_url from xdb_urls where xdb_name=?";
+        StringListQuery query=new StringListQuery(this.getDataSource(),sql);
+        List<String> urls=execute(query, xdbName);
+        if(urls.size()>0) return urls.get(0);
+        else return "";
+    }
+    public int getPubIdKey(String id, String idType) throws Exception {
+        String sql="select pub_id_key from publication_ids where identifier=? and identifier_type=?";
+        IntListQuery query=new IntListQuery(this.getDataSource(), sql);
+        List<Integer> pubIdKeys=execute(query, id, idType);
+        if(pubIdKeys.size()>0)
+            return pubIdKeys.get(0);
+        else return 0;
+    }
+    public void insertPubAssociations(int refKey, long scgeId,String type) throws Exception {
+        String sql="insert into pub_associations (ref_key, " +
+                "scge_id, " +
+                "type " +
+                ") values (?,?,?) ";
+        update(sql, refKey,scgeId, type);
+    }
+    public List<Reference> getPublicationsBySCGEId(long scgeId) throws Exception {
+        String query = " select * from publications p \n" +
+                "   left outer join pub_associations pa on p.ref_key=pa.ref_key\n" +
+                "   where scge_id=? ";
+       return  executeRefQuery(query, scgeId);
+    }
+    public List<Reference> getAssociatedPublicationsBySCGEId(long scgeId) throws Exception {
+        String query = "select * from publications p where ref_key in (select distinct(ref_key) from pub_associations where scge_id=? and type='associated') ";
+        return executeRefQuery(query, scgeId);
+
+    }
+    public List<Reference> getRelatedPublicationsBySCGEId(long scgeId) throws Exception {
+        String query = "select * from publications p where ref_key in (select distinct(ref_key) from pub_associations where scge_id=? and type='related') ";
+        return executeRefQuery(query, scgeId);
+
     }
 
     /**
@@ -70,7 +139,7 @@ public class PublicationDAO extends AbstractDAO {
      */
     public Reference getPublicationByDOI(String doi) throws Exception {
 
-        String query = "SELECT ref.* FROM references ref  WHERE  ref.DOI=?";
+        String query = "SELECT ref.* FROM publications ref  WHERE  ref.DOI=?";
 
         List<Reference> refs = executeRefQuery(query, doi);
         return refs.isEmpty() ? null : refs.get(0);
@@ -84,7 +153,7 @@ public class PublicationDAO extends AbstractDAO {
      */
     public Reference getReferenceByKey(int key) throws Exception {
 
-        String query = "SELECT ref.* FROM references ref "+
+        String query = "SELECT ref.* FROM publications ref "+
                 "WHERE ref.ref_key=?";
 
         List<Reference> refs = executeRefQuery(query, key);
@@ -204,5 +273,49 @@ public class PublicationDAO extends AbstractDAO {
     public List<Reference> executeRefQuery(String query, Object ... params) throws Exception {
         ReferenceQuery q = new ReferenceQuery(this.getDataSource(), query);
         return execute(q, params);
+    }
+    public void runPubmedProcesssor(int pmid) throws IOException {
+        Extractor extractor=new Extractor();
+        String url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?"+
+                "db=pubmed" +
+                "&retmode=xml&rettype=abstract"+
+                "&id="+pmid;
+        extractor.fetchArticle(pmid, url);
+    }
+    public List<Publication> getPublications(long scge_id) throws Exception {
+        List<Reference> references = getPublicationsBySCGEId(scge_id);
+        List<Publication> publications=new ArrayList<>();
+        for(Reference ref:references){
+            Publication publication=new Publication();
+            publication.setReference(ref);
+            publication.setAuthorList(getAuthorsByRefKey(ref.getKey()));
+            publication.setArticleIds(getArticleIdsByRefKey(ref.getKey()));
+            publications.add(publication);
+        }
+        return publications;
+    }
+    public List<Publication> getAssociatedPublications(long scge_id) throws Exception {
+        List<Reference> references = getAssociatedPublicationsBySCGEId(scge_id);
+        List<Publication> publications=new ArrayList<>();
+        for(Reference ref:references){
+            Publication publication=new Publication();
+            publication.setReference(ref);
+            publication.setAuthorList(getAuthorsByRefKey(ref.getKey()));
+            publication.setArticleIds(getArticleIdsByRefKey(ref.getKey()));
+            publications.add(publication);
+        }
+        return publications;
+    }
+    public List<Publication> getRelatedPublications(long scge_id) throws Exception {
+        List<Reference> references = getRelatedPublicationsBySCGEId(scge_id);
+        List<Publication> publications=new ArrayList<>();
+        for(Reference ref:references){
+            Publication publication=new Publication();
+            publication.setReference(ref);
+            publication.setAuthorList(getAuthorsByRefKey(ref.getKey()));
+            publication.setArticleIds(getArticleIdsByRefKey(ref.getKey()));
+            publications.add(publication);
+        }
+        return publications;
     }
 }
