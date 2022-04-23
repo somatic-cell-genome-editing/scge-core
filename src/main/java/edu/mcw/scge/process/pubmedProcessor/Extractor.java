@@ -107,7 +107,7 @@ public class Extractor {
                             .getTextContent();
                     reference.setRefAbstract(abstractText);
 
-                    reference.setPubDate(getPubDate(eElement));
+                //    reference.setPubDate(getPubDate(eElement));
                     int refKey= processor.insertReference(reference);
                     processor.insertAuthor(parseAuthorList(eElement), refKey);
                     Map<String, String> articleIdMap=parseArticleIdList(doc);
