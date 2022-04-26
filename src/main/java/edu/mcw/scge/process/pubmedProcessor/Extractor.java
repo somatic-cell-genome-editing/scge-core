@@ -42,9 +42,8 @@ public class Extractor {
         return sb.toString();
     }
     public String getInputFile(long pmid, String url) throws IOException {
-
-       String fileName = "data/" + pmid + ".txt";
- //       String fileName = "C:/data/pubmed/" + pmid + ".txt";
+        String fileName = "data/" + pmid + ".txt";
+//String fileName = "C:/data/pubmed/" + pmid + ".txt";
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
             byte dataBuffer[] = new byte[1024];
@@ -73,12 +72,12 @@ public class Extractor {
             is.close();
         }
     }
-    public String fetchArticle(long pmid, String url) throws IOException {
+    public int fetchArticle(long pmid, String url) throws IOException {
 
         //    InputStream is = new URL(url).openStream();
         //    BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
         //  System.out.println(readAll(rd));
-
+        int refKey=0;
         try {
             File inputFile = new File(getInputFile(pmid,url));
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -108,7 +107,7 @@ public class Extractor {
                     reference.setRefAbstract(abstractText);
 
                 //    reference.setPubDate(getPubDate(eElement));
-                    int refKey= processor.insertReference(reference);
+                    refKey= processor.insertReference(reference);
                     processor.insertAuthor(parseAuthorList(eElement), refKey);
                     Map<String, String> articleIdMap=parseArticleIdList(doc);
                     if(articleIdMap.get("doi")!=null)
@@ -123,7 +122,7 @@ public class Extractor {
 
 
 
-        return null;
+        return refKey;
     }
     public Date getPubDate(Element eElement){
 

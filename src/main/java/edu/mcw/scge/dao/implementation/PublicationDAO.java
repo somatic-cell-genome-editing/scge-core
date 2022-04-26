@@ -274,13 +274,24 @@ public class PublicationDAO extends AbstractDAO {
         ReferenceQuery q = new ReferenceQuery(this.getDataSource(), query);
         return execute(q, params);
     }
-    public void runPubmedProcesssor(int pmid) throws IOException {
+    public int runPubmedProcesssor(int pmid) throws Exception {
         Extractor extractor=new Extractor();
-        String url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?"+
-                "db=pubmed" +
-                "&retmode=xml&rettype=abstract"+
-                "&id="+pmid;
-        extractor.fetchArticle(pmid, url);
+        int refKey=getRefKey(pmid);
+        if(refKey>0){
+            return refKey;
+        }else {
+            String url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?" +
+                    "db=pubmed" +
+                    "&retmode=xml&rettype=abstract" +
+                    "&id=" + pmid;
+            return extractor.fetchArticle(pmid, url);
+        }
+    }
+    public int getRefKey(int pmid) throws Exception {
+        String sql="select ref_key from publication_ids where identifier_type='pubmed' and identifier=?";
+        IntListQuery q=new IntListQuery(this.getDataSource(), sql);
+        List<Integer> refKeys=execute(q, String.valueOf(pmid));
+        return refKeys.size()>0?refKeys.get(0):0;
     }
     public List<Publication> getPublications(long scge_id) throws Exception {
         List<Reference> references = getPublicationsBySCGEId(scge_id);
