@@ -2,6 +2,7 @@ package edu.mcw.scge.process.tierUpdates;
 
 import edu.mcw.scge.dao.implementation.*;
 import edu.mcw.scge.datamodel.*;
+import edu.mcw.scge.datamodel.Vector;
 import org.apache.poi.ss.formula.functions.T;
 
 import java.util.*;
@@ -11,6 +12,8 @@ public class UpdateUtils {
     StudyDao sdao=new StudyDao();
     ExperimentRecordDao edao= new ExperimentRecordDao();
     GuideDao gdao=new GuideDao();
+    VectorDao vectorDao=new VectorDao();
+    ProtocolDao protocolDao=new ProtocolDao();
     ModelDao mdao=new ModelDao();
     DeliveryDao deliveryDao=new DeliveryDao();
     EditorDao editorDao=new EditorDao();
@@ -28,17 +31,57 @@ public class UpdateUtils {
             if(r.getEditorId()>0)
             updateEditorTier(r.getEditorId(), update.getTier());
 
+            updateVectorTier(r.getExperimentRecordId(), update.getTier());
+            updateProtocolTier(r, update.getTier());
         }
     }
     public void updateGuideTier(long expRecId, int updatedTier) throws Exception {
         List<Guide> guides = gdao.getGuidesByExpRecId(expRecId);
         if(guides!=null && guides.size()>0)
         for(Guide g:guides) {
-            //Guide g = gdao.getGuideById(guideId).get(0);
             if (g.getTier() < updatedTier || (g.getTier() > updatedTier && g.getTier() == 2)) {
                 gdao.updateGuideTier(updatedTier, g.getGuide_id());
             }
         }
+    }
+    public void updateVectorTier(long expRecId, int updatedTier) throws Exception {
+        List<Vector> vectors = vectorDao.getVectorsByExpRecId(expRecId);
+        if(vectors!=null && vectors.size()>0)
+            for(Vector vector:vectors) {
+                if (vector.getTier() < updatedTier || (vector.getTier() > updatedTier && vector.getTier() == 2)) {
+                    vectorDao.updateVectorTier(updatedTier, vector.getVectorId());
+                }
+            }
+    }
+    public void updateProtocolTier(ExperimentRecord record, int updatedTier) throws Exception {
+        List<Protocol> protocols = new ArrayList<>();
+         try {
+             protocols.addAll(protocolDao.getProtocolsForObject(record.getExperimentId()));
+         }catch (Exception e){}
+         try {
+             protocols.addAll(protocolDao.getProtocolsForObject(record.getEditorId()));
+         }catch (Exception e){}
+         try {
+             protocols.addAll(protocolDao.getProtocolsForObject(record.getDeliverySystemId()));
+
+         }catch (Exception e){}
+        try {
+            protocols.addAll(protocolDao.getProtocolsForObject(record.getModelId()));
+        }catch (Exception e){}
+        try {
+            for (Guide g : gdao.getGuidesByExpRecId(record.getExperimentRecordId()))
+                protocols.addAll(protocolDao.getProtocolsForObject(g.getGuide_id()));
+        }catch (Exception e){}
+        try {
+            for (Vector vector : vectorDao.getVectorsByExpRecId(record.getExperimentRecordId()))
+                protocols.addAll(protocolDao.getProtocolsForObject(vector.getVectorId()));
+        }catch (Exception e){}
+        if( protocols.size()>0)
+            for(Protocol protocol:protocols) {
+                if (protocol.getTier() < updatedTier || (protocol.getTier() > updatedTier && protocol.getTier() == 2)) {
+                   protocolDao.updateProtocolTier(protocol.getId(),updatedTier);
+                }
+            }
     }
     public void updateModelTier(long modelId, int updatedTier) throws Exception {
         Model m=mdao.getModelById(modelId);
