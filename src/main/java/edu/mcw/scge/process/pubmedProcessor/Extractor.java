@@ -42,7 +42,7 @@ public class Extractor {
         return sb.toString();
     }
     public String getInputFile(long pmid, String url) throws IOException {
-        String fileName = "data/pubmed" + pmid + ".txt";
+        String fileName = "data/pubmed/" + pmid + ".txt";
 //String fileName = "C:/data/pubmed/" + pmid + ".txt";
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
