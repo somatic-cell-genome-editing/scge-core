@@ -298,15 +298,17 @@ public class ExperimentDao extends AbstractDAO {
         return execute(q);
     }
 	
-	public void insertExperiment(Experiment experiment) throws Exception{
+	public long insertExperiment(Experiment experiment) throws Exception{
 
         String sql = "insert into experiment (experiment_id,name,study_id, " +
-                "type  ) values (?,?,?,?)";
+                "type,description) values (?,?,?,?,?)";
 
-        long experimentId = this.getNextKeyFromSequence("experiment_seq");
+        long experimentId = this.getNextKeyFromSequenceLong("exp_seq");
         
-        update(sql, experimentId,experiment.getName(),experiment.getStudyId(),experiment.getType());
+        update(sql, experimentId,experiment.getName(),experiment.getStudyId(),experiment.getType(),experiment.getDescription());
+        return experimentId;
     }
+
     /**
      *
      * @param validationExperimentId =validation experiment id

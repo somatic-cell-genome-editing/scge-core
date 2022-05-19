@@ -58,9 +58,9 @@ public class ModelDao extends AbstractDAO {
 
     public long getModelId(Model model) throws Exception {
 
-        String sql = "select * from model where type =? and name=? and organism=?";
+        String sql = "select * from model where type =? and name=?";
 
-        List<Model> list = ModelQuery.execute(this,sql,model.getType(), model.getName(), model.getOrganism() );
+        List<Model> list = ModelQuery.execute(this,sql,model.getType(), model.getName() );
         return list.isEmpty() ? 0 : list.get(0).getModelId();
     }
     public boolean verifyModelAccess(long modelId, int personId) throws Exception {
