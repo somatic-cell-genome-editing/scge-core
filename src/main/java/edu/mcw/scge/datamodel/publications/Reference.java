@@ -78,14 +78,6 @@ public class Reference {
         this.pubDate = pubDate;
     }
 
-    public int getRgdId() {
-        return rgdId;
-    }
-
-    public void setRgdId(int rgdId) {
-        this.rgdId = rgdId;
-    }
-
     public String getNotes() {
         return notes;
     }
@@ -158,6 +150,14 @@ public class Reference {
         this.doi = doi;
     }
 
+    public String getPubmedId() {
+        return pubmedId;
+    }
+
+    public void setPubmedId(String pubmedId) {
+        this.pubmedId = pubmedId;
+    }
+
     private String editors;
     private String publication;
     private String volume;
@@ -165,7 +165,6 @@ public class Reference {
     private String pages;
     private String pubStatus;
     private Date pubDate;
-    private int rgdId;
     private String notes;
     private String referenceType;
     private String citation;
@@ -175,5 +174,7 @@ public class Reference {
     private String urlWebReference;
     private int speciesTypeKey;
     private String doi;
+    private String pubmedId;
+
 
 }

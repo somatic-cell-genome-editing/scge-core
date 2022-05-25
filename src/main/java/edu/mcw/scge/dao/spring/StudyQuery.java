@@ -27,6 +27,9 @@ public class StudyQuery extends MappingSqlQuery {
         s.setGroupId(rs.getInt("group_id"));
         s.setPiId(rs.getInt("pi_id"));
         try{
+            s.setModifiedBy(rs.getInt("modified_by"));
+        }catch (Exception e){}
+        try{
             s.setPiId(rs.getInt("piId"));
         }catch (Exception e){}
         try {

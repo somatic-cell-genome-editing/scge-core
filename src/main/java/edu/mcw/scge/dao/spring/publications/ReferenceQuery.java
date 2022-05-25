@@ -1,5 +1,6 @@
 package edu.mcw.scge.dao.spring.publications;
 
+import edu.mcw.scge.dao.implementation.PublicationDAO;
 import edu.mcw.scge.datamodel.publications.Reference;
 import org.springframework.jdbc.object.MappingSqlQuery;
 
@@ -8,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ReferenceQuery extends MappingSqlQuery {
+    PublicationDAO publicationDAO=new PublicationDAO();
     public ReferenceQuery(DataSource ds, String query) {
         super(ds, query);
     }
@@ -34,8 +36,13 @@ public class ReferenceQuery extends MappingSqlQuery {
         ref.setUrlWebReference(rs.getString("url_web_reference"));
 
         ref.setDoi(rs.getString("doi"));
-
+        try {
+            ref.setPubmedId(publicationDAO.getPubmedId(ref.getKey()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return ref;
     }
+
 
 }

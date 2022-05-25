@@ -43,7 +43,7 @@ public class Extractor {
     }
     public String getInputFile(long pmid, String url) throws IOException {
         String fileName = "data/pubmed/" + pmid + ".txt";
-//String fileName = "C:/data/pubmed/" + pmid + ".txt";
+        //String fileName = "C:/data/pubmed/" + pmid + ".txt";
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
             byte dataBuffer[] = new byte[1024];
@@ -51,9 +51,8 @@ public class Extractor {
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
             }
-        } catch (IOException e) {
-            // handle exception
-        }
+        } catch (IOException e) {// handle exception
+             }
         return fileName;
     }
 
