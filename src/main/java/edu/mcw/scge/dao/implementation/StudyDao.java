@@ -22,12 +22,17 @@ public class StudyDao extends AbstractDAO {
         return execute(q,personId, experimentId);
     }
     public List<Study> getStudyByExperimentId(long experimentId) throws Exception {
-        String sql = "select s.* from study s inner join experiment e on s.study_id=e.study_id " +
-                "                inner join person_info p on p.group_id=s.group_id " +
+        /*String sql = "select s.* p.*, pi.* from study s inner join experiment e on s.study_id=e.study_id " +
+                "                inner join person_info pi on pi.group_id=s.group_id " +
+                " inner join person p on p.person_id=pi.person_id " +
                 "                where " +
                 "                 e.experiment_id=? " +
                 "                " ;
-
+*/
+        String sql="select s.*, person.*, p.* from study s inner join experiment e on s.study_id=e.study_id                 \n" +
+                " inner join person_info p on p.group_id=s.group_id " +
+                " inner join person person on person.person_id= p.person_id                \n" +
+                " where  e.experiment_id=?";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
     }

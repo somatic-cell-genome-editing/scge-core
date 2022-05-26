@@ -35,6 +35,15 @@ public class PublicationDAO extends AbstractDAO {
         ReferenceQuery referenceQuery=new ReferenceQuery(this.getDataSource(), sql);
         return referenceQuery.execute();
     }
+    public String getPubmedId(int refKey) throws Exception {
+        List<ArticleId> ids= getArticleIdsByRefKey(refKey);
+        for(ArticleId id:ids){
+            if(id.getIdType().equals("pubmed")){
+                return id.getId();
+            }
+        }
+        return "";
+    }
     public List<Reference> getReferencesNotAssociatedByObjectId(long objectId) throws Exception {
         String sql="select * from publications where ref_key not in " +
                 "(select ref_key from pub_associations where scge_id=?)";
@@ -328,5 +337,15 @@ public class PublicationDAO extends AbstractDAO {
             publications.add(publication);
         }
         return publications;
+    }
+    public void makeAssociation(long objectId, int refKey, String type) throws Exception {
+
+            if(type!=null){
+                System.out.println("REFKEY:"+refKey+"\tTYPE:"+type);
+                boolean existsAssociation= existsAssociation(refKey,objectId);
+                if(!existsAssociation)
+                   insertPubAssociations( refKey,objectId,type);
+            }
+
     }
 }

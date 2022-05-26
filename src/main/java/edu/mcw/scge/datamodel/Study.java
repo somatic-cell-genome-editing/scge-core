@@ -29,6 +29,15 @@ public class Study {
     private int isValidationStudy;
     private Study validationStudy;
     private List<Study> validatedStudies;
+    private int modifiedBy;
+
+    public int getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(int modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
 
     public int getIsValidationStudy() {
         return isValidationStudy;
