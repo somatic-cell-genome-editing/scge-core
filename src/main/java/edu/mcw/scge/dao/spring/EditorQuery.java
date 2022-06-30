@@ -40,6 +40,7 @@ public class EditorQuery extends MappingSqlQuery {
         e.setCatalog(rs.getString("catalog"));
         e.setRrid(rs.getString("rrid"));
         e.setTier(rs.getInt("tier"));
+        e.setTargetLocus(rs.getString("target_locus"));
         try {
             e.setOrientation(rs.getString("orientation"));
             e.setAssembly(rs.getString("assembly"));
