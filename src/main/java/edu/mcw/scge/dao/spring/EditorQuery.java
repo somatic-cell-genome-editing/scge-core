@@ -32,7 +32,6 @@ public class EditorQuery extends MappingSqlQuery {
         e.setActivity(rs.getString("activity"));
         e.setFusion(rs.getString("fusion"));
         e.setDsbCleavageType(rs.getString("dsb_cleavage_type"));
-        e.setTarget_sequence(rs.getString("target_sequence"));
         e.setSource(rs.getString("source"));
         e.setProteinSequence(rs.getString("protein_sequence"));
         e.setAnnotatedMap(rs.getString("annotated_map"));
@@ -44,6 +43,11 @@ public class EditorQuery extends MappingSqlQuery {
 
         try {
             e.setTargetLocus(rs.getString("target_locus"));
+        } catch(Exception ignored) {
+        }
+
+        try {
+            e.setTarget_sequence(rs.getString("target_sequence"));
         } catch(Exception ignored) {
         }
 
