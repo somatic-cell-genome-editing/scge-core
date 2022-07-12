@@ -40,19 +40,24 @@ public class EditorQuery extends MappingSqlQuery {
         e.setCatalog(rs.getString("catalog"));
         e.setRrid(rs.getString("rrid"));
         e.setTier(rs.getInt("tier"));
-        e.setTargetLocus(rs.getString("target_locus"));
+        e.setOrientation(rs.getString("orientation"));
+
         try {
-            e.setOrientation(rs.getString("orientation"));
+            e.setTargetLocus(rs.getString("target_locus"));
+        } catch(Exception ignored) {
+        }
+
+        try {
             e.setAssembly(rs.getString("assembly"));
             e.setChr(rs.getString("chromosome"));
             e.setStart(rs.getString("start"));
             e.setStop(rs.getString("stop"));
             e.setStrand(rs.getString("strand"));
-            e.setTargetLocus(rs.getString("target_locus"));
-
-        } catch(Exception ignored) {
-
+        } catch(Exception ignored2) {
         }
+
+
+
 
         return e;
     }
