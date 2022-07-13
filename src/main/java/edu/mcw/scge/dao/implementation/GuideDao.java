@@ -13,13 +13,11 @@ public class GuideDao extends AbstractDAO {
         return execute(q, guideId);
     }
 
-    public List<Guide> getGuideByFullGuideSequence(String guideSequence) throws Exception {
-        String sql="select * from guide g left outer join genome_info gi on g.guide_id=gi.genome_id where g.full_guide=?";
+    public List<Guide> getGuidesByTargetSequence(String targetSequence) throws Exception {
+        String sql="select * from guide g left outer join genome_info gi on g.guide_id=gi.genome_id where gi.target_sequence=?";
         GuideQuery q= new GuideQuery(this.getDataSource(), sql);
-        return execute(q, guideSequence);
+        return execute(q, targetSequence);
     }
-
-
 
     public List<Guide> getGuides() throws Exception {
         String sql="select * from guide g left outer join genome_info gi on g.guide_id=gi.genome_id order by guide";
