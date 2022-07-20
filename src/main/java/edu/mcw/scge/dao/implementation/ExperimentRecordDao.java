@@ -44,7 +44,7 @@ public class ExperimentRecordDao extends AbstractDAO {
     */
 
     public List<ExperimentRecord> getExperimentRecordsByStudyId(int studyId) throws Exception {
-        String sql="select s.study, r.*, app.*, e.symbol, d.ds_type, m.name as modelName,h.lab_id as hrdonorName, x.type from study s join experiment x on (s.study_id=x.study_id) \n" +
+        String sql="select s.study, r.*, app.*, e.symbol, d.ds_type, m.display_name as modelName,h.lab_id as hrdonorName, x.type from study s join experiment x on (s.study_id=x.study_id) \n" +
                 "inner join experiment_record r on (r.experiment_id=x.experiment_id) \n" +
                 "left outer join editor e on (e.editor_id= r.editor_id) \n" +
                 "left outer join delivery_system d on (d.ds_id= r.ds_id) \n" +
@@ -71,7 +71,7 @@ public class ExperimentRecordDao extends AbstractDAO {
     */
 
    public List<ExperimentRecord> getExperimentRecordById(long expRecId) throws Exception {
-        String sql="select s.study, r.*, e.symbol, d.ds_type, m.name as modelName, g.guide, h.lab_id as hrdonorName, x.type" +
+        String sql="select s.study, r.*, e.symbol, d.ds_type, m.display_name as modelName, g.guide, h.lab_id as hrdonorName, x.type" +
                 " from  experiment x  " +
                 "left join experiment_record r on (r.experiment_id=x.experiment_id) " +
                 " left outer join study s on r.study_id = s.study_id " +
