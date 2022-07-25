@@ -32,12 +32,12 @@ public class EditorDao extends AbstractDAO {
     }
 
     public List<Editor> getEditorById(long id) throws Exception {
-        String sql="select * from editor where editor_id=?";
+        String sql="select * from editor e left outer join genome_info gi on e.editor_id = gi.genome_id where editor_id=?";
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
         return execute(q, id);
     }
     public List<Editor> getEditorByExperimentId(long experimentId) throws Exception {
-        String sql="select * from editor where editor_id in (select distinct(editor_id) from experiment_record er where er.experiment_id=?)";
+        String sql="select * from editor e left outer join genome_info gi on e.editor_id=gi.genome_id where editor_id in (select distinct(editor_id) from experiment_record er where er.experiment_id=?)";
         EditorQuery q=new EditorQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
     }

@@ -45,7 +45,15 @@ public class StudyQuery extends MappingSqlQuery {
 
             s.setPiLastName(rs.getString("piLastName"));
 
-        }catch (Exception e){}
+        }catch (Exception e){
+            try {
+                s.setPi(rs.getString("name"));
+                s.setPiFirstName(rs.getString("first_name"));
+
+                s.setPiLastName(rs.getString("last_name"));
+            }catch (Exception e1){}
+
+        }
         try{
             s.setDeliveryPiId(rs.getInt("delivery_pi_id"));
         }catch (Exception e){}

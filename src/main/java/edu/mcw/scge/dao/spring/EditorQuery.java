@@ -32,7 +32,6 @@ public class EditorQuery extends MappingSqlQuery {
         e.setActivity(rs.getString("activity"));
         e.setFusion(rs.getString("fusion"));
         e.setDsbCleavageType(rs.getString("dsb_cleavage_type"));
-        e.setTarget_sequence(rs.getString("target_sequence"));
         e.setSource(rs.getString("source"));
         e.setProteinSequence(rs.getString("protein_sequence"));
         e.setAnnotatedMap(rs.getString("annotated_map"));
@@ -40,18 +39,29 @@ public class EditorQuery extends MappingSqlQuery {
         e.setCatalog(rs.getString("catalog"));
         e.setRrid(rs.getString("rrid"));
         e.setTier(rs.getInt("tier"));
+        e.setOrientation(rs.getString("orientation"));
+
         try {
-            e.setOrientation(rs.getString("orientation"));
+            e.setTargetLocus(rs.getString("target_locus"));
+        } catch(Exception ignored) {
+        }
+
+        try {
+            e.setTarget_sequence(rs.getString("target_sequence"));
+        } catch(Exception ignored) {
+        }
+
+        try {
             e.setAssembly(rs.getString("assembly"));
             e.setChr(rs.getString("chromosome"));
             e.setStart(rs.getString("start"));
             e.setStop(rs.getString("stop"));
             e.setStrand(rs.getString("strand"));
-            e.setTargetLocus(rs.getString("target_locus"));
-
-        } catch(Exception ignored) {
-
+        } catch(Exception ignored2) {
         }
+
+
+
 
         return e;
     }
