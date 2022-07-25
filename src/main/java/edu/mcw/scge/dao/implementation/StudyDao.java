@@ -29,10 +29,11 @@ public class StudyDao extends AbstractDAO {
                 "                 e.experiment_id=? " +
                 "                " ;
 */
-        String sql="select s.*, person.*, p.* from study s inner join experiment e on s.study_id=e.study_id                 \n" +
-                " inner join person_info p on p.group_id=s.group_id " +
-                " inner join person person on person.person_id= p.person_id                \n" +
-                " where  e.experiment_id=?";
+        String sql="select s.*, person.* from study s ," +
+                " experiment e,person person " +
+                " where s.study_id=e.study_id                 " +
+                "and person.person_id= s.pi_id              " +
+                "and  e.experiment_id=?";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
     }
