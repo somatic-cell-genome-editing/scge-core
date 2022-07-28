@@ -2,11 +2,19 @@ package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
 import edu.mcw.scge.dao.spring.AntibodyQuery;
+import edu.mcw.scge.dao.spring.ExperimentRecordQuery;
+import edu.mcw.scge.dao.spring.LongListQuery;
 import edu.mcw.scge.datamodel.Antibody;
+import edu.mcw.scge.datamodel.ExperimentRecord;
 
 import java.util.List;
 
 public class AntibodyDao extends AbstractDAO {
+    public List<Antibody> getAntibodies() throws Exception{
+        String sql="select * from antibody";
+        AntibodyQuery q=new AntibodyQuery(this.getDataSource(), sql);
+        return q.execute();
+    }
     public List<Antibody> getAntibody(int antibodyId) throws Exception{
         String sql="select * from antibody where antibody_id=?";
         AntibodyQuery q=new AntibodyQuery(this.getDataSource(), sql);
@@ -42,5 +50,11 @@ public class AntibodyDao extends AbstractDAO {
                 " a.antibody_id = aa.antibody_id where aa.experiment_record_id=?";
         AntibodyQuery q=new AntibodyQuery(this.getDataSource(), sql);
         return execute(q, expRecId);
+    }
+    public List<ExperimentRecord> getAssociatedExperimentRecords(int antibodyId) throws Exception {
+        String sql="select * from experiment_record where experiment_record_id in (" +
+                "select experiment_record_id from antibody_associations where antibody_id=?)";
+        ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
+        return execute(q, antibodyId);
     }
 }
