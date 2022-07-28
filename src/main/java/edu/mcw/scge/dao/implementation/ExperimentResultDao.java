@@ -10,7 +10,7 @@ import java.util.List;
 public class ExperimentResultDao extends AbstractDAO {
     public List<ExperimentResultDetail> getResultsByExperimentRecId(long expRecId) throws Exception {
         String sql="select r.*,d.replicate,d.result from experiment_result r inner join experiment_result_detail d " +
-                "on r.result_id = d.result_id where r.experiment_record_id=? ";
+                "on r.result_id = d.result_id where r.experiment_record_id=? order by r.result_id,d.replicate ";
         ExperimentResultDetailQuery q=new ExperimentResultDetailQuery(this.getDataSource(), sql);
         return execute(q, expRecId);
     }
