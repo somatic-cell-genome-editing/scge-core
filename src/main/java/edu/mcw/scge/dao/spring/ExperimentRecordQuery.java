@@ -40,11 +40,14 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         } catch(Exception ignored) {
 
         }
-
-        e.setModelId(rs.getLong("model_id"));
-        e.setModelName(rs.getString("modelName"));
-        e.setEditorId(rs.getLong("editor_id"));
-        e.setEditorSymbol(rs.getString("symbol"));
+        try {
+            e.setModelId(rs.getLong("model_id"));
+            e.setModelName(rs.getString("modelName"));
+        }catch (Exception ex){}
+        try {
+            e.setEditorId(rs.getLong("editor_id"));
+            e.setEditorSymbol(rs.getString("symbol"));
+        }catch (Exception e1){}
         try {
             e.setDeliverySystemName(rs.getString("ds_name"));
             e.setDeliverySystemType(rs.getString("ds_type"));
@@ -60,10 +63,12 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         }catch (Exception e1){
 
         }
-        e.setOrganSystemID(rs.getString("organ_system"));
-        e.setTissueId(rs.getString("tissue_id"));
-        e.setCellType(rs.getString("cell_type"));
-        e.setModelName(rs.getString("modelName"));
+        try {
+            e.setOrganSystemID(rs.getString("organ_system"));
+            e.setTissueId(rs.getString("tissue_id"));
+            e.setCellType(rs.getString("cell_type"));
+        }catch (Exception e1){}
+     //   e.setModelName(rs.getString("modelName"));
      //   e.setGuide(rs.getString("guide"));
         e.setExperimentRecordId(rs.getLong("experiment_record_id"));
      //   e.setVectorId(rs.getInt("vector_id"));
