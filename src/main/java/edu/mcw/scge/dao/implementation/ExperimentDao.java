@@ -21,7 +21,7 @@ public class ExperimentDao extends AbstractDAO {
 
     public List<String> getExperimentRecordCellTypeList(long experimentId) throws Exception {
         String sql="select distinct ot.term from experiment_record ex " +
-                "inner join ont_terms ot on ex.cell_type=ot.term_acc " +
+                "left outer join ont_terms ot on ex.cell_type=ot.term_acc " +
                 "where ex.experiment_id=? order by ot.term";
 
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
