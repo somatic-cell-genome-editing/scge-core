@@ -104,7 +104,7 @@ public class ExperimentDao extends AbstractDAO {
         return execute(q, experimentId);
     }
     public List<ExperimentRecord> getExperimentRecords(long experimentId) throws Exception {
-        String sql="select ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm, a.*  from experiment_record ex " +
+        String sql="select ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,m.display_name,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm, a.*  from experiment_record ex " +
                 " left outer join experiment x on x.experiment_id=ex.experiment_id " +
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +

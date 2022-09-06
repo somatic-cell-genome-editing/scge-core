@@ -45,6 +45,10 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
             e.setModelName(rs.getString("modelName"));
         }catch (Exception ex){}
         try {
+            e.setModelId(rs.getLong("model_id"));
+            e.setModelDisplayName(rs.getString("display_name"));
+        }catch (Exception ex){}
+        try {
             e.setEditorId(rs.getLong("editor_id"));
             e.setEditorSymbol(rs.getString("symbol"));
         }catch (Exception e1){}
