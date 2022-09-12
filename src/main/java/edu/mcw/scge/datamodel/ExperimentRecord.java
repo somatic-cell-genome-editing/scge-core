@@ -37,7 +37,7 @@ public class ExperimentRecord {
     private String cellType;
     private String tissueTerm;
     private String organSystemID;
-    private String cellTypeTerm;
+    private String cellTypeTerm = "Unspecified";
   //  private String vector;
     private String dosage;
     private String injectionFrequency;
@@ -107,6 +107,9 @@ public class ExperimentRecord {
     }
 
     public void setCellTypeTerm(String cellTypeTerm) {
+        if (cellTypeTerm == null || cellTypeTerm.equals("")) {
+            cellTypeTerm = "Unspecified";
+        }
         this.cellTypeTerm = cellTypeTerm;
     }
 
