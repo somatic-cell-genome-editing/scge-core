@@ -18,7 +18,22 @@ public class ExperimentDao extends AbstractDAO {
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
     }
+    public List<String> getExperimentRecordTargetTissueList(long experimentId) throws Exception {
+        String sql="select distinct ot.term from experiment_record ex " +
+                "inner join ont_terms ot on ex.tissue_id=ot.term_acc " +
+                "where ex.experiment_id=? and is_target_tissue=1 order by ot.term";
 
+        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+        return execute(q, experimentId);
+    }
+    public List<String> getExperimentRecordNonTargetTissueList(long experimentId) throws Exception {
+        String sql="select distinct ot.term from experiment_record ex " +
+                "inner join ont_terms ot on ex.tissue_id=ot.term_acc " +
+                "where ex.experiment_id=? and is_target_tissue is null order by ot.term";
+
+        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+        return execute(q, experimentId);
+    }
     public List<String> getExperimentRecordCellTypeList(long experimentId) throws Exception {
         String sql="select distinct ot.term from experiment_record ex " +
                 "inner join ont_terms ot on ex.cell_type=ot.term_acc " +
