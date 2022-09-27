@@ -104,7 +104,7 @@ public class StudyDao extends AbstractDAO {
     public List<Study> getStudies(Person p) throws Exception {
 
 
-        PersonDao pDAO = new PersonDao();
+       /* PersonDao pDAO = new PersonDao();
         List<PersonInfo> pInfo = pDAO.getPersonInfo(p.getId());
 
         StringBuilder groups = new StringBuilder();
@@ -124,23 +124,32 @@ public class StudyDao extends AbstractDAO {
                 " pi.name as piName, " +
                 " pi.first_name as piFirstName , pi.last_name as piLastName"+
                 " from study s, institution i, person p, person pi where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.pi_id=pi.person_id " +
-                " and s.group_id in (" + groups + ") order by piLastName";
+                " and s.group_id in (" + groups + ") order by piLastName";*/
+       String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId,\n" +
+               "                pi.name as piName, \n" +
+               "                pi.first_name as piFirstName , pi.last_name as piLastName\n" +
+               "                from study s, institution i, person p, person pi where s.lab_id=i.institution_id and s.submitter_id=p.person_id and pi.person_id=? \n" +
+               "                and s.group_id in (select group_id from person_info where person_id=?) order by piLastName\n" +
+               "                ";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
-        return execute(q);
+        return execute(q,p.getId(),p.getId());
 
     }
 
     public List<Study> getStudies() throws Exception{
-        String sql="select s.*, i.institution_name, p.name as submitterName, " +
-                " pi.person_id as piId, pi.name as piName, " +
-                " pi.first_name as piFirstName , pi.last_name as piLastName"+
-                " from study s, institution i, person p, person pi " +
-                " where s.lab_id=i.institution_id and s.submitter_id=p.person_id " +
-                " and s.pi_id=pi.person_id order by piLastName";
+        String sql="select s.*, i.institution_name, p.name as submitterName " +
+                " from study s, institution i, person p " +
+                " where s.lab_id=i.institution_id and s.submitter_id=p.person_id " ;
+
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q);
     }
-
+    public List<Person> getStudyPi(Study study) throws Exception {
+        String sql="select * from  person where person_id in (select person_id from person_info where group_id in (\n" +
+                " select group_id from study where group_id=?) and role_key in (select role_key from scge_roles where role='pi'))";
+        PersonQuery query=new PersonQuery(this.getDataSource(), sql);
+        return execute(query, study.getGroupId());
+    }
     public List<Study> getSharedTier2Studies(int personId) throws Exception{
         String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, pi.name as piName" +
                 ", pi.first_name as piFirstName , pi.last_name as piLastName "+
@@ -163,9 +172,6 @@ public class StudyDao extends AbstractDAO {
         return execute(q, initiativeName);
 
     }
-
-
-
     public List<Study> getStudiesByGrantId(int grantId) throws Exception{
         String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, " +
                 "pi.name as piName, " +
@@ -295,14 +301,12 @@ public class StudyDao extends AbstractDAO {
     }
 
     public List<Study> getStudiesByGroupId(int groupId) throws Exception {
-        String sql="select s.*, i.institution_name, p.name as submitterName, pi.person_id as piId, " +
-                "pi.name as piName, " +
-                "pi.first_name as piFirstName, " +
-                "pi.last_name as piLastName " +
-                "from study s, institution i, person p, person pi " +
+        String sql="select s.*, i.institution_name, p.name as submitterName " +
+
+                "from study s, institution i, person p " +
                 "where s.lab_id=i.institution_id " +
                 "and s.submitter_id=p.person_id " +
-                " and s.pi_id=pi.person_id " +
+                "  " +
                 " and s.group_id=?";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q, groupId);

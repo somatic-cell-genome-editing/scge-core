@@ -1,11 +1,15 @@
 package edu.mcw.scge.dao.spring;
 
+import edu.mcw.scge.dao.implementation.PersonDao;
+import edu.mcw.scge.dao.implementation.StudyDao;
+import edu.mcw.scge.datamodel.Person;
 import edu.mcw.scge.datamodel.Study;
 import org.springframework.jdbc.object.MappingSqlQuery;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class StudyQuery extends MappingSqlQuery {
     public StudyQuery(DataSource ds, String sql){
@@ -60,6 +64,26 @@ public class StudyQuery extends MappingSqlQuery {
         try{
             s.setIsValidationStudy(rs.getInt("is_validation_study"));
         }catch (Exception e){}
+
+        mapPi(s);
         return s;
+    }
+    public void mapPi(Study s)  {
+        StudyDao studyDao=new StudyDao();
+        PersonDao personDao=new PersonDao();
+        try {
+            if (s.getPiId() > 0) {
+                Person pi = personDao.getPersonById(s.getPiId()).get(0);
+                s.setPiLastName(pi.getLastName());
+                s.setPiFirstName(pi.getFirstName());
+                s.setPi(pi.getName());
+            }else{
+               List<Person> pis=
+                       studyDao.getStudyPi(s);
+               s.setMultiplePis(pis);
+            }
+        }catch (Exception e){
+
+        }
     }
 }

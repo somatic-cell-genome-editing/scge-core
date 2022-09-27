@@ -18,7 +18,7 @@ public class Study {
     private String pi;
     private String piFirstName;
     private String piLastName;
-
+    private List<Person> multiplePis;
     private String rawData;
     private String reference;
     private List<Integer> associatedGroups;
@@ -166,6 +166,14 @@ public class Study {
 
     public void setPi(String pi) {
         this.pi = pi;
+    }
+
+    public List<Person> getMultiplePis() {
+        return multiplePis;
+    }
+
+    public void setMultiplePis(List<Person> multiplePis) {
+        this.multiplePis = multiplePis;
     }
 
     public String getRawData() {
