@@ -14,10 +14,7 @@ public class Study {
     private Date lastModifiedDate;
     private int submitterId;
     private String submitter;
-    private int piId;
-    private String pi;
-    private String piFirstName;
-    private String piLastName;
+
     private List<Person> multiplePis;
     private String rawData;
     private String reference;
@@ -152,21 +149,7 @@ public class Study {
         this.submitter = submitter;
     }
 
-    public int getPiId() {
-        return piId;
-    }
 
-    public void setPiId(int piId) {
-        this.piId = piId;
-    }
-
-    public String getPi() {
-        return pi;
-    }
-
-    public void setPi(String pi) {
-        this.pi = pi;
-    }
 
     public List<Person> getMultiplePis() {
         return multiplePis;
@@ -208,19 +191,5 @@ public class Study {
         this.groupId = groupId;
     }
 
-    public String getPiFirstName() {
-        return piFirstName;
-    }
 
-    public void setPiFirstName(String piFirstName) {
-        this.piFirstName = piFirstName;
-    }
-
-    public String getPiLastName() {
-        return piLastName;
-    }
-
-    public void setPiLastName(String piLastName) {
-        this.piLastName = piLastName;
-    }
 }

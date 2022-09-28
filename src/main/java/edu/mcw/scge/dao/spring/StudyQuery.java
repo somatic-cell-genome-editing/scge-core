@@ -29,13 +29,11 @@ public class StudyQuery extends MappingSqlQuery {
         s.setRawData(rs.getString("raw_data"));
         s.setReference(rs.getString("reference"));
         s.setGroupId(rs.getInt("group_id"));
-        s.setPiId(rs.getInt("pi_id"));
+
         try{
             s.setModifiedBy(rs.getInt("modified_by"));
         }catch (Exception e){}
-        try{
-            s.setPiId(rs.getInt("piId"));
-        }catch (Exception e){}
+
         try {
             s.setLabName(rs.getString("institution_name"));
 
@@ -43,21 +41,7 @@ public class StudyQuery extends MappingSqlQuery {
         try{
             s.setSubmitter(rs.getString("submitterName"));
         }catch (Exception e){}
-        try {
-            s.setPi(rs.getString("piName"));
-            s.setPiFirstName(rs.getString("piFirstName"));
 
-            s.setPiLastName(rs.getString("piLastName"));
-
-        }catch (Exception e){
-            try {
-                s.setPi(rs.getString("name"));
-                s.setPiFirstName(rs.getString("first_name"));
-
-                s.setPiLastName(rs.getString("last_name"));
-            }catch (Exception e1){}
-
-        }
         try{
             s.setDeliveryPiId(rs.getInt("delivery_pi_id"));
         }catch (Exception e){}
@@ -70,18 +54,11 @@ public class StudyQuery extends MappingSqlQuery {
     }
     public void mapPi(Study s)  {
         StudyDao studyDao=new StudyDao();
-        PersonDao personDao=new PersonDao();
         try {
-            if (s.getPiId() > 0) {
-                Person pi = personDao.getPersonById(s.getPiId()).get(0);
-                s.setPiLastName(pi.getLastName());
-                s.setPiFirstName(pi.getFirstName());
-                s.setPi(pi.getName());
-            }else{
-               List<Person> pis=
-                       studyDao.getStudyPi(s);
+
+               List<Person> pis= studyDao.getStudyPi(s);
                s.setMultiplePis(pis);
-            }
+
         }catch (Exception e){
 
         }
