@@ -307,6 +307,11 @@ public class StudyDao extends AbstractDAO {
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q, groupId);
     }
+    public List<Integer> getAllSubmittedGrantIds() throws Exception {
+        String sql="select distinct(group_id) from study";
+        IntListQuery query=new IntListQuery(this.getDataSource(), sql);
+        return query.execute();
+    }
     public List<Person> getStudyPOC(int studyId) throws Exception{
         String sql="select * from person where person_id in " +
                 "(select person_id from person_info where role_key in (" +

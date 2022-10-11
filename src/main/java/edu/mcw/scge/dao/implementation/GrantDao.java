@@ -2,8 +2,10 @@ package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
 import edu.mcw.scge.dao.spring.GrantQuery;
+import edu.mcw.scge.dao.spring.PersonQuery;
 import edu.mcw.scge.dao.spring.StringListQuery;
 import edu.mcw.scge.datamodel.Grant;
+import edu.mcw.scge.datamodel.Person;
 
 import java.util.List;
 
@@ -58,5 +60,10 @@ public class GrantDao extends AbstractDAO {
         String sql="select * from scge_grants where grant_initiative=?";
         GrantQuery q=new GrantQuery(this.getDataSource(), sql);
         return execute(q, initiative);
+    }
+    public List<Person> getGrantPi(int grantId) throws Exception {
+        String sql="select * from person where person_id in (select person_id from person_info where group_id=? and role_key=?)";
+        PersonQuery query=new PersonQuery(this.getDataSource(), sql);
+        return execute(query, grantId, 31);
     }
 }
