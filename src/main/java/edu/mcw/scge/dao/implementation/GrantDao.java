@@ -27,6 +27,18 @@ public class GrantDao extends AbstractDAO {
         List<Grant> grantList=execute(q, groupId);
         return (grantList!=null && grantList.size()>0)?grantList.get(0):null;
     }
+    public String getCurrentGrantNumberByGrantId(int grantId) throws Exception {
+        String sql="select grant_number from grant_numbers where grant_id=? and status=?" ;
+       StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+        List<String> grantList=execute(q, grantId, "current");
+        return (grantList!=null && grantList.size()>0)?grantList.get(0):"";
+    }
+    public List<String> getFormerGrantNumbersByGrantId(int grantId) throws Exception {
+        String sql="select grant_number from grant_numbers where grant_id=? and status=?" ;
+        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+        return execute(q, grantId, "former");
+
+    }
 
     public Grant getGrantByNumber(String grantNumber){
         return null;
