@@ -11,7 +11,7 @@ import java.util.List;
 
 public class GrantDao extends AbstractDAO {
     public void insert(Grant g) throws Exception {
-        String sql="insert into scge_grants (grant_id, group_id, grant_number, grant_title, grant_title_lc, grant_initiative) values(?,?,?,?,?)";
+        String sql="insert into scge_grants (grant_id, group_id, grant_title, grant_title_lc, grant_initiative) values(?,?,?,?,?)";
         update(sql,g.getGrantId(), g.getGroupId(), g.getGrantNumber(), g.getGrantTitle(), g.getGrantTitleLc(), g.getGrantInitiative());
     }
     public Grant getGrantByTitle(String grantTitle) throws Exception {
