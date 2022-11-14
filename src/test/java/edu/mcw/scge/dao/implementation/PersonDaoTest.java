@@ -10,9 +10,9 @@ import java.util.List;
 public class PersonDaoTest {
     @Test
     public void getAllActiveMembersTest() throws Exception {
-      /*  PersonDao personDao=new PersonDao();
+        PersonDao personDao=new PersonDao();
         List<Person> personList=personDao.getAllActiveMembers();
-        Assert.assertFalse(personList.isEmpty());*/
+        Assert.assertFalse(personList.isEmpty());
     }
 
 }
