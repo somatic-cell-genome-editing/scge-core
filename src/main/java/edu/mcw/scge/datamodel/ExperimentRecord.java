@@ -28,6 +28,7 @@ public class ExperimentRecord {
     private String deliverySystemName;
    // private String guide;
     private String modelName;
+    private String modelDisplayName;
     private String studyName;
     private String age;
     private String genotype;
@@ -36,7 +37,7 @@ public class ExperimentRecord {
     private String cellType;
     private String tissueTerm;
     private String organSystemID;
-    private String cellTypeTerm;
+    private String cellTypeTerm = "unspecified";
   //  private String vector;
     private String dosage;
     private String injectionFrequency;
@@ -44,6 +45,14 @@ public class ExperimentRecord {
     private String hrdonorName;
 
     private int isTargetTissue;
+
+    public String getModelDisplayName() {
+        return modelDisplayName;
+    }
+
+    public void setModelDisplayName(String modelDisplayName) {
+        this.modelDisplayName = modelDisplayName;
+    }
 
     public int getIsTargetTissue() {
         return isTargetTissue;
@@ -98,6 +107,9 @@ public class ExperimentRecord {
     }
 
     public void setCellTypeTerm(String cellTypeTerm) {
+        if (cellTypeTerm == null || cellTypeTerm.equals("")) {
+            cellTypeTerm = "unspecified";
+        }
         this.cellTypeTerm = cellTypeTerm;
     }
 

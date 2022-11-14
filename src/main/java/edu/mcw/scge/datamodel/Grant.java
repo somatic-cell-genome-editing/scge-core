@@ -1,5 +1,7 @@
 package edu.mcw.scge.datamodel;
 
+import java.util.List;
+
 public class Grant {
    private int grantId;
    private int groupId;
@@ -7,7 +9,35 @@ public class Grant {
    private String  grantTitleLc;
    private String grantNumber;
    private String grantInitiative;
-   public int getGrantId() {
+   private String description;
+   private String currentGrantNumber;
+   private List<String> formerGrantNumbers;
+
+    public String getCurrentGrantNumber() {
+        return currentGrantNumber;
+    }
+
+    public void setCurrentGrantNumber(String currentGrantNumber) {
+        this.currentGrantNumber = currentGrantNumber;
+    }
+
+    public List<String> getFormerGrantNumbers() {
+        return formerGrantNumbers;
+    }
+
+    public void setFormerGrantNumbers(List<String> formerGrantNumbers) {
+        this.formerGrantNumbers = formerGrantNumbers;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getGrantId() {
         return grantId;
     }
 

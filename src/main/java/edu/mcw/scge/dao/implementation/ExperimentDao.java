@@ -18,10 +18,25 @@ public class ExperimentDao extends AbstractDAO {
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
     }
+    public List<String> getExperimentRecordTargetTissueList(long experimentId) throws Exception {
+        String sql="select distinct ot.term from experiment_record ex " +
+                "inner join ont_terms ot on ex.tissue_id=ot.term_acc " +
+                "where ex.experiment_id=? and is_target_tissue=1 order by ot.term";
 
+        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+        return execute(q, experimentId);
+    }
+    public List<String> getExperimentRecordNonTargetTissueList(long experimentId) throws Exception {
+        String sql="select distinct ot.term from experiment_record ex " +
+                "inner join ont_terms ot on ex.tissue_id=ot.term_acc " +
+                "where ex.experiment_id=? and is_target_tissue is null order by ot.term";
+
+        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+        return execute(q, experimentId);
+    }
     public List<String> getExperimentRecordCellTypeList(long experimentId) throws Exception {
         String sql="select distinct ot.term from experiment_record ex " +
-                "inner join ont_terms ot on ex.cell_type=ot.term_acc " +
+                "left outer join ont_terms ot on ex.cell_type=ot.term_acc " +
                 "where ex.experiment_id=? order by ot.term";
 
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
@@ -104,7 +119,7 @@ public class ExperimentDao extends AbstractDAO {
         return execute(q, experimentId);
     }
     public List<ExperimentRecord> getExperimentRecords(long experimentId) throws Exception {
-        String sql="select ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm, a.*  from experiment_record ex " +
+        String sql="select ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,m.display_name,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm, a.*  from experiment_record ex " +
                 " left outer join experiment x on x.experiment_id=ex.experiment_id " +
                 "left outer join editor e on ex.editor_id = e.editor_id " +
                 "left outer join delivery_system d on ex.ds_id = d.ds_id " +
@@ -135,6 +150,13 @@ public class ExperimentDao extends AbstractDAO {
         return execute(q);
     }
     public List<Experiment> getExperimentsByStudy(int studyId) throws Exception {
+        String sql="select * from experiment where study_id=?";
+
+        ExperimentQuery q=new ExperimentQuery(this.getDataSource(), sql);
+        return execute(q, studyId);
+    }
+    public List<Experiment> getExperimentsByObjectId(int studyId, long objectId, String object) throws Exception {
+
         String sql="select * from experiment where study_id=?";
 
         ExperimentQuery q=new ExperimentQuery(this.getDataSource(), sql);
@@ -276,7 +298,7 @@ public class ExperimentDao extends AbstractDAO {
     }
 
     public List<ExperimentRecord> getExperimentsByGuide(long guideId) throws Exception {
-        String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
+      /*  String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm from experiment_record ex " +
                 "inner join guide_associations ga on ex.experiment_record_id=ga.experiment_record_id \n" +
                 //"inner join guide g on ga.guide_id = g.guide_id\n" +
                 "inner join experiment x on x.experiment_id=ex.experiment_id " +
@@ -287,7 +309,12 @@ public class ExperimentDao extends AbstractDAO {
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
                 //    "inner join vector v on ex.vector_id = v.vector_id " +
-                "inner join study s on ex.study_id = s.study_id and ga.guide_id = ?";
+                "inner join study s on ex.study_id = s.study_id and ga.guide_id = ?";*/
+      String sql="select s.study, ex.*, e.symbol, d.ds_type, d.ds_name, m.name as modelName,h.lab_id as hrdonorName, x.type, ot.term, ct.term as cellTerm from experiment_record ex \n" +
+              "left outer join guide_associations ga on ex.experiment_record_id=ga.experiment_record_id inner join experiment x on x.experiment_id=ex.experiment_id \n" +
+              "left outer join editor e on ex.editor_id = e.editor_id left outer join delivery_system d on ex.ds_id = d.ds_id left outer join model m on ex.model_id = m.model_id \n" +
+              "left outer join hr_donor h on (h.hrdonor_id= ex.hrdonor_id) \n" +
+              "left outer join ont_terms ot on ex.tissue_id=ot.term_acc left outer join ont_terms ct on ex.cell_type=ct.term_acc inner join study s on ex.study_id = s.study_id and ga.guide_id = ?";
         ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
         return execute(q, guideId);
     }
