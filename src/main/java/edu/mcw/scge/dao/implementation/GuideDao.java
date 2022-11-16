@@ -114,13 +114,16 @@ public class GuideDao extends AbstractDAO {
     }
 
     public long getGuideId(Guide guide) throws Exception {
+        // original query does not work as expected when any searched for columns is null, like 'pam'
+        // String sql = "select * from guide where species =? and guide=? and pam=? and modifications = ?";
 
-        String sql = "select * from guide where species =? and guide=? and pam=? and modifications = ?";
+        String sql = "SELECT * FROM guide WHERE  species=?  AND  guide=?  AND  COALESCE(pam,'*')=COALESCE(?,'*')  AND  modifications=?";
 
         List<Guide> list = GuideQuery.execute(this,sql,guide.getSpecies(),  guide.getGuide(),
                 guide.getPam(), guide.getModifications());
         return list.isEmpty() ? 0 : list.get(0).getGuide_id();
     }
+
     public void updateGuideTier(int tier, long guideId) throws Exception{
         String sql="update guide set tier=? where guide_id=?";
         update(sql, tier, guideId);
