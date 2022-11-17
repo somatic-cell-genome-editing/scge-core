@@ -303,7 +303,7 @@ public class StudyDao extends AbstractDAO {
                 "where s.lab_id=i.institution_id " +
                 "and s.submitter_id=p.person_id " +
                 "  " +
-                " and s.group_id=?";
+                " and s.group_id=? order by s.study_id";
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q, groupId);
     }

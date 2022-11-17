@@ -136,7 +136,11 @@ public class StudyDaoTest {
     }
 
     @Test
-    public void getStudiesByGroupId() {
+    public void getStudiesByGroupId() throws Exception {
+      List<Study> studies=  studyDao.getStudiesByGroupId(1412);
+     for(Study s: studies){
+          System.out.println("Study:"+ s.getStudyId());
+        }
     }
 
     @Test
