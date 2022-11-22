@@ -28,7 +28,7 @@ public class HRDonorDao extends AbstractDAO {
         String sql = "insert into hr_donor (hrdonor_id,type,lab_id,source,sequence,modification,description  )" +
                 " values (?,?,?,?,?,?,?)";
 
-        long donorId = this.getNextKeyFromSequence("donor_seq");
+        long donorId = this.getNextKeyFromSequenceLong("donor_seq");
 
 
         update(sql, donorId,hrdonor.getType(),hrdonor.getLabId(),hrdonor.getSource(),hrdonor.getSequence(),
