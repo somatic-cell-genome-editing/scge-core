@@ -38,7 +38,7 @@ public class HRDonorDao extends AbstractDAO {
     public long getHRDonorId(HRDonor hrdonor) throws Exception {
 
         // modification could be null
-        String sql = "SELECT hrdonor_id FROM hr_donor WHERE sequence=? AND COALESCE(modification,'*')=COALESCE(?,'*')";
+        String sql = "SELECT MAX(hrdonor_id) FROM hr_donor WHERE sequence=? AND COALESCE(modification,'*')=COALESCE(?,'*')";
 
         return getLongCount(sql, hrdonor.getSequence(), hrdonor.getModification());
     }
