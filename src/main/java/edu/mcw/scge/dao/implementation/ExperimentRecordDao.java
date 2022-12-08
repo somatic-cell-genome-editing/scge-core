@@ -101,14 +101,14 @@ public class ExperimentRecordDao extends AbstractDAO {
 
         return experimentId;
     }
-    public long getExpRecordId(ExperimentRecord experimentRecord) throws Exception {
-        String sql="select * from experiment_record where name =? and study_id=? and editor_id = ? and ds_id = ?  and model_id = ? and sex = ?" +
-                "and application_method_id = ? and tissue_id = ? and cell_type = ? ";
-        ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
-        List<ExperimentRecord> list = execute(q,sql,experimentRecord.getExperimentName(),  experimentRecord.getStudyId(),experimentRecord.getEditorId(),experimentRecord.getDeliverySystemId(),
-                experimentRecord.getModelId(),experimentRecord.getSex(),experimentRecord.getApplicationMethodId(),experimentRecord.getTissueId(),experimentRecord.getCellType());
-        return list.isEmpty() ? 0 : list.get(0).getExperimentRecordId();
+
+    public long getExpRecordId(ExperimentRecord r) throws Exception {
+        String sql = "SELECT MAX(experiment_record_id) FROM experiment_record WHERE name=? AND study_id=? AND editor_id=? AND ds_id=? "+
+                "AND model_id=? AND sex=? AND application_method_id=? AND tissue_id=? AND cell_type=?";
+        return getLongCount(sql, r.getExperimentName(), r.getStudyId(), r.getEditorId(), r.getDeliverySystemId(),
+                r.getModelId(), r.getSex(), r.getApplicationMethodId(), r.getTissueId(), r.getCellType());
     }
+
     public void addTargetTissue( List<Long> experimentRecordIds) throws Exception{
 
         String sql = "update experiment_record set is_target_tissue=1 "+
