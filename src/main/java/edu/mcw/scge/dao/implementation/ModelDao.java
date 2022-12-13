@@ -27,16 +27,18 @@ public class ModelDao extends AbstractDAO {
 
     public long insertModel(Model model) throws Exception{
 
-        String sql = "insert into model ( model_id, type, name, organism, sex, rrid, source, transgene, subtype, annotated_map," +
-                "transgene_description, transgene_reporter,model_description,parental_origin,display_name,strain_alias,tier )" +
-                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into model (model_id, type, name, organism, sex, rrid, source, transgene, subtype, annotated_map," +
+                "transgene_description, transgene_reporter,model_description,parental_origin,display_name,strain_alias,tier," +
+                "catalog, ontology, official_name)" +
+                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ,?,?,?)";
 
         long modelId = this.getNextKeyFromSequenceLong("model_seq");
 
         update(sql, modelId, model.getType(), model.getName(), model.getOrganism(),model.getSex(), model.getRrid(),
-                model.getSource(),model.getTransgene(),model.getSubtype(),model.getAnnotatedMap(),
-                model.getTransgeneDescription(),model.getTransgeneReporter(),model.getDescription(),model.getParentalOrigin(),
-                model.getDisplayName(),model.getStrainAlias(),model.getTier());
+            model.getSource(),model.getTransgene(),model.getSubtype(),model.getAnnotatedMap(),
+            model.getTransgeneDescription(),model.getTransgeneReporter(),model.getDescription(),model.getParentalOrigin(),
+            model.getDisplayName(), model.getStrainAlias(), model.getTier(),
+            model.getCatalog(), model.getOntology(), model.getOfficialName());
 
         return modelId;
     }
@@ -44,16 +46,16 @@ public class ModelDao extends AbstractDAO {
     public void updateModel(Model model) throws Exception{
 
         String sql = "update model set type=?, name=?, organism=?, sex=?, rrid=?, source=?, transgene=?, subtype=?, annotated_map=?," +
-                "transgene_description=?, transgene_reporter=?,model_description=?,parental_origin=?,display_name=?,strain_alias=?,tier=? " +
+                "transgene_description=?, transgene_reporter=?, model_description=?, parental_origin=?, display_name=?, strain_alias=?, tier=? " +
+                ",catalog=?, ontology=?, official_name=? " +
                 "where model_id = ?";
-
-
 
         update(sql, model.getType(), model.getName(), model.getOrganism(),model.getSex(), model.getRrid(),
                 model.getSource(),model.getTransgene(),model.getSubtype(),model.getAnnotatedMap(),
                 model.getTransgeneDescription(),model.getTransgeneReporter(),model.getDescription(),model.getParentalOrigin(),
-                model.getDisplayName(),model.getStrainAlias(),model.getTier(),model.getModelId());
-
+                model.getDisplayName(), model.getStrainAlias(), model.getTier(),
+                model.getCatalog(), model.getOntology(), model.getOfficialName(),
+                model.getModelId());
     }
 
     public long getModelId(Model model) throws Exception {
