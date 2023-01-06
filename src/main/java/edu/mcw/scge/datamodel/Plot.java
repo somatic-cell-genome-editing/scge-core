@@ -10,9 +10,19 @@ public class Plot {
     private String title;
     private List<String> tickLabels;
     private Map<String, List<Double>> plotData;
-    private HashMap<Integer, List<Integer>> replicateResult;
+    private HashMap<Integer, List<Double>> replicateResult;
     private Experiment experiment;
     private List<Object> comparableObjects;
+    private List<Long> recordIds;
+
+
+    public List<Long> getRecordIds() {
+        return recordIds;
+    }
+
+    public void setRecordIds(List<Long> recordIds) {
+        this.recordIds = recordIds;
+    }
 
     public String getXaxisLabel() {
         return xaxisLabel;
@@ -54,11 +64,11 @@ public class Plot {
         this.plotData = plotData;
     }
 
-    public HashMap<Integer, List<Integer>> getReplicateResult() {
+    public HashMap<Integer, List<Double>> getReplicateResult() {
         return replicateResult;
     }
 
-    public void setReplicateResult(HashMap<Integer, List<Integer>> replicateResult) {
+    public void setReplicateResult(HashMap<Integer, List<Double>> replicateResult) {
         this.replicateResult = replicateResult;
     }
 

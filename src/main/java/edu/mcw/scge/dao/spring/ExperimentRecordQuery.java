@@ -1,14 +1,20 @@
 package edu.mcw.scge.dao.spring;
 
-import edu.mcw.scge.datamodel.Experiment;
-import edu.mcw.scge.datamodel.ExperimentRecord;
+import edu.mcw.scge.dao.implementation.ExperimentResultDao;
+import edu.mcw.scge.dao.implementation.GuideDao;
+import edu.mcw.scge.dao.implementation.VectorDao;
+import edu.mcw.scge.datamodel.*;
 import org.springframework.jdbc.object.MappingSqlQuery;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
+    GuideDao guideDao=new GuideDao();
+    ExperimentResultDao resultDao=new ExperimentResultDao();
+    VectorDao vectorDao=new VectorDao();
     public ExperimentRecordQuery(DataSource ds, String sql){
         super(ds, sql);
     }
@@ -88,6 +94,21 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
             e.setHrdonorId(rs.getLong("hrdonor_id"));
             e.setHrdonorName(rs.getString("hrdonorName"));
         }catch (Exception e1){}
+        try{
+            mapGuide(e);
+        }catch (Exception e1){
+
+        }
+        try{
+            mapVecotr(e);
+        }catch (Exception e1){
+
+        }
+        try{
+            mapResultDetails(e);
+        }catch (Exception e1){
+
+        }
         return e;
 
 
@@ -95,4 +116,21 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
 
 
     }
+    void mapGuide(ExperimentRecord e) throws Exception {
+        List<Guide> guideList=guideDao.getGuidesByExpRecId(e.getExperimentRecordId());
+        if(guideList!=null && guideList.size()>0){
+            e.setGuides(guideList);
+        }
+    }
+    void mapVecotr(ExperimentRecord e) throws Exception {
+        List<Vector> vectors=vectorDao.getVectorsByExpRecId(e.getExperimentRecordId());
+        if(vectors!=null && vectors.size()>0)
+            e.setVectors(vectors);
+    }
+    void mapResultDetails(ExperimentRecord e) throws Exception {
+        List<ExperimentResultDetail> resultDetails=resultDao.getResultsByExperimentRecId(e.getExperimentRecordId());
+        if(resultDetails!=null && resultDetails.size()>0)
+            e.setResultDetails(resultDetails);
+    }
+
 }

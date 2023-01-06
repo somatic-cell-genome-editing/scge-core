@@ -1,5 +1,7 @@
 package edu.mcw.scge.datamodel;
 
+import java.util.List;
+
 public class ExperimentRecord {
     private long experimentRecordId;
     private long experimentId;
@@ -11,13 +13,6 @@ public class ExperimentRecord {
     private long deliverySystemId;
     private long hrdonorId;
 
-    public String getOrganSystemID() {
-        return organSystemID;
-    }
-
-    public void setOrganSystemID(String organSystemID) {
-        this.organSystemID = organSystemID;
-    }
 
     //  private int vectorId;
     private long modelId;
@@ -37,7 +32,7 @@ public class ExperimentRecord {
     private String cellType;
     private String tissueTerm;
     private String organSystemID;
-    private String cellTypeTerm = "unspecified";
+    private String cellTypeTerm ;
   //  private String vector;
     private String dosage;
     private String injectionFrequency;
@@ -45,6 +40,51 @@ public class ExperimentRecord {
     private String hrdonorName;
 
     private int isTargetTissue;
+
+    private List<Guide> guides;
+    private List<Vector> vectors;
+    private List<HRDonor> hrDonors;
+    private List<ExperimentResultDetail> resultDetails;
+
+    public List<Guide> getGuides() {
+        return guides;
+    }
+
+    public void setGuides(List<Guide> guides) {
+        this.guides = guides;
+    }
+
+    public List<Vector> getVectors() {
+        return vectors;
+    }
+
+    public void setVectors(List<Vector> vectors) {
+        this.vectors = vectors;
+    }
+
+    public List<HRDonor> getHrDonors() {
+        return hrDonors;
+    }
+
+    public void setHrDonors(List<HRDonor> hrDonors) {
+        this.hrDonors = hrDonors;
+    }
+
+    public List<ExperimentResultDetail> getResultDetails() {
+        return resultDetails;
+    }
+
+    public void setResultDetails(List<ExperimentResultDetail> resultDetails) {
+        this.resultDetails = resultDetails;
+    }
+
+    public String getOrganSystemID() {
+        return organSystemID;
+    }
+
+    public void setOrganSystemID(String organSystemID) {
+        this.organSystemID = organSystemID;
+    }
 
     public String getModelDisplayName() {
         return modelDisplayName;
