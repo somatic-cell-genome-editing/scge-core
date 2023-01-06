@@ -2,9 +2,7 @@ package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
 import edu.mcw.scge.dao.spring.HRDonorQuery;
-import edu.mcw.scge.dao.spring.VectorQuery;
 import edu.mcw.scge.datamodel.HRDonor;
-import edu.mcw.scge.datamodel.Vector;
 
 import java.util.List;
 
@@ -25,23 +23,23 @@ public class HRDonorDao extends AbstractDAO {
 
     public long insertHRDonor(HRDonor hrdonor) throws Exception{
 
-        String sql = "insert into hr_donor (hrdonor_id,type,lab_id,source,sequence,modification,description  )" +
-                " values (?,?,?,?,?,?,?)";
+        String sql = "insert into hr_donor (hrdonor_id,type,lab_id,source,sequence,modification,description,tier)" +
+                " values (?,?,?,?,?,?,?,?)";
 
-        long donorId = this.getNextKeyFromSequence("donor_seq");
-
+        long donorId = this.getNextKeyFromSequenceLong("donor_seq");
+        hrdonor.setId(donorId);
 
         update(sql, donorId,hrdonor.getType(),hrdonor.getLabId(),hrdonor.getSource(),hrdonor.getSequence(),
-                hrdonor.getModification(),hrdonor.getDescription());
+                hrdonor.getModification(), hrdonor.getDescription(), hrdonor.getTier());
 
         return donorId;
     }
 
     public long getHRDonorId(HRDonor hrdonor) throws Exception {
 
-        String sql = "select * from hr_donor where sequence=? and modification = ?";
+        // modification could be null
+        String sql = "SELECT MAX(hrdonor_id) FROM hr_donor WHERE sequence=? AND COALESCE(modification,'*')=COALESCE(?,'*')";
 
-        List<HRDonor> list = HRDonorQuery.execute(this,sql, hrdonor.getSequence(),hrdonor.getModification());
-        return list.isEmpty() ? 0 : list.get(0).getId();
+        return getLongCount(sql, hrdonor.getSequence(), hrdonor.getModification());
     }
 }

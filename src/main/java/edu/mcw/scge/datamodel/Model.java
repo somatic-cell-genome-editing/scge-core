@@ -19,6 +19,9 @@ public class Model {
     private String displayName;
     private String strainAlias;
     private int tier;
+    private String catalog;
+    private String ontology;
+    private String officialName;
 
     public int getTier() {
         return tier;
@@ -154,5 +157,29 @@ public class Model {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getCatalog() {
+        return catalog;
+    }
+
+    public void setCatalog(String catalog) {
+        this.catalog = catalog;
+    }
+
+    public String getOntology() {
+        return ontology;
+    }
+
+    public void setOntology(String ontology) {
+        this.ontology = ontology;
+    }
+
+    public String getOfficialName() {
+        return officialName;
+    }
+
+    public void setOfficialName(String officialName) {
+        this.officialName = officialName;
     }
 }

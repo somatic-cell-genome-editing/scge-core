@@ -9,42 +9,42 @@ import java.util.List;
 public class DeliveryDao extends AbstractDAO {
     public List<Delivery> getDeliverySystemsById(long deliverySystemId) throws  Exception{
         String sql="select * from delivery_system where ds_id=?";
-        DeliveryQuery q=new DeliveryQuery(this.getDataSource(), sql);
-        return execute(q, deliverySystemId);
+        return DeliveryQuery.execute(this, sql, deliverySystemId);
     }
-	public List<Delivery> getDeliverySystems() throws  Exception{
+
+    public List<Delivery> getDeliverySystems() throws  Exception{
         String sql="select * from delivery_system order by ds_name";
-        DeliveryQuery q=new DeliveryQuery(this.getDataSource(), sql);
-        return execute(q);
-	}	
+        return DeliveryQuery.execute(this, sql);
+	}
+
     public long insertDelivery(Delivery delivery) throws Exception{
 
-        String sql = "insert into delivery_system ( ds_id, ds_type, ds_subtype, ds_name, ds_source, " +
-                "ds_description, ds_lab_id, ds_annotated_map, ds_rrid, " +
-                "ds_np_size, ds_mol_targeting_agent,tier ) values (?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO delivery_system ( ds_id, ds_type, ds_subtype, ds_name, ds_source, ds_description, " +
+                "ds_lab_id, ds_annotated_map, ds_rrid, ds_np_size, ds_mol_targeting_agent, " +
+                "tier, ds_sequence, ds_zeta_potential, ds_np_polydispersity_index ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         long deliveryId = this.getNextKeyFromSequenceLong("delivery_seq");
 
-
-        update(sql, deliveryId,delivery.getType(),delivery.getSubtype(),delivery.getName(),
-                delivery.getSource(),delivery.getDescription(),
-                delivery.getLabId(),delivery.getAnnotatedMap(),
-                delivery.getRrid(),delivery.getNpSize(),delivery.getMolTargetingAgent(),delivery.getTier());
+        update(sql, deliveryId, delivery.getType(), delivery.getSubtype(), delivery.getName(), delivery.getSource(), delivery.getDescription(),
+                delivery.getLabId(), delivery.getAnnotatedMap(), delivery.getRrid(), delivery.getNpSize(), delivery.getMolTargetingAgent(),
+                delivery.getTier(), delivery.getSequence(), delivery.getZetaPotential(), delivery.getNpPolydispersityIndex());
 
         return deliveryId;
     }
+
     public void updateDelivery(Delivery delivery) throws Exception{
 
-        String sql = "update delivery_system set ds_type=?, ds_subtype=?, ds_name=?, ds_source=?, " +
-                "ds_description=?, ds_lab_id=?, ds_annotated_map=?, ds_rrid=?, " +
-                "ds_np_size=?, ds_mol_targeting_agent=?,tier=? where ds_id=?";
+        String sql = "UPDATE delivery_system SET ds_type=?, ds_subtype=?, ds_name=?, ds_source=?, ds_description=?, " +
+                "ds_lab_id=?, ds_annotated_map=?, ds_rrid=?, ds_np_size=?, ds_mol_targeting_agent=?, tier=?, " +
+                "ds_sequence=?, ds_zeta_potential=?, ds_np_polydispersity_index=? " +
+                "WHERE ds_id=?";
 
-        update(sql,delivery.getType(),delivery.getSubtype(),delivery.getName(),
-                delivery.getSource(),delivery.getDescription(),
-                delivery.getLabId(),delivery.getAnnotatedMap(),
-                delivery.getRrid(),delivery.getNpSize(),delivery.getMolTargetingAgent(),delivery.getTier(),delivery.getId());
-
+        update(sql, delivery.getType(), delivery.getSubtype(), delivery.getName(), delivery.getSource(), delivery.getDescription(),
+                delivery.getLabId(), delivery.getAnnotatedMap(), delivery.getRrid(), delivery.getNpSize(), delivery.getMolTargetingAgent(), delivery.getTier(),
+                delivery.getSequence(), delivery.getZetaPotential(), delivery.getNpPolydispersityIndex(),
+                delivery.getId());
     }
+
     public long getDeliveryId(Delivery delivery) throws Exception {
 
         String sql = "select * from delivery_system where ds_type =? and ds_name=?";
