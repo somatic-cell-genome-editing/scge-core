@@ -204,7 +204,8 @@ public class ExperimentDao extends AbstractDAO {
                 "where ex.experiment_id=?";
 
         ExperimentQuery q=new ExperimentQuery(this.getDataSource(), sql);
-        return (Experiment) execute(q, experimentId).get(0);
+        List<Experiment> experiments=execute(q, experimentId);
+        return experiments.size()>0?experiments.get(0):new Experiment();
 
     }
     public Experiment getExperimentByStudyIdNExperimentId(int studyId,long experimentId) throws Exception {
