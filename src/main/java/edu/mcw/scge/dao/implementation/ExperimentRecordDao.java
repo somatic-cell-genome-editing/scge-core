@@ -2,11 +2,12 @@ package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
 import edu.mcw.scge.dao.spring.ExperimentRecordQuery;
-import edu.mcw.scge.datamodel.Editor;
+import edu.mcw.scge.dao.spring.StringMapQuery;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ExperimentRecordDao extends AbstractDAO {
@@ -133,7 +134,34 @@ public class ExperimentRecordDao extends AbstractDAO {
 
         deleteTargetTissue(experimentId);
         if(experimentRecordIds.size()>0)
-        addTargetTissue(experimentRecordIds);
+            addTargetTissue(experimentRecordIds);
+    }
 
+
+    /////////////////
+    ///// to handle EXPERIMENT_DETAILS table
+    public Map<String,String> getExperimentRecordDetails(long expRecId) throws Exception {
+        String sql = "SELECT name,value FROM experiment_details WHERE experiment_record_id=?";
+        List<StringMapQuery.MapPair> list = StringMapQuery.execute(this, sql, expRecId);
+        Map<String,String> details = new HashMap<>();
+        for( StringMapQuery.MapPair pair: list ) {
+            details.put(pair.keyValue, pair.stringValue);
+        }
+        return details;
+    }
+
+    public void insertExperimentRecordDetails(long expRecId, String name, String value) throws Exception {
+        String sql = "INSERT INTO experiment_details (experiment_record_id,name,value) VALUES(?,?,?)";
+        update(sql, expRecId, name, value);
+    }
+
+    public void updateExperimentRecordDetails(long expRecId, String name, String value) throws Exception {
+        String sql = "UPDATE experiment_details SET value=? WHERE experiment_record_id=? AND name=?";
+        update(sql, value, expRecId, name);
+    }
+
+    public void deleteExperimentRecordDetails(long expRecId, String name) throws Exception {
+        String sql = "DELETE experiment_details WHERE experiment_record_id=? AND name=?";
+        update(sql, expRecId, name);
     }
 }
