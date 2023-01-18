@@ -5,8 +5,9 @@ import edu.mcw.scge.dao.spring.*;
 import edu.mcw.scge.datamodel.Experiment;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.LongStream;
+import java.util.Map;
 
 public class ExperimentDao extends AbstractDAO {
 
@@ -387,5 +388,41 @@ public class ExperimentDao extends AbstractDAO {
                 " where v.experiment_id=? ";
         LongListQuery q=new LongListQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
+    }
+
+    /////////////////
+    ///// to handle EXPERIMENT_DETAILS table
+    public Map<String,String> getExperimentDetails(long expId) throws Exception {
+        String sql = "SELECT name,value FROM experiment_details WHERE experiment_id=?";
+        List<StringMapQuery.MapPair> list = StringMapQuery.execute(this, sql, expId);
+        Map<String,String> details = new HashMap<>();
+        for( StringMapQuery.MapPair pair: list ) {
+            details.put(pair.keyValue, pair.stringValue);
+        }
+        return details;
+    }
+
+    public void insertExperimentDetails(long expId, String name, String value) throws Exception {
+        String sql = "INSERT INTO experiment_details (experiment_id,name,value) VALUES(?,?,?)";
+        update(sql, expId, name, value);
+    }
+
+    public void updateExperimentDetails(long expId, String name, String value) throws Exception {
+        String sql = "UPDATE experiment_details SET value=? WHERE experiment_id=? AND name=?";
+        update(sql, value, expId, name);
+    }
+
+    public void deleteExperimentDetails(long expId, String name) throws Exception {
+        String sql = "DELETE experiment_details WHERE experiment_id=? AND name=?";
+        update(sql, expId, name);
+    }
+
+    public String getExperimentDetailsValue(long expId, String name) throws Exception {
+        String sql = "SELECT value FROM experiment_details WHERE experiment_id=? AND name=?";
+        List<String> values = StringListQuery.execute(this, sql, expId, name);
+        if( values==null || values.isEmpty() ) {
+            return null;
+        }
+        return values.get(0);
     }
 }
