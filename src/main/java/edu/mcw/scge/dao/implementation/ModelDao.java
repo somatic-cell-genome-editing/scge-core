@@ -60,7 +60,7 @@ public class ModelDao extends AbstractDAO {
 
     public long getModelId(Model model) throws Exception {
 
-        String sql = "SELECT * FROM model WHERE type=? AND name=? AND COALESCE(model,'')=COALESCE(?,'')";
+        String sql = "SELECT * FROM model WHERE type=? AND name=? AND COALESCE(source,'')=COALESCE(?,'')";
 
         List<Model> list = ModelQuery.execute(this,sql,model.getType(), model.getName(), model.getSource());
         return list.isEmpty() ? 0 : list.get(0).getModelId();
