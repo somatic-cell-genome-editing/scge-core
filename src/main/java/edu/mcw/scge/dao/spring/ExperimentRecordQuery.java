@@ -2,6 +2,7 @@ package edu.mcw.scge.dao.spring;
 
 import edu.mcw.scge.dao.implementation.ExperimentResultDao;
 import edu.mcw.scge.dao.implementation.GuideDao;
+import edu.mcw.scge.dao.implementation.HRDonorDao;
 import edu.mcw.scge.dao.implementation.VectorDao;
 import edu.mcw.scge.datamodel.*;
 import org.springframework.jdbc.object.MappingSqlQuery;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
     GuideDao guideDao=new GuideDao();
+    HRDonorDao hrDonorDao=new HRDonorDao();
     ExperimentResultDao resultDao=new ExperimentResultDao();
     VectorDao vectorDao=new VectorDao();
     public ExperimentRecordQuery(DataSource ds, String sql){
@@ -109,6 +111,11 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         }catch (Exception e1){
 
         }
+        try{
+            mapHrDonor(e);
+        }catch (Exception e1){
+
+        }
         return e;
 
 
@@ -131,6 +138,11 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
         List<ExperimentResultDetail> resultDetails=resultDao.getResultsByExperimentRecId(e.getExperimentRecordId());
         if(resultDetails!=null && resultDetails.size()>0)
             e.setResultDetails(resultDetails);
+    }
+    void mapHrDonor(ExperimentRecord e) throws Exception {
+            List<HRDonor> hrDonors=hrDonorDao.getHRDonorById(e.getHrdonorId());
+        if(hrDonors!=null && hrDonors.size()>0)
+            e.setHrDonors(hrDonors);
     }
 
 }

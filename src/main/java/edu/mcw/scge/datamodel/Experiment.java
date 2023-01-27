@@ -1,6 +1,8 @@
 package edu.mcw.scge.datamodel;
 
 
+import java.sql.Date;
+
 public class Experiment {
     private long experimentId;
     private int studyId;
@@ -8,6 +10,15 @@ public class Experiment {
     private String type;
     private String name;
     private String description;
+    private Date lastModifiedDate;
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
 
     public long getExperimentId() {
         return experimentId;

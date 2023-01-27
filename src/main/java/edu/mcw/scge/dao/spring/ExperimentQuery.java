@@ -25,6 +25,11 @@ public class ExperimentQuery extends MappingSqlQuery<Experiment> {
         }catch (Exception ignored) {
 
         }
+        try{
+            e.setLastModifiedDate(rs.getDate("last_modified_date"));
+        }catch (Exception ignored){
+
+        }
 
         return e;
     }
