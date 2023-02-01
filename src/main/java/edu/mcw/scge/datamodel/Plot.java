@@ -8,6 +8,7 @@ public class Plot {
     private String xaxisLabel;
     private String yaxisLabel;
     private String title;
+    private String titleColor;
     private List<String> tickLabels;
     private Map<String, List<Double>> plotData;
     private HashMap<Integer, List<Double>> replicateResult;
@@ -15,6 +16,13 @@ public class Plot {
     private List<Object> comparableObjects;
     private List<Long> recordIds;
 
+    public String getTitleColor() {
+        return titleColor;
+    }
+
+    public void setTitleColor(String titleColor) {
+        this.titleColor = titleColor;
+    }
 
     public List<Long> getRecordIds() {
         return recordIds;
