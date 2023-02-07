@@ -6,7 +6,6 @@ import edu.mcw.scge.datamodel.Experiment;
 import edu.mcw.scge.datamodel.ExperimentRecord;
 
 import java.util.List;
-import java.util.stream.LongStream;
 
 public class ExperimentDao extends AbstractDAO {
 
@@ -15,8 +14,9 @@ public class ExperimentDao extends AbstractDAO {
                 "inner join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "where ex.experiment_id=? order by ot.term";
 
-        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
-        return execute(q, experimentId);
+        //StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+        //return execute(q, experimentId);
+        return StringListQuery.execute(this, sql, experimentId);
     }
     public List<String> getExperimentRecordTargetTissueList(long experimentId) throws Exception {
         String sql="select distinct ot.term from experiment_record ex " +
@@ -129,7 +129,7 @@ public class ExperimentDao extends AbstractDAO {
                 "left outer join hr_donor h on (h.hrdonor_id= ex.hrdonor_id) \n" +
                 "left outer join ont_terms ot on ex.tissue_id=ot.term_acc " +
                 "left outer join ont_terms ct on ex.cell_type=ct.term_acc " +
-                "where ex.experiment_id=? order by ex.record_order";
+                "where ex.experiment_id=? order by COALESCE(ex.record_order,ex.experiment_record_id)";
 
         ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
@@ -204,7 +204,8 @@ public class ExperimentDao extends AbstractDAO {
                 "where ex.experiment_id=?";
 
         ExperimentQuery q=new ExperimentQuery(this.getDataSource(), sql);
-        return (Experiment) execute(q, experimentId).get(0);
+        List<Experiment> experiments=execute(q, experimentId);
+        return experiments.size()>0?experiments.get(0):new Experiment();
 
     }
     public Experiment getExperimentByStudyIdNExperimentId(int studyId,long experimentId) throws Exception {
