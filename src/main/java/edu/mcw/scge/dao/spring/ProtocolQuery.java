@@ -1,6 +1,7 @@
 package edu.mcw.scge.dao.spring;
 
 import edu.mcw.scge.dao.AbstractDAO;
+import edu.mcw.scge.dao.implementation.TierDao;
 import edu.mcw.scge.datamodel.Protocol;
 import org.springframework.jdbc.object.MappingSqlQuery;
 import javax.sql.DataSource;
@@ -9,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ProtocolQuery extends MappingSqlQuery<Protocol> {
+    TierDao tierDao=new TierDao();
     public ProtocolQuery(DataSource ds, String sql) {
         super(ds, sql);
     }
@@ -20,8 +22,11 @@ public class ProtocolQuery extends MappingSqlQuery<Protocol> {
         p.setDescription(rs.getString("description"));
         p.setId(rs.getLong("protocol_id"));
         p.setTitle(rs.getString("title"));
-        p.setTier(rs.getInt("tier"));
-        p.setFilename(rs.getString("filename"));
+        try {
+            p.setTier(tierDao.getTier(rs.getLong("protocol_id")));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }        p.setFilename(rs.getString("filename"));
         p.setXref(rs.getString("xref"));
         p.setKeywords(rs.getString("keywords"));
         return p;

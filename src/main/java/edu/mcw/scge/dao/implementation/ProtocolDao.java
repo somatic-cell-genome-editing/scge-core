@@ -49,13 +49,13 @@ public class ProtocolDao extends AbstractDAO {
 
     public long insertProtocol(Protocol protocol) throws Exception{
 
-        String sql = "insert into protocol ( title,description,protocol_id,tier," +
+        String sql = "insert into protocol ( title,description,protocol_id," +
                 "filename,xref,keywords )" +
-                "values (?,?,?,?,?,?,?)";
+                "values (?,?,?,?,?,?)";
 
         long protocolId = this.getNextKeyFromSequenceLong("protocol_seq");
 
-        update(sql, protocol.getTitle(),protocol.getDescription(),protocolId,protocol.getTier(),protocol.getFilename(),
+        update(sql, protocol.getTitle(),protocol.getDescription(),protocolId,protocol.getFilename(),
                 protocol.getXref(),protocol.getKeywords());
 
         return protocolId;
@@ -83,12 +83,12 @@ public class ProtocolDao extends AbstractDAO {
 
     public void updateProtocol(Protocol protocol) throws Exception{
 
-        String sql = "update protocol set title=?,description=?,tier=?," +
+        String sql = "update protocol set title=?,description=?," +
                 "filename=?,xref=?,keywords=? where protocol_id = ?";
 
 
 
-        update(sql, protocol.getTitle(),protocol.getDescription(),protocol.getTier(),protocol.getFilename(),
+        update(sql, protocol.getTitle(),protocol.getDescription(),protocol.getFilename(),
                 protocol.getXref(),protocol.getKeywords(),protocol.getId());
 
     }
