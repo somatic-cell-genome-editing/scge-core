@@ -1,6 +1,7 @@
 package edu.mcw.scge.dao.spring;
 
 import edu.mcw.scge.dao.AbstractDAO;
+import edu.mcw.scge.dao.implementation.TierDao;
 import edu.mcw.scge.datamodel.Guide;
 import org.springframework.jdbc.object.MappingSqlQuery;
 
@@ -10,6 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class GuideQuery extends MappingSqlQuery<Guide> {
+    TierDao tierDao=new TierDao();
     public GuideQuery(DataSource ds, String sql) {
         super(ds, sql);
     }
@@ -38,8 +40,11 @@ public class GuideQuery extends MappingSqlQuery<Guide> {
         g.setStemloop3Sequence(rs.getString("stemloop_3_sequence"));
         g.setModifications(rs.getString("modifications"));
         g.setStandardScaffoldSequence(rs.getString("standard_scaffold_sequence"));
-        g.setTier(rs.getInt("tier"));
-        g.setIvtConstructSource(rs.getString("ivt_construct_source"));
+        try {
+            g.setTier(tierDao.getTier(rs.getLong("guide_id")));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }        g.setIvtConstructSource(rs.getString("ivt_construct_source"));
         g.setVectorId(rs.getString("vector_id"));;
         g.setVectorName(rs.getString("vector_name"));
         g.setVectorDescription(rs.getString("vector_description"));
