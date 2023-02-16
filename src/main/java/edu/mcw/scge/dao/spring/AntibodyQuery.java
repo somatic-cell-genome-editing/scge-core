@@ -1,7 +1,9 @@
 package edu.mcw.scge.dao.spring;
 
 import edu.mcw.scge.dao.AbstractDAO;
+import edu.mcw.scge.dao.implementation.TierDao;
 import edu.mcw.scge.datamodel.Antibody;
+import edu.mcw.scge.datamodel.Tier;
 import org.springframework.jdbc.object.MappingSqlQuery;
 
 import javax.sql.DataSource;
@@ -10,6 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class AntibodyQuery extends MappingSqlQuery {
+    TierDao tierDao=new TierDao();
     public AntibodyQuery(DataSource ds, String sql){
         super(ds, sql);
     }
@@ -20,6 +23,7 @@ public class AntibodyQuery extends MappingSqlQuery {
         a.setRrid(rs.getString("rrid"));
         a.setOtherId(rs.getString("other_id"));
         a.setDescription(rs.getString("antibody_description"));
+
         return a;
     }
 

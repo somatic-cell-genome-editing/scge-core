@@ -1,8 +1,10 @@
 package edu.mcw.scge.dao.spring;
 
 import edu.mcw.scge.dao.AbstractDAO;
+import edu.mcw.scge.dao.implementation.TierDao;
 import edu.mcw.scge.datamodel.Access;
 import edu.mcw.scge.datamodel.Editor;
+import edu.mcw.scge.datamodel.Tier;
 import org.springframework.jdbc.object.MappingSqlQuery;
 
 import javax.sql.DataSource;
@@ -14,6 +16,7 @@ import java.util.List;
  * Created by jthota on 9/10/2019.
  */
 public class EditorQuery extends MappingSqlQuery {
+    TierDao tierDao=new TierDao();
     public EditorQuery(DataSource ds, String sql){
         super(ds, sql);
     }
@@ -38,7 +41,12 @@ public class EditorQuery extends MappingSqlQuery {
         e.setEditorDescription(rs.getString("editor_description"));
         e.setCatalog(rs.getString("catalog"));
         e.setRrid(rs.getString("rrid"));
-        e.setTier(rs.getInt("tier"));
+     //   e.setTier(rs.getInt("tier"));
+        try {
+            e.setTier(tierDao.getTier(rs.getLong("editor_id")));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         e.setOrientation(rs.getString("orientation"));
 
         try {

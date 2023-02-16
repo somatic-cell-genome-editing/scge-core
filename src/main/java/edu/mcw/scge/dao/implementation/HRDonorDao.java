@@ -23,14 +23,14 @@ public class HRDonorDao extends AbstractDAO {
 
     public long insertHRDonor(HRDonor hrdonor) throws Exception{
 
-        String sql = "insert into hr_donor (hrdonor_id,type,lab_id,source,sequence,modification,description,tier)" +
-                " values (?,?,?,?,?,?,?,?)";
+        String sql = "insert into hr_donor (hrdonor_id,type,lab_id,source,sequence,modification,description)" +
+                " values (?,?,?,?,?,?,?)";
 
         long donorId = this.getNextKeyFromSequenceLong("donor_seq");
         hrdonor.setId(donorId);
 
         update(sql, donorId,hrdonor.getType(),hrdonor.getLabId(),hrdonor.getSource(),hrdonor.getSequence(),
-                hrdonor.getModification(), hrdonor.getDescription(), hrdonor.getTier());
+                hrdonor.getModification(), hrdonor.getDescription());
 
         return donorId;
     }

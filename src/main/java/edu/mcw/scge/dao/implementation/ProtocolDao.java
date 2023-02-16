@@ -92,7 +92,7 @@ public class ProtocolDao extends AbstractDAO {
                 protocol.getXref(),protocol.getKeywords(),protocol.getId());
 
     }
-    public void updateProtocolTier(long protocolId, int updatedTier) throws Exception{
+   /* public void updateProtocolTier(long protocolId, int updatedTier) throws Exception{
 
         String sql = "update protocol set tier=? " +
                 " where protocol_id = ?";
@@ -101,7 +101,7 @@ public class ProtocolDao extends AbstractDAO {
 
         update(sql, updatedTier, protocolId);
 
-    }
+    }*/
     public long getProtocolId(Protocol protocol) throws Exception {
 
         String sql = "select * from protocol where title =? and filename=?";

@@ -1,6 +1,7 @@
 package edu.mcw.scge.dao.spring;
 
 import edu.mcw.scge.dao.AbstractDAO;
+import edu.mcw.scge.dao.implementation.TierDao;
 import edu.mcw.scge.datamodel.HRDonor;
 import edu.mcw.scge.datamodel.PeptideNucleicAcid;
 import org.springframework.jdbc.object.MappingSqlQuery;
@@ -14,6 +15,7 @@ import java.util.List;
  * Created by hsnalabolu on 2/4/2021.
  */
 public class HRDonorQuery extends MappingSqlQuery {
+    TierDao tierDao=new TierDao();
     public HRDonorQuery(DataSource ds, String sql){
         super(ds, sql);
     }
@@ -27,7 +29,12 @@ public class HRDonorQuery extends MappingSqlQuery {
         h.setDescription(rs.getString("description"));
         h.setModification(rs.getString("modification"));
         h.setType(rs.getString("type"));
-        h.setTier(rs.getInt("tier"));
+      //  h.setTier(rs.getInt("tier"));
+        try {
+            h.setTier(tierDao.getTier(rs.getLong("hrdonor_id")));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         return h;
     }
 

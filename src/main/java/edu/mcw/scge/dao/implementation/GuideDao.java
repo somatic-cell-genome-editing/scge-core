@@ -53,9 +53,9 @@ public class GuideDao extends AbstractDAO {
                 "pam,grna_lab_id , guide_format, spacer_sequence, spacer_length, repeat_sequence," +
                 " guide,guide_description, forward_primer, reverse_primer, linker_sequence, " +
                 "anti_repeat_sequence, stemloop_1_sequence, stemloop_2_sequence, stemloop_3_sequence, " +
-                "standard_scaffold_sequence, modifications,tier,ivt_construct_source," +
+                "standard_scaffold_sequence, modifications,ivt_construct_source," +
                 "vector_id,vector_name,vector_description,vector_type,annotated_map,specificity_ratio,full_guide,guide_compatibility ) " +
-                "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         long guideId = this.getNextKeyFromSequenceLong("guide_seq");
 
@@ -64,7 +64,7 @@ public class GuideDao extends AbstractDAO {
                 guide.getPam(),guide.getGrnaLabId(),guide.getGuideFormat(),guide.getSpacerSequence(),guide.getSpacerLength(),guide.getRepeatSequence(),
                 guide.getGuide(),guide.getGuideDescription(), guide.getForwardPrimer(), guide.getReversePrimer(), guide.getLinkerSequence(),
                 guide.getAntiRepeatSequence(),guide.getStemloop1Sequence(),guide.getStemloop2Sequence(),guide.getStemloop3Sequence(),
-                guide.getStandardScaffoldSequence(), guide.getModifications(),guide.getTier(),guide.getIvtConstructSource(),
+                guide.getStandardScaffoldSequence(), guide.getModifications(),guide.getIvtConstructSource(),
                 guide.getVectorId(),guide.getVectorName(),guide.getVectorDescription(),guide.getVectorType(),guide.getAnnotatedMap(),
                 guide.getSpecificityRatio(),guide.getFullGuide(),guide.getGuideCompatibility());
 
@@ -76,7 +76,7 @@ public class GuideDao extends AbstractDAO {
                 "guide_format=?, spacer_sequence=?, spacer_length=?, repeat_sequence=?," +
                 " guide=?, guide_description=?, forward_primer=?, reverse_primer=?, linker_sequence=?, " +
                 "anti_repeat_sequence=?, stemloop_1_sequence=?, stemloop_2_sequence=?, stemloop_3_sequence=?, " +
-                "standard_scaffold_sequence=?, modifications=?, tier=?, ivt_construct_source=?," +
+                "standard_scaffold_sequence=?, modifications=?, ivt_construct_source=?," +
                 "vector_id=?, vector_name=?, vector_description=?, vector_type=?," +
                 "annotated_map=?, specificity_ratio=?,full_guide =? ,guide_compatibility=? where guide_id=?";
 
@@ -84,7 +84,7 @@ public class GuideDao extends AbstractDAO {
                 guide.getPam(),guide.getGrnaLabId(),guide.getGuideFormat(),guide.getSpacerSequence(),guide.getSpacerLength(),guide.getRepeatSequence(),
                 guide.getGuide(),guide.getGuideDescription(), guide.getForwardPrimer(), guide.getReversePrimer(), guide.getLinkerSequence(),
                 guide.getAntiRepeatSequence(),guide.getStemloop1Sequence(),guide.getStemloop2Sequence(),guide.getStemloop3Sequence(),
-                guide.getStandardScaffoldSequence(), guide.getModifications(),guide.getTier(),guide.getIvtConstructSource(),
+                guide.getStandardScaffoldSequence(), guide.getModifications(),guide.getIvtConstructSource(),
                 guide.getVectorId(),guide.getVectorName(),guide.getVectorDescription(),guide.getVectorType(),guide.getAnnotatedMap(),
                 guide.getSpecificityRatio() ,guide.getFullGuide(),guide.getGuideCompatibility(),guide.getGuide_id() );
     }
@@ -124,10 +124,7 @@ public class GuideDao extends AbstractDAO {
         return list.isEmpty() ? 0 : list.get(0).getGuide_id();
     }
 
-    public void updateGuideTier(int tier, long guideId) throws Exception{
-        String sql="update guide set tier=? where guide_id=?";
-        update(sql, tier, guideId);
-    }
+
 
     public List<Guide> getGuidesByExpRecId(long expRecId) throws Exception {
         String sql="select distinct g.*, gi.* from guide g left outer join genome_info gi on g.guide_id=gi.genome_id" +

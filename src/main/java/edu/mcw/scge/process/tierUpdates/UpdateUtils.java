@@ -17,43 +17,45 @@ public class UpdateUtils {
     ModelDao mdao=new ModelDao();
     DeliveryDao deliveryDao=new DeliveryDao();
     EditorDao editorDao=new EditorDao();
+    HRDonorDao hrDonorDao=new HRDonorDao();
     TierUpdateDao tierUpdateDao=new TierUpdateDao();
     public void updateOtherExperimentalObjects(StudyTierUpdate update) throws Exception {
         int studyId=update.getStudyId();
         List<ExperimentRecord> records=edao.getExperimentRecordsByStudyId(studyId);
         if(records!=null && records.size()>0)
         for(ExperimentRecord r:records){
-            updateGuideTier(r.getExperimentRecordId(), update.getTier());
+            updateGuideTier(r.getExperimentRecordId(),update);
             if(r.getModelId()>0)
-            updateModelTier(r.getModelId(), update.getTier());
+            updateModelTier(r.getModelId(), update);
             if(r.getDeliverySystemId()>0)
-            updateDeliverySystemTier(r.getDeliverySystemId(), update.getTier());
+            updateDeliverySystemTier(r.getDeliverySystemId(), update);
             if(r.getEditorId()>0)
-            updateEditorTier(r.getEditorId(), update.getTier());
+            updateEditorTier(r.getEditorId(), update);
 
-            updateVectorTier(r.getExperimentRecordId(), update.getTier());
-            updateProtocolTier(r, update.getTier());
+            updateVectorTier(r.getExperimentRecordId(), update);
+            updateProtocolTier(r, update);
+            updateHrDonorTier(r.getHrdonorId(),update);
         }
     }
-    public void updateGuideTier(long expRecId, int updatedTier) throws Exception {
+    public void updateGuideTier(long expRecId, StudyTierUpdate update) throws Exception {
         List<Guide> guides = gdao.getGuidesByExpRecId(expRecId);
         if(guides!=null && guides.size()>0)
         for(Guide g:guides) {
-            if (g.getTier() < updatedTier || (g.getTier() > updatedTier && g.getTier() == 2)) {
-                gdao.updateGuideTier(updatedTier, g.getGuide_id());
+            if (g.getTier() < update.getTier() || (g.getTier() > update.getTier() && g.getTier() == 2)) {
+                tierUpdateDao.updateObjectTier(update, g.getGuide_id());
             }
         }
     }
-    public void updateVectorTier(long expRecId, int updatedTier) throws Exception {
+    public void updateVectorTier(long expRecId, StudyTierUpdate update) throws Exception {
         List<Vector> vectors = vectorDao.getVectorsByExpRecId(expRecId);
         if(vectors!=null && vectors.size()>0)
             for(Vector vector:vectors) {
-                if (vector.getTier() < updatedTier || (vector.getTier() > updatedTier && vector.getTier() == 2)) {
-                    vectorDao.updateVectorTier(updatedTier, vector.getVectorId());
+                if (vector.getTier() < update.getTier() || (vector.getTier() > update.getTier() && vector.getTier() == 2)) {
+                    tierUpdateDao.updateObjectTier(update, vector.getVectorId());
                 }
             }
     }
-    public void updateProtocolTier(ExperimentRecord record, int updatedTier) throws Exception {
+    public void updateProtocolTier(ExperimentRecord record, StudyTierUpdate update) throws Exception {
         List<Protocol> protocols = new ArrayList<>();
          try {
              protocols.addAll(protocolDao.getProtocolsForObject(record.getExperimentId()));
@@ -78,34 +80,43 @@ public class UpdateUtils {
         }catch (Exception e){}
         if( protocols.size()>0)
             for(Protocol protocol:protocols) {
-                if (protocol.getTier() < updatedTier || (protocol.getTier() > updatedTier && protocol.getTier() == 2)) {
-                   protocolDao.updateProtocolTier(protocol.getId(),updatedTier);
+                if (protocol.getTier() < update.getTier() || (protocol.getTier() > update.getTier() && protocol.getTier() == 2)) {
+                   tierUpdateDao.updateObjectTier(update, protocol.getId());
                 }
             }
     }
-    public void updateModelTier(long modelId, int updatedTier) throws Exception {
+    public void updateModelTier(long modelId, StudyTierUpdate update) throws Exception {
         Model m=mdao.getModelById(modelId);
         if(m!=null)
-        if(m.getTier()<updatedTier || (m.getTier()>updatedTier && m.getTier()==2)){
-            mdao.updateModelTier(updatedTier, modelId);
+        if(m.getTier()<update.getTier() || (m.getTier()>update.getTier() && m.getTier()==2)){
+            tierUpdateDao.updateObjectTier(update, modelId);
         }
     }
-    public void updateDeliverySystemTier(long dsId, int updatedTier) throws Exception {
+    public void updateDeliverySystemTier(long dsId, StudyTierUpdate update) throws Exception {
         List<Delivery> dsList=deliveryDao.getDeliverySystemsById(dsId);
         if(dsList!=null && dsList.size()>0) {
             for (Delivery d : dsList) {
-                if (d.getTier() < updatedTier || (d.getTier() > updatedTier && d.getTier() == 2)) {
-                    deliveryDao.updateDeliveryTier(updatedTier, dsId);
+                if (d.getTier() < update.getTier() || (d.getTier() > update.getTier() && d.getTier() == 2)) {
+                    tierUpdateDao.updateObjectTier(update, dsId);
                 }
             }
         }
     }
-    public void updateEditorTier(long editorId, int updatedTIer) throws Exception {
+    public void updateEditorTier(long editorId,StudyTierUpdate update) throws Exception {
         List<Editor> editors=editorDao.getEditorById(editorId);
         if(editors!=null && editors.size()>0) {
             Editor e = editorDao.getEditorById(editorId).get(0);
-            if (e.getTier() < updatedTIer || (e.getTier() > updatedTIer && e.getTier() == 2)) {
-                editorDao.updateEditorTier(updatedTIer, editorId);
+            if (e.getTier() < update.getTier() || (e.getTier() > update.getTier() && e.getTier() == 2)) {
+                tierUpdateDao.updateObjectTier(update, editorId);
+            }
+        }
+    }
+    public void updateHrDonorTier(long hrDonorId,StudyTierUpdate update) throws Exception {
+        List<HRDonor> donors=hrDonorDao.getHRDonorById(hrDonorId);
+        if(donors!=null && donors.size()>0) {
+            HRDonor e = hrDonorDao.getHRDonorById(hrDonorId).get(0);
+            if (e.getTier() < update.getTier() || (e.getTier() > update.getTier() && e.getTier() == 2)) {
+                tierUpdateDao.updateObjectTier(update, hrDonorId);
             }
         }
     }
@@ -177,7 +188,7 @@ public class UpdateUtils {
 
         }
         if(disabled){
-            sdao.updateStudyTier(updateList.get(0));
+            tierUpdateDao.updateStudyTier(updateList.get(0));
             updateOtherExperimentalObjects(updateList.get(0));
             tierUpdateDao.insertTierLog(studyId);
             tierUpdateDao.delete(studyId);
