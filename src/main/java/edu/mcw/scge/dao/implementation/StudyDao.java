@@ -171,6 +171,15 @@ public class StudyDao extends AbstractDAO {
         return execute(q, initiativeName);
 
     }
+    public List<Study> getTier4StudiesOfInitiative(String initiativeName) throws Exception{
+        String sql = " select * from study where tier=4 and group_id in (\n" +
+                "            select group_id from scge_grants where grant_initiative_lc=?)";
+
+        StudyQuery q=new StudyQuery(this.getDataSource(), sql);
+        return execute(q, initiativeName);
+
+    }
+
     public List<Study> getStudiesByGrantId(int grantId) throws Exception{
         String sql="select s.*, i.institution_name, p.name as submitterName"+
                 " from study s, institution i, person p, scge_grants sg " +
