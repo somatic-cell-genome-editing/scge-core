@@ -48,10 +48,10 @@ public class VectorDao extends AbstractDAO {
                 vector.getDescription(),vector.getCapsidVariant(),vector.getSource(),vector.getLabId(),vector.getAnnotatedMap(),
                 vector.getTiterMethod(),vector.getCapsidSerotype(),vector.getVectorId());
     }
-   /* public void updateVectorTier(int updatedTier, long vectorId) throws Exception {
+    public void updateVectorTier(int updatedTier, long vectorId) throws Exception {
         String sql="update vector set tier=? where vector_id=?";
         update(sql,updatedTier, vectorId);
-    }*/
+    }
     public long getVectorId(Vector vector) throws Exception {
 
         String sql = "select * from vector where subtype=? and name = ?";

@@ -83,15 +83,4 @@ public class TierUpdateDao extends AbstractDAO {
         TierUpdateQuery q=new TierUpdateQuery(this.getDataSource(), sql);
         return execute(q);
     }
-    public void updateStudyTier(StudyTierUpdate u) throws Exception{
-        String sql="update scge_tier set tier=?, last_modified_by=?, " +
-                "last_modified_date=? where scge_id=?";
-        update(sql, u.getTier(),  String.valueOf(u.getModifiedBy()), u.getModifiedDate(), u.getStudyId());
-    }
-    public void updateObjectTier(StudyTierUpdate u, long objectId) throws Exception{
-        String sql="update scge_tier set tier=?, last_modified_by=?, " +
-                "last_modified_date=? where scge_id=?";
-
-        update(sql, u.getTier(),  String.valueOf(u.getModifiedBy()), u.getModifiedDate(), objectId);
-    }
 }

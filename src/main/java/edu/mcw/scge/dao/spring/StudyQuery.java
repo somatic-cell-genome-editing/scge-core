@@ -2,7 +2,6 @@ package edu.mcw.scge.dao.spring;
 
 import edu.mcw.scge.dao.implementation.PersonDao;
 import edu.mcw.scge.dao.implementation.StudyDao;
-import edu.mcw.scge.dao.implementation.TierDao;
 import edu.mcw.scge.datamodel.Person;
 import edu.mcw.scge.datamodel.Study;
 import org.springframework.jdbc.object.MappingSqlQuery;
@@ -13,7 +12,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class StudyQuery extends MappingSqlQuery {
-    TierDao tierDao=new TierDao();
     public StudyQuery(DataSource ds, String sql){
         super(ds,sql);
     }
@@ -23,23 +21,17 @@ public class StudyQuery extends MappingSqlQuery {
         s.setLabId(rs.getInt("lab_id"));
         s.setStudyId(rs.getInt("study_id"));
         s.setStudy(rs.getString("study"));
-       // s.setTier(rs.getInt("tier"));
-        try {
-            s.setTier(tierDao.getTier(rs.getLong("study_id")));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        s.setTier(rs.getInt("tier"));
         s.setSubmissionDate(rs.getDate("submission_date"));
-        try {
-            s.setLastModifiedDate(rs.getDate("tier_modified_date"));
-        }catch (Exception e){}
+        s.setLastModifiedDate(rs.getDate("last_modified_date"));
+
         s.setSubmitterId(rs.getInt("submitter_id"));
         s.setRawData(rs.getString("raw_data"));
         s.setReference(rs.getString("reference"));
         s.setGroupId(rs.getInt("group_id"));
 
         try{
-            s.setModifiedBy(rs.getInt("tier_modified_by"));
+            s.setModifiedBy(rs.getInt("modified_by"));
         }catch (Exception e){}
 
         try {

@@ -49,13 +49,13 @@ public class ProtocolDao extends AbstractDAO {
 
     public long insertProtocol(Protocol protocol) throws Exception{
 
-        String sql = "insert into protocol ( title,description,protocol_id," +
+        String sql = "insert into protocol ( title,description,protocol_id,tier," +
                 "filename,xref,keywords )" +
-                "values (?,?,?,?,?,?)";
+                "values (?,?,?,?,?,?,?)";
 
         long protocolId = this.getNextKeyFromSequenceLong("protocol_seq");
 
-        update(sql, protocol.getTitle(),protocol.getDescription(),protocolId,protocol.getFilename(),
+        update(sql, protocol.getTitle(),protocol.getDescription(),protocolId,protocol.getTier(),protocol.getFilename(),
                 protocol.getXref(),protocol.getKeywords());
 
         return protocolId;
@@ -83,16 +83,16 @@ public class ProtocolDao extends AbstractDAO {
 
     public void updateProtocol(Protocol protocol) throws Exception{
 
-        String sql = "update protocol set title=?,description=?," +
+        String sql = "update protocol set title=?,description=?,tier=?," +
                 "filename=?,xref=?,keywords=? where protocol_id = ?";
 
 
 
-        update(sql, protocol.getTitle(),protocol.getDescription(),protocol.getFilename(),
+        update(sql, protocol.getTitle(),protocol.getDescription(),protocol.getTier(),protocol.getFilename(),
                 protocol.getXref(),protocol.getKeywords(),protocol.getId());
 
     }
-   /* public void updateProtocolTier(long protocolId, int updatedTier) throws Exception{
+    public void updateProtocolTier(long protocolId, int updatedTier) throws Exception{
 
         String sql = "update protocol set tier=? " +
                 " where protocol_id = ?";
@@ -101,7 +101,7 @@ public class ProtocolDao extends AbstractDAO {
 
         update(sql, updatedTier, protocolId);
 
-    }*/
+    }
     public long getProtocolId(Protocol protocol) throws Exception {
 
         String sql = "select * from protocol where title =? and filename=?";

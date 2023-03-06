@@ -1,7 +1,6 @@
 package edu.mcw.scge.dao.spring;
 
 import edu.mcw.scge.dao.AbstractDAO;
-import edu.mcw.scge.dao.implementation.TierDao;
 import edu.mcw.scge.datamodel.Delivery;
 import org.springframework.jdbc.object.MappingSqlQuery;
 
@@ -11,7 +10,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class DeliveryQuery extends MappingSqlQuery {
-    TierDao tierDao=new TierDao();
     public DeliveryQuery(DataSource ds, String sql){
         super(ds, sql);
     }
@@ -29,12 +27,7 @@ public class DeliveryQuery extends MappingSqlQuery {
         d.setRrid(rs.getString("ds_rrid"));
         d.setNpSize(rs.getString("ds_np_size"));
         d.setMolTargetingAgent(rs.getString("ds_mol_targeting_agent"));
-        //d.setTier(rs.getInt("tier"));
-        try {
-            d.setTier(tierDao.getTier(rs.getLong("ds_id")));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        d.setTier(rs.getInt("tier"));
         d.setSequence(rs.getString("ds_sequence"));
         d.setZetaPotential(rs.getString("ds_zeta_potential"));
         d.setNpPolydispersityIndex(rs.getString("ds_np_polydispersity_index"));

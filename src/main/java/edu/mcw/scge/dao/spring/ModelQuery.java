@@ -1,7 +1,6 @@
 package edu.mcw.scge.dao.spring;
 
 import edu.mcw.scge.dao.AbstractDAO;
-import edu.mcw.scge.dao.implementation.TierDao;
 import edu.mcw.scge.datamodel.Model;
 import org.springframework.jdbc.object.MappingSqlQuery;
 
@@ -11,7 +10,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ModelQuery extends MappingSqlQuery {
-    TierDao tierDao=new TierDao();
     public ModelQuery(DataSource ds, String sql){
         super(ds, sql);
     }
@@ -34,12 +32,7 @@ public class ModelQuery extends MappingSqlQuery {
         m.setDisplayName(rs.getString("display_name"));
         m.setStrainAlias(rs.getString("strain_alias"));
         m.setDescription(rs.getString("model_description"));
-      //  m.setTier(rs.getInt("tier"));
-        try {
-            m.setTier(tierDao.getTier(rs.getLong("model_id")));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        m.setTier(rs.getInt("tier"));
         m.setCatalog(rs.getString("catalog"));
         m.setOntology(rs.getString("ontology"));
         m.setOfficialName(rs.getString("official_name"));

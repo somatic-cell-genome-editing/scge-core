@@ -28,16 +28,16 @@ public class ModelDao extends AbstractDAO {
     public long insertModel(Model model) throws Exception{
 
         String sql = "insert into model (model_id, type, name, organism, sex, rrid, source, transgene, subtype, annotated_map," +
-                "transgene_description, transgene_reporter,model_description,parental_origin,display_name,strain_alias," +
+                "transgene_description, transgene_reporter,model_description,parental_origin,display_name,strain_alias,tier," +
                 "catalog, ontology, official_name)" +
-                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ,?,?,?)";
+                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ,?,?,?)";
 
         long modelId = this.getNextKeyFromSequenceLong("model_seq");
 
         update(sql, modelId, model.getType(), model.getName(), model.getOrganism(),model.getSex(), model.getRrid(),
             model.getSource(),model.getTransgene(),model.getSubtype(),model.getAnnotatedMap(),
             model.getTransgeneDescription(),model.getTransgeneReporter(),model.getDescription(),model.getParentalOrigin(),
-            model.getDisplayName(), model.getStrainAlias(),
+            model.getDisplayName(), model.getStrainAlias(), model.getTier(),
             model.getCatalog(), model.getOntology(), model.getOfficialName());
 
         return modelId;
@@ -46,14 +46,14 @@ public class ModelDao extends AbstractDAO {
     public void updateModel(Model model) throws Exception{
 
         String sql = "update model set type=?, name=?, organism=?, sex=?, rrid=?, source=?, transgene=?, subtype=?, annotated_map=?," +
-                "transgene_description=?, transgene_reporter=?, model_description=?, parental_origin=?, display_name=?, strain_alias=? " +
+                "transgene_description=?, transgene_reporter=?, model_description=?, parental_origin=?, display_name=?, strain_alias=?, tier=? " +
                 ",catalog=?, ontology=?, official_name=? " +
                 "where model_id = ?";
 
         update(sql, model.getType(), model.getName(), model.getOrganism(),model.getSex(), model.getRrid(),
                 model.getSource(),model.getTransgene(),model.getSubtype(),model.getAnnotatedMap(),
                 model.getTransgeneDescription(),model.getTransgeneReporter(),model.getDescription(),model.getParentalOrigin(),
-                model.getDisplayName(), model.getStrainAlias(),
+                model.getDisplayName(), model.getStrainAlias(), model.getTier(),
                 model.getCatalog(), model.getOntology(), model.getOfficialName(),
                 model.getModelId());
     }
@@ -65,7 +65,7 @@ public class ModelDao extends AbstractDAO {
         List<Model> list = ModelQuery.execute(this,sql,model.getType(), model.getName(), model.getSource());
         return list.isEmpty() ? 0 : list.get(0).getModelId();
     }
-  /*  public boolean verifyModelAccess(long modelId, int personId) throws Exception {
+    public boolean verifyModelAccess(long modelId, int personId) throws Exception {
         String sql="(select e.* from model e left outer join experiment_record r on e.model_id=r.model_id " +
                 "left outer join experiment x on x.experiment_id=r.experiment_id " +
                 "left outer join study s on s.study_id =x.study_id " +
@@ -75,9 +75,9 @@ public class ModelDao extends AbstractDAO {
         ModelQuery q=new ModelQuery(this.getDataSource(), sql);
         List<Model> modelList= execute(q, personId, modelId, modelId);
         return modelList.size() > 0;
-    }*/
-   /* public void updateModelTier(int tier, long modelId) throws Exception{
+    }
+    public void updateModelTier(int tier, long modelId) throws Exception{
         String sql="update model set tier=? where model_id=?";
         update(sql, tier, modelId);
-    }*/
+    }
 }
