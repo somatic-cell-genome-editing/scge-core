@@ -42,9 +42,12 @@ public class ApplicationMethodDao extends AbstractDAO {
 
     public int getAppMethodId(ApplicationMethod method) throws Exception {
 
-        String sql = "select * from application_method where application_type=? and dosage = ? and days_post_injection=?";
+        String sql = "SELECT * FROM application_method WHERE application_type=? AND dosage=? AND days_post_injection=? "+
+                "AND site_of_application=? AND editor_format=? AND injection_frequency=?";
 
-        List<ApplicationMethod> list = ApplicationMethodQuery.execute(this,sql, method.getApplicationType(),method.getDosage(),method.getDaysPostInjection());
+        List<ApplicationMethod> list = ApplicationMethodQuery.execute(this, sql,
+                method.getApplicationType(), method.getDosage(), method.getDaysPostInjection(),
+                method.getSiteOfApplication(), method.getEditorFormat(), method.getInjectionFrequency());
         return list.isEmpty() ? 0 : list.get(0).getApplicationId();
     }
 }
