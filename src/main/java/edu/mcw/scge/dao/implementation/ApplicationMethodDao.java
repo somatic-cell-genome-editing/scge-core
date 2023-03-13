@@ -12,7 +12,11 @@ public class ApplicationMethodDao extends AbstractDAO {
         ApplicationMethodQuery q=new ApplicationMethodQuery(this.getDataSource(), sql);
         return execute(q, applicationId);
     }
-
+    public List<ApplicationMethod> getAllApplicationMethods() throws Exception {
+        String sql = "select * from application_method";
+        ApplicationMethodQuery q = new ApplicationMethodQuery(this.getDataSource(), sql);
+        return q.execute();
+    }
     public int insertApplicationMethod(ApplicationMethod method) throws Exception{
 
         String sql = "insert into application_method ( application_method_id, application_type, site_of_application," +
