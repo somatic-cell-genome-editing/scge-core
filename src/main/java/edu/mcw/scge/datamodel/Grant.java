@@ -12,6 +12,15 @@ public class Grant {
    private String description;
    private String currentGrantNumber;
    private List<String> formerGrantNumbers;
+   private String nihReporterLink;
+
+    public String getNihReporterLink() {
+        return nihReporterLink;
+    }
+
+    public void setNihReporterLink(String nihReporterLink) {
+        this.nihReporterLink = nihReporterLink;
+    }
 
     public String getCurrentGrantNumber() {
         return currentGrantNumber;

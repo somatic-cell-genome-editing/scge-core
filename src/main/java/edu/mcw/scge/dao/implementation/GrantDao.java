@@ -39,6 +39,12 @@ public class GrantDao extends AbstractDAO {
         return execute(q, grantId, "former");
 
     }
+    public String getCurrentNihReportLink(int grantId) throws Exception {
+        String sql="select nih_report_link from grant_numbers where grant_id=? and status=?" ;
+        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+        List<String> links=execute(q, grantId, "current");
+        return links.size()>0?links.get(0):"";
+    }
 
     public Grant getGrantByNumber(String grantNumber){
         return null;
