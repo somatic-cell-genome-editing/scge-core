@@ -5,6 +5,7 @@ import edu.mcw.scge.dao.SCGEIDManagementDao;
 import edu.mcw.scge.dao.spring.LongListQuery;
 import edu.mcw.scge.dao.spring.ProtocolQuery;
 import edu.mcw.scge.datamodel.*;
+import edu.mcw.scge.datamodel.publications.Publication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class ProtocolDao extends AbstractDAO {
     ExperimentDao experimentDao=new ExperimentDao();
     ExperimentRecordDao experimentRecordDao=new ExperimentRecordDao();
     StudyDao studyDao=new StudyDao();
-
+    PublicationDAO publicationDAO=new PublicationDAO();
     public Protocol getProtocolById(long protocolId) throws Exception {
         String sql="select * from protocol where protocol_id=?";
         ProtocolQuery q= new ProtocolQuery(this.getDataSource(), sql);
@@ -188,6 +189,12 @@ public class ProtocolDao extends AbstractDAO {
         }
         return experiments;
     }
+    public List<Publication> mapAssociatedPublications(long protocolId) throws Exception {
+        return publicationDAO.getAssociatedPublications(protocolId);
+    }
+    public List<Publication> mapRelatedPublications(long protocolId) throws Exception {
+        return publicationDAO.getRelatedPublications(protocolId);
+    }
 
     public ProtocolAssociation getProtocolAssociations(long protocolId) throws Exception {
         ProtocolAssociation protocolAssociation=new ProtocolAssociation();
@@ -198,7 +205,8 @@ public class ProtocolDao extends AbstractDAO {
         protocolAssociation.setAssociatedModels(mapModelsFromAssociatedObjectsList(associatedObjecIds));
         protocolAssociation.setAssociatedVectors(mapVectorsFromAssociatedObjectsList(associatedObjecIds));
         protocolAssociation.setAssociatedExperiments(mapExperimentsFromAssociatedObjectsList(associatedObjecIds));
-
+        protocolAssociation.setAssociatedPublications(mapAssociatedPublications(protocolId));
+        protocolAssociation.setRelatedPublications(mapRelatedPublications(protocolId));
         for(Editor editor:protocolAssociation.getAssociatedEditors()){
             List<Study> objectStudies=studyDao.getStudiesByEditor(editor.getId());
             addStudy(objectStudies, protocolAssociation);

@@ -1,5 +1,7 @@
 package edu.mcw.scge.datamodel;
 
+import edu.mcw.scge.datamodel.publications.Publication;
+
 import java.util.List;
 
 public class ProtocolAssociation extends Protocol {
@@ -10,6 +12,24 @@ public class ProtocolAssociation extends Protocol {
     private List<Model> associatedModels;
     private List<Study> associatedStudies;
     private List<Experiment> associatedExperiments;
+    private List<Publication> associatedPublications;
+    private List<Publication> relatedPublications;
+
+    public List<Publication> getRelatedPublications() {
+        return relatedPublications;
+    }
+
+    public void setRelatedPublications(List<Publication> relatedPublications) {
+        this.relatedPublications = relatedPublications;
+    }
+
+    public List<Publication> getAssociatedPublications() {
+        return associatedPublications;
+    }
+
+    public void setAssociatedPublications(List<Publication> associatedPublications) {
+        this.associatedPublications = associatedPublications;
+    }
 
     public List<Experiment> getAssociatedExperiments() {
         return associatedExperiments;
