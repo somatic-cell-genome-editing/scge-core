@@ -32,6 +32,13 @@ public class GrantQuery extends MappingSqlQuery {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        try {
+            String link=grantDao.getCurrentNihReportLink(g.getGrantId());
+            if(!link.equals(""))
+            g.setNihReporterLink(link);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return g;
     }
 
