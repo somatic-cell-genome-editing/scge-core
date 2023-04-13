@@ -80,6 +80,12 @@ public class ExperimentRecordQuery extends MappingSqlQuery<ExperimentRecord> {
             e.setTissueId(rs.getString("tissue_id"));
             e.setCellType(rs.getString("cell_type"));
         }catch (Exception e1){}
+        try{
+            e.setTimePoint(rs.getString("time_point"));
+        }catch (Exception exception){}
+        try{
+            e.setQualifier(rs.getString("qualifier"));
+        }catch (Exception exception){}
      //   e.setModelName(rs.getString("modelName"));
      //   e.setGuide(rs.getString("guide"));
         e.setExperimentRecordId(rs.getLong("experiment_record_id"));

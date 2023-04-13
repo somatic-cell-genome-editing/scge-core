@@ -43,8 +43,26 @@ public class ExperimentRecord {
 
     private List<Guide> guides;
     private List<Vector> vectors;
+    private String qualifier;
+    private String timePoint;
     private List<HRDonor> hrDonors;
     private List<ExperimentResultDetail> resultDetails;
+
+    public String getQualifier() {
+        return qualifier;
+    }
+
+    public void setQualifier(String qualifier) {
+        this.qualifier = qualifier;
+    }
+
+    public String getTimePoint() {
+        return timePoint;
+    }
+
+    public void setTimePoint(String timePoint) {
+        this.timePoint = timePoint;
+    }
 
     public List<Guide> getGuides() {
         return guides;
