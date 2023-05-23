@@ -105,13 +105,13 @@ public class ExperimentRecordDao extends AbstractDAO {
 
     public long getExpRecordId(ExperimentRecord r) throws Exception {
         String sql = "SELECT MAX(experiment_record_id) FROM experiment_record WHERE name=? AND study_id=? AND editor_id=? AND ds_id=? "+
-                "AND model_id=? AND application_method_id=? "+
+                "AND model_id=? AND application_method_id=? AND experiment_id=?"+
                 // handle NULLs or blanks in columns 'sex','tissue_id','cell_type'
                 "AND COALESCE(sex,'') = COALESCE(?,'') "+
                 "AND COALESCE(tissue_id,'') = COALESCE(?,'') "+
                 "AND COALESCE(cell_type,'') = COALESCE(?,'')";
         return getLongCount(sql, r.getExperimentName(), r.getStudyId(), r.getEditorId(), r.getDeliverySystemId(),
-                r.getModelId(), r.getApplicationMethodId(), r.getSex(), r.getTissueId(), r.getCellType());
+                r.getModelId(), r.getApplicationMethodId(), r.getExperimentId(), r.getSex(), r.getTissueId(), r.getCellType());
     }
 
     public void addTargetTissue( List<Long> experimentRecordIds) throws Exception{
