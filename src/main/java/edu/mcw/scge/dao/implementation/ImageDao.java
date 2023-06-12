@@ -6,6 +6,7 @@ import edu.mcw.scge.dao.spring.EditorQuery;
 import edu.mcw.scge.dao.spring.ImageQuery;
 import edu.mcw.scge.datamodel.Editor;
 import edu.mcw.scge.datamodel.Image;
+import org.springframework.dao.DataAccessException;
 
 import java.io.ByteArrayInputStream;
 import java.sql.Connection;
@@ -40,22 +41,16 @@ public class ImageDao extends AbstractDAO {
             column="thumbnail";
         }
 
-        Connection conn=null;
-        Statement st =null;
-
         String sql="select " + column + " from images where scge_id=" + scgeId + " and bucket='" + bucket + "'";
         byte[] image = null;
-        try {
-            conn = this.getDataSource().getConnection();
-            st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+        try(Connection conn = this.getDataSource().getConnection();
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);) {
+
             if (rs.next()) {
                 image = rs.getBytes(column);
             }
 
-        } finally {
-            st.close();
-            conn.close();
         }
 
         return image;
