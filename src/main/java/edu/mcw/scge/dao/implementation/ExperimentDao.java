@@ -155,6 +155,12 @@ public class ExperimentDao extends AbstractDAO {
         ExperimentQuery q=new ExperimentQuery(this.getDataSource(), sql);
         return execute(q, studyId);
     }
+    public List<Experiment> getExperimentsByGroup(int groupId) throws Exception {
+        String sql="select * from experiment where study_id in (select study_id from study where group_id=?)";
+
+        ExperimentQuery q=new ExperimentQuery(this.getDataSource(), sql);
+        return execute(q, groupId);
+    }
     public List<Experiment> getExperimentsByObjectId(int studyId, long objectId, String object) throws Exception {
 
         String sql="select * from experiment where study_id=?";
