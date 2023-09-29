@@ -1,12 +1,9 @@
 package edu.mcw.scge.datamodel;
 
-/**
- * Created by jdepons on 9/10/2019.
- */
 public class Editor {
     private long id;
     private String type;
-    private String subType;
+    private String subtype;
     private String symbol;
     private String alias;
     private String species;
@@ -33,44 +30,12 @@ public class Editor {
 
     private int tier;
 
-    public String getCatalog() {
-        return catalog;
-    }
-
-    public void setCatalog(String catalog) {
-        this.catalog = catalog;
-    }
-
-    public String getRrid() {
-        return rrid;
-    }
-
-    public void setRrid(String rrid) {
-        this.rrid = rrid;
-    }
-
-    public int getTier() {
-        return tier;
-    }
-
-    public void setTier(int tier) {
-        this.tier = tier;
-    }
-
     public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getSubType() {
-        return subType;
-    }
-
-    public void setSubType(String subType) {
-        this.subType = subType;
     }
 
     public String getType() {
@@ -81,20 +46,36 @@ public class Editor {
         this.type = type;
     }
 
+    public String getSubtype() {
+        return subtype;
+    }
+
+    public void setSubtype(String subtype) {
+        this.subtype = subtype;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
     public String getSpecies() {
         return species;
     }
 
     public void setSpecies(String species) {
         this.species = species;
-    }
-
-    public String getPamPreference() {
-        return pamPreference;
-    }
-
-    public void setPamPreference(String pamPreference) {
-        this.pamPreference = pamPreference;
     }
 
     public String getEditorVariant() {
@@ -105,12 +86,20 @@ public class Editor {
         this.editorVariant = editorVariant;
     }
 
-    public String getFusion() {
-        return fusion;
+    public String getPamPreference() {
+        return pamPreference;
     }
 
-    public void setFusion(String fusion) {
-        this.fusion = fusion;
+    public void setPamPreference(String pamPreference) {
+        this.pamPreference = pamPreference;
+    }
+
+    public String getSubstrateTarget() {
+        return substrateTarget;
+    }
+
+    public void setSubstrateTarget(String substrateTarget) {
+        this.substrateTarget = substrateTarget;
     }
 
     public String getActivity() {
@@ -119,6 +108,14 @@ public class Editor {
 
     public void setActivity(String activity) {
         this.activity = activity;
+    }
+
+    public String getFusion() {
+        return fusion;
+    }
+
+    public void setFusion(String fusion) {
+        this.fusion = fusion;
     }
 
     public String getDsbCleavageType() {
@@ -143,30 +140,6 @@ public class Editor {
 
     public void setSource(String source) {
         this.source = source;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
-
-    public String getSubstrateTarget() {
-        return substrateTarget;
-    }
-
-    public void setSubstrateTarget(String substrateTarget) {
-        this.substrateTarget = substrateTarget;
     }
 
     public String getProteinSequence() {
@@ -247,5 +220,29 @@ public class Editor {
 
     public void setOrientation(String orientation) {
         this.orientation = orientation;
+    }
+
+    public String getCatalog() {
+        return catalog;
+    }
+
+    public void setCatalog(String catalog) {
+        this.catalog = catalog;
+    }
+
+    public String getRrid() {
+        return rrid;
+    }
+
+    public void setRrid(String rrid) {
+        this.rrid = rrid;
+    }
+
+    public int getTier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
     }
 }

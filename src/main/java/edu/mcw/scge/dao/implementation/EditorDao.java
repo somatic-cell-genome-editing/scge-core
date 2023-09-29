@@ -5,6 +5,7 @@ import edu.mcw.scge.dao.spring.EditorQuery;
 import edu.mcw.scge.dao.spring.IntListQuery;
 import edu.mcw.scge.datamodel.Editor;
 
+
 import java.util.List;
 
 /**
@@ -58,7 +59,7 @@ public class EditorDao extends AbstractDAO {
         long editorId = this.getNextKeyFromSequenceLong("editor_seq");
 
 
-        update(sql, editorId,editor.getSubType(),editor.getSpecies(),editor.getPamPreference(),
+        update(sql, editorId,editor.getSubtype(),editor.getSpecies(),editor.getPamPreference(),
                 editor.getEditorVariant(),editor.getFusion(),editor.getActivity(),editor.getDsbCleavageType(),
                 editor.getTarget_sequence(),editor.getSource(),editor.getType(),
                 editor.getSymbol(),editor.getAlias(),editor.getSubstrateTarget(), editor.getProteinSequence(),
@@ -73,7 +74,7 @@ public class EditorDao extends AbstractDAO {
                 "type=?, symbol=?, alias=?,  substrate_target=?, protein_sequence=?, editor_description=?, annotated_map=?,tier=?,orientation=? " +
                 "where editor_id=?";
 
-        update(sql,editor.getSubType(),editor.getSpecies(),editor.getPamPreference(),
+        update(sql,editor.getSubtype(),editor.getSpecies(),editor.getPamPreference(),
                 editor.getEditorVariant(),editor.getFusion(),editor.getActivity(),editor.getDsbCleavageType(),
                 editor.getTarget_sequence(),editor.getSource(),editor.getType(),
                 editor.getSymbol(),editor.getAlias(),editor.getSubstrateTarget(), editor.getProteinSequence(),
@@ -102,7 +103,7 @@ public class EditorDao extends AbstractDAO {
 
         String sql = "select * from editor where species =? and type=? and subtype=? and symbol = ?";
 
-        List<Editor> list = EditorQuery.execute(this,sql,editor.getSpecies(), editor.getType(),editor.getSubType(),editor.getSymbol() );
+        List<Editor> list = EditorQuery.execute(this,sql,editor.getSpecies(), editor.getType(),editor.getSubtype(),editor.getSymbol() );
         return list.isEmpty() ? 0 : list.get(0).getId();
     }
 

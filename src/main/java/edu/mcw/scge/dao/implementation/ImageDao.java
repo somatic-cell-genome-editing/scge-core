@@ -2,11 +2,8 @@ package edu.mcw.scge.dao.implementation;
 
 
 import edu.mcw.scge.dao.AbstractDAO;
-import edu.mcw.scge.dao.spring.EditorQuery;
 import edu.mcw.scge.dao.spring.ImageQuery;
-import edu.mcw.scge.datamodel.Editor;
 import edu.mcw.scge.datamodel.Image;
-import org.springframework.dao.DataAccessException;
 
 import java.io.ByteArrayInputStream;
 import java.sql.Connection;

@@ -1,7 +1,6 @@
 package edu.mcw.scge.dao.spring;
 
 import edu.mcw.scge.dao.AbstractDAO;
-import edu.mcw.scge.datamodel.Access;
 import edu.mcw.scge.datamodel.Editor;
 import org.springframework.jdbc.object.MappingSqlQuery;
 
@@ -22,7 +21,7 @@ public class EditorQuery extends MappingSqlQuery {
         Editor e= new Editor();
         e.setId(rs.getLong("editor_id"));
         e.setType(rs.getString("type"));
-        e.setSubType(rs.getString("subtype"));
+        e.setSubtype(rs.getString("subtype"));
         e.setSymbol(rs.getString("symbol"));
         e.setAlias(rs.getString("alias"));
         e.setSpecies(rs.getString("species"));

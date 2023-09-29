@@ -1,9 +1,7 @@
 package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
-import edu.mcw.scge.dao.spring.EditorQuery;
 import edu.mcw.scge.dao.spring.VectorQuery;
-import edu.mcw.scge.datamodel.Editor;
 import edu.mcw.scge.datamodel.Vector;
 
 import java.util.List;

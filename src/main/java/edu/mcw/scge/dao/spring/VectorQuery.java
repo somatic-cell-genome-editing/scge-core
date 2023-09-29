@@ -1,7 +1,6 @@
 package edu.mcw.scge.dao.spring;
 
 import edu.mcw.scge.dao.AbstractDAO;
-import edu.mcw.scge.datamodel.Editor;
 import edu.mcw.scge.datamodel.Vector;
 import org.springframework.jdbc.object.MappingSqlQuery;
 

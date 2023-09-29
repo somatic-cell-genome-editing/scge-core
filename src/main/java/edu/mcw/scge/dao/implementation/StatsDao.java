@@ -2,10 +2,6 @@ package edu.mcw.scge.dao.implementation;
 
 import edu.mcw.scge.dao.AbstractDAO;
 import edu.mcw.scge.dao.spring.CountQuery;
-import edu.mcw.scge.dao.spring.EditorQuery;
-import edu.mcw.scge.datamodel.Editor;
-
-import java.util.List;
 
 /**
  * Created by jthota on 9/10/2019.
