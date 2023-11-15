@@ -82,21 +82,14 @@ public class ImageDao extends AbstractDAO {
         String sql = "update images set file_name='" + image.getFileName() + "', image=?, thumbnail=?,image_700_wide=?, legend='" + image.getLegend() + "', " +
                 " title='" + image.getTitle() + "', file_type='" + image.getFileType() + "', pos_index=" + image.getPosIndex() + " where scge_id=" + image.getScgeId() + " and bucket='" + image.getBucket() + "'";
 
-        Connection conn=null;
-        PreparedStatement pst =null;
+        try(Connection conn = this.getDataSource().getConnection();
+            PreparedStatement pst = conn.prepareStatement(sql);) {
 
-        try {
-            conn = this.getDataSource().getConnection();
-            pst = conn.prepareStatement(sql);
             pst.setBinaryStream(1, new ByteArrayInputStream(image.getImage()), image.getImage().length);
             pst.setBinaryStream(2, new ByteArrayInputStream(image.getThumbnail()), image.getThumbnail().length);
             pst.setBinaryStream(3, new ByteArrayInputStream(image.getImage700Wide()), image.getImage700Wide().length);
             pst.executeUpdate();
-        } finally {
-            pst.close();
-            conn.close();
         }
-
         //return editorId;
 
 
@@ -119,21 +112,16 @@ public class ImageDao extends AbstractDAO {
                 "," + image.getPosIndex() + ")";
 
 
-        Connection conn=null;
-        PreparedStatement pst =null;
 
-        try {
-            conn = this.getDataSource().getConnection();
-            pst = conn.prepareStatement(sql);
+
+        try(Connection conn = this.getDataSource().getConnection();
+            PreparedStatement  pst = conn.prepareStatement(sql);) {
+
             pst.setBinaryStream(1, new ByteArrayInputStream(image.getImage()), image.getImage().length);
             pst.setBinaryStream(2, new ByteArrayInputStream(image.getThumbnail()), image.getThumbnail().length);
             pst.setBinaryStream(3, new ByteArrayInputStream(image.getImage700Wide()), image.getImage700Wide().length);
             pst.executeUpdate();
-        } finally {
-            pst.close();
-            conn.close();
         }
-
         //return editorId;
     }
 

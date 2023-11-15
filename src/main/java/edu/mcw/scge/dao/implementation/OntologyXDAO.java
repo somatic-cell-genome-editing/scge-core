@@ -1144,8 +1144,9 @@ public class OntologyXDAO extends AbstractDAO {
                 "VALUES(?,?,?,?,?,ont_synonyms_seq.NEXTVAL) "+
                 "RETURNING syn_key INTO ?; END;";
 
-        try (Connection conn = this.getConnection() ){
-            CallableStatement cs = conn.prepareCall(sql);
+        try (Connection conn = this.getConnection();
+             CallableStatement cs = conn.prepareCall(sql);){
+
             cs.setString(1, synonym.getTermAcc());
             cs.setString(2, synonym.getName());
             cs.setString(3, synonym.getType());

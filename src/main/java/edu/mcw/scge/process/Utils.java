@@ -495,11 +495,12 @@ public class Utils {
      */
     public static List<String> getSingleRow(String query, String[] params) throws Exception {
 
-        Connection conn = DataSourceFactory.getInstance().getDataSource().getConnection();
-        List<String> columns = new ArrayList<>();
-        try {
 
-            PreparedStatement stmt = conn.prepareStatement(query);
+        List<String> columns = new ArrayList<>();
+        try(Connection conn = DataSourceFactory.getInstance().getDataSource().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);) {
+
+
             if( params!=null ) {
                 for( int i=0; i<params.length; i++ ) {
                     stmt.setString(i+1, params[i]);
@@ -513,12 +514,6 @@ public class Utils {
                     columns.add(rs.getString(i));
             }
 
-        } finally {
-            try {
-               conn.close();
-            }catch (Exception ignored) {
-                ignored.printStackTrace();
-            }
         }
         return columns;
     }
@@ -535,11 +530,11 @@ public class Utils {
      */
     public static List<List<String>> getRows(String query, String[] params, Comparator<List<String>> comparator) throws Exception {
 
-        Connection conn = DataSourceFactory.getInstance().getDataSource().getConnection();
         List<List<String>> rows = new ArrayList<>();
-        try {
+        try(Connection conn = DataSourceFactory.getInstance().getDataSource().getConnection();
+                    PreparedStatement stmt = conn.prepareStatement(query);) {
 
-            PreparedStatement stmt = conn.prepareStatement(query);
+
             if( params!=null ) {
                 for( int i=0; i<params.length; i++ ) {
                     stmt.setString(i+1, params[i]);
@@ -573,13 +568,8 @@ public class Utils {
                 prevRow = currRow;
             }
 
-        } finally {
-            try {
-               conn.close();
-            }catch (Exception ignored) {
-                ignored.printStackTrace();
-            }
         }
+
         return rows;
     }
 
