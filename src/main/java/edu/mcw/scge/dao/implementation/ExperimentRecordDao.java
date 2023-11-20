@@ -56,22 +56,7 @@ public class ExperimentRecordDao extends AbstractDAO {
         ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
         return execute(q, studyId);
     }
-
-    /*public List<ExperimentRecord> getExperimentRecordById(int expId) throws Exception {
-        String sql="select s.study, r.*, e.symbol, d.ds_type, m.name as modelName, g.guide, x.type from  experiment x  " +
-                "left join experiment_record r on (r.experiment_id=x.experiment_id) " +
-                "left join editor e on (e.editor_id= r.editor_id) " +
-                "left join delivery_system d on (d.ds_id= r.ds_id) " +
-                "left join guide g on (r.guide_id=g.guide_id) " +
-              //  "left join target t on (t.target_id=r.target_id) " +
-                "left join model m on (m.model_id =r.model_id) " +
-                "where x.experiment_id=?";
-        ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
-        return execute(q, expId);
-    }
-    */
-
-   public List<ExperimentRecord> getExperimentRecordById(long expRecId) throws Exception {
+    public List<ExperimentRecord> getExperimentRecordById(long expRecId) throws Exception {
         String sql="select s.study, r.*, e.symbol, d.ds_type, m.display_name as modelName, g.guide, h.lab_id as hrdonorName, x.type" +
                 " from  experiment x  " +
                 "left join experiment_record r on (r.experiment_id=x.experiment_id) " +
@@ -87,18 +72,17 @@ public class ExperimentRecordDao extends AbstractDAO {
         return execute(q, expRecId);
     }
 
-	public long insertExperimentRecord(ExperimentRecord expRecord) throws Exception{
+	public long insertExperimentRecord(ExperimentRecord r) throws Exception{
 
         String sql = "insert into experiment_record (experiment_id,name,study_id, " +
                 "editor_id,ds_id,model_id,hrdonor_id,application_method_id,experiment_record_id,age, genotype,sex," +
-                "tissue_id, cell_type,organ_system  ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "tissue_id, cell_type,organ_system,qualifier,time_point ) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         long experimentId = this.getNextKeyFromSequenceLong("experiment_seq");
         
-        update(sql, expRecord.getExperimentId(),expRecord.getExperimentName(),expRecord.getStudyId(), expRecord.getEditorId(),
-                expRecord.getDeliverySystemId(),expRecord.getModelId(),expRecord.getHrdonorId(),
-                expRecord.getApplicationMethodId(),experimentId, expRecord.getAge(),expRecord.getGenotype(),
-                expRecord.getSex(),expRecord.getTissueId(),expRecord.getCellType(),expRecord.getOrganSystemID());
+        update(sql, r.getExperimentId(), r.getExperimentName(), r.getStudyId(), r.getEditorId(), r.getDeliverySystemId(),
+                r.getModelId(), r.getHrdonorId(), r.getApplicationMethodId(), experimentId, r.getAge(), r.getGenotype(),
+                r.getSex(), r.getTissueId(), r.getCellType(), r.getOrganSystemID(), r.getQualifier(), r.getTimePoint());
 
         return experimentId;
     }
