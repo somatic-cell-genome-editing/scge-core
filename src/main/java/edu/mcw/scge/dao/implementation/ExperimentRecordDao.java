@@ -93,9 +93,13 @@ public class ExperimentRecordDao extends AbstractDAO {
                 // handle NULLs or blanks in columns 'sex','tissue_id','cell_type'
                 "AND COALESCE(sex,'') = COALESCE(?,'') "+
                 "AND COALESCE(tissue_id,'') = COALESCE(?,'') "+
-                "AND COALESCE(cell_type,'') = COALESCE(?,'')";
+                "AND COALESCE(cell_type,'') = COALESCE(?,'') "+
+                "AND COALESCE(organ_system,'') = COALESCE(?,'') "+
+                "AND COALESCE(qualifier,'') = COALESCE(?,'') "+
+                "AND COALESCE(time_point,'') = COALESCE(?,'')";
         return getLongCount(sql, r.getExperimentName(), r.getStudyId(), r.getEditorId(), r.getDeliverySystemId(),
-                r.getModelId(), r.getApplicationMethodId(), r.getExperimentId(), r.getSex(), r.getTissueId(), r.getCellType());
+                r.getModelId(), r.getApplicationMethodId(), r.getExperimentId(), r.getSex(), r.getTissueId(), r.getCellType(),
+                r.getOrganSystemID(), r.getQualifier(), r.getTimePoint());
     }
 
     public void addTargetTissue( List<Long> experimentRecordIds) throws Exception{
