@@ -166,7 +166,7 @@ public class ExperimentRecord {
 
     public void setCellTypeTerm(String cellTypeTerm) {
         if (cellTypeTerm == null || cellTypeTerm.equals("")) {
-            cellTypeTerm = "unspecified";
+            cellTypeTerm = "";
         }
         this.cellTypeTerm = cellTypeTerm;
     }
