@@ -183,26 +183,29 @@ public class Extractor {
                         .getElementsByTagName("LastName")
                         .item(0)
                         .getTextContent();
-                System.out.println("LastName : "
-                        +lastName);
-                author.setLastName(lastName);
+                if(lastName!=null && !lastName.equals("")) {
+                    System.out.println("LastName : "
+                            + lastName);
+                    author.setLastName(lastName.trim());
+                }
                 String firstName=authorElement
                         .getElementsByTagName("ForeName")
                         .item(0)
                         .getTextContent();
-
-                System.out.println("First Name : "
-                        + firstName);
-                author.setFirstName(firstName);
+                if(firstName!=null && !firstName.equals("")) {
+                    System.out.println("First Name : "
+                            + firstName);
+                    author.setFirstName(firstName.trim());
+                }
                 String initials=authorElement
                         .getElementsByTagName("Initials")
                         .item(0)
                         .getTextContent();
-
-                System.out.println("Initials : "
-                        + initials);
-                author.setInitials(initials);
-
+                if(initials!=null && !initials.equals("")) {
+                    System.out.println("Initials : "
+                            + initials);
+                    author.setInitials(initials.trim());
+                }
                 authorsList.add(author);
             }
 
