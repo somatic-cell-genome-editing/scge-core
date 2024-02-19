@@ -51,9 +51,11 @@ public class Extractor {
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
             }
+            return fileName;
         } catch (IOException e) {// handle exception
+            e.printStackTrace();
              }
-        return fileName;
+        return null;
     }
 
     public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
@@ -78,42 +80,48 @@ public class Extractor {
         //  System.out.println(readAll(rd));
         int refKey=0;
         try {
-            File inputFile = new File(getInputFile(pmid,url));
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(inputFile);
-            doc.getDocumentElement().normalize();
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-            NodeList nList = doc.getElementsByTagName("Article");
-            System.out.println("----------------------------");
-            Reference reference=new Reference();
-            for (int temp = 0; temp < nList.getLength(); temp++) {
-                Node nNode = nList.item(temp);
-                System.out.println("\nCurrent Element :" + nNode.getNodeName());
+            String fileName=getInputFile(pmid,url);
+            if(fileName!=null) {
+                File inputFile = new File(fileName);
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.parse(inputFile);
+                doc.getDocumentElement().normalize();
+                System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+                NodeList nList = doc.getElementsByTagName("Article");
+                System.out.println("----------------------------");
+                Reference reference = new Reference();
+                for (int temp = 0; temp < nList.getLength(); temp++) {
+                    Node nNode = nList.item(temp);
+                    System.out.println("\nCurrent Element :" + nNode.getNodeName());
 
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element eElement = (Element) nNode;
-                    String title=eElement
-                            .getElementsByTagName("ArticleTitle")
-                            .item(0)
-                            .getTextContent();
+                    if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element eElement = (Element) nNode;
+                        String title = eElement
+                                .getElementsByTagName("ArticleTitle")
+                                .item(0)
+                                .getTextContent();
 
-                    reference.setTitle(title);
-                    String abstractText=eElement
-                            .getElementsByTagName("AbstractText")
-                            .item(0)
-                            .getTextContent();
-                    reference.setRefAbstract(abstractText);
+                        reference.setTitle(title);
+                        String abstractText = eElement
+                                .getElementsByTagName("AbstractText")
+                                .item(0)
+                                .getTextContent();
+                        reference.setRefAbstract(abstractText);
 
-                //    reference.setPubDate(getPubDate(eElement));
-                    refKey= processor.insertReference(reference);
-                    processor.insertAuthor(parseAuthorList(eElement), refKey);
-                    Map<String, String> articleIdMap=parseArticleIdList(doc);
-                    if(articleIdMap.get("doi")!=null)
-                        reference.setDoi(articleIdMap.get("doi"));
-                    List<Integer> pubIdKeys=processor.updateArticleIds(parseArticleIdList(doc), refKey);
+                        //    reference.setPubDate(getPubDate(eElement));
+                        refKey = processor.insertReference(reference);
+                        processor.insertAuthor(parseAuthorList(eElement), refKey);
+                        Map<String, String> articleIdMap = parseArticleIdList(doc);
+                        if (articleIdMap.get("doi") != null)
+                            reference.setDoi(articleIdMap.get("doi"));
+                        List<Integer> pubIdKeys = processor.updateArticleIds(parseArticleIdList(doc), refKey);
 
+                    }
                 }
+            }
+            else{
+                System.out.println("File not found...for PMID:"+pmid+"\tat location"+url );
             }
         } catch (Exception e) {
             e.printStackTrace();
