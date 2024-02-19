@@ -18,10 +18,14 @@ public class Processor {
         return refKey;
     }
     public void insertAuthor(List<Author> authors, int  refKey) throws Exception {
+
         for(Author author:authors) {
-            int authorKey=publicationDAO.getNextKey("pub_authors_seq");
-            author.setKey(authorKey);
-            publicationDAO.insertAuthor(author);
+            int authorKey=  publicationDAO.getAuthorKey(author);
+            if(authorKey==0) {
+                authorKey = publicationDAO.getNextKey("pub_authors_seq");
+                author.setKey(authorKey);
+                publicationDAO.insertAuthor(author);
+            }
             publicationDAO.insertPubAuthorAssociation(refKey,authorKey, 0);
         }
 

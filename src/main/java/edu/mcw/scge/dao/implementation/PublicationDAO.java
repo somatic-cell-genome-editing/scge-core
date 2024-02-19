@@ -226,6 +226,15 @@ public class PublicationDAO extends AbstractDAO {
                 auth.getInstitution(), auth.getNotes(), auth.getInitials(), auth.getSuffix(), auth.getKey());
     }
 
+    public int getAuthorKey(Author author) throws Exception {
+        String sql="select * from pub_authors where author_last_name=? " +
+                "and author_first_name=? " +
+                "and author_initials=? ";
+        AuthorQuery query=new AuthorQuery(this.getDataSource(), sql);
+        List<Author> authors= execute(query, author.getLastName(), author.getFirstName(), author.getInitials());
+        return authors!=null && authors.size()>0?authors.get(0).getKey():0;
+    }
+
     /**
      * return author associations for given reference
      * @param refKey key of reference
