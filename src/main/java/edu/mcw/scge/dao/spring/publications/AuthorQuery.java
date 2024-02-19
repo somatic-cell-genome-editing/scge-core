@@ -14,6 +14,7 @@ public class AuthorQuery extends MappingSqlQuery {
     @Override
     protected Object mapRow(ResultSet rs, int rowNum) throws SQLException {
         Author author=new Author();
+        author.setKey(rs.getInt("author_key"));
         author.setFirstName(rs.getString("author_first_name"));
         author.setLastName(rs.getString("author_last_name"));
         author.setInitials(rs.getString("author_initials"));
