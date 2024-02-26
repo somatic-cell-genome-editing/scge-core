@@ -129,6 +129,10 @@ public class PublicationDAO extends AbstractDAO {
                 "   where scge_id=? ";
        return  executeRefQuery(query, scgeId);
     }
+    public List<Reference> getReferences() throws Exception {
+        String query = " select * from publications";
+        return  executeRefQuery(query);
+    }
     public List<Reference> getAssociatedPublicationsBySCGEId(long scgeId) throws Exception {
         String query = "select * from publications p where ref_key in (select distinct(ref_key) from pub_associations where scge_id=? and type='associated') ";
         return executeRefQuery(query, scgeId);
@@ -323,6 +327,18 @@ public class PublicationDAO extends AbstractDAO {
         }
         return publications;
     }
+    public List<Publication> getAllPublications() throws Exception {
+        List<Reference> references = getReferences();
+        List<Publication> publications=new ArrayList<>();
+        for(Reference ref:references){
+            Publication publication=new Publication();
+            publication.setReference(ref);
+            publication.setAuthorList(getAuthorsByRefKey(ref.getKey()));
+            publication.setArticleIds(getArticleIdsByRefKey(ref.getKey()));
+            publications.add(publication);
+        }
+        return publications;
+    }
     public List<Publication> getAssociatedPublications(long scge_id) throws Exception {
         List<Reference> references = getAssociatedPublicationsBySCGEId(scge_id);
         List<Publication> publications=new ArrayList<>();
@@ -346,6 +362,11 @@ public class PublicationDAO extends AbstractDAO {
             publications.add(publication);
         }
         return publications;
+    }
+    public List<Long> getPublicationAssoicatedSCGEIds(int refKey) throws Exception {
+        String sql="select scge_id from pub_associations where ref_key=?";
+        LongListQuery query=new LongListQuery(this.getDataSource(), sql);
+        return execute(query, refKey);
     }
     public void makeAssociation(long objectId, int refKey, String type) throws Exception {
 

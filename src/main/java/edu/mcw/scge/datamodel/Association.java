@@ -4,7 +4,7 @@ import edu.mcw.scge.datamodel.publications.Publication;
 
 import java.util.List;
 
-public class ProtocolAssociation extends Protocol {
+public class Association extends Protocol {
     private List<Editor> associatedEditors;
     private List<Guide> associatedGuides;
     private List<Delivery> associatedDeliverySystems;

@@ -12,16 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ProtocolDao extends AbstractDAO {
-    SCGEIDManagementDao managementDao=new SCGEIDManagementDao();
-    EditorDao editorDao=new EditorDao();
-    ModelDao modelDao=new ModelDao();
-    GuideDao guideDao=new GuideDao();
-    DeliveryDao deliveryDao=new DeliveryDao();
-    VectorDao vectorDao=new VectorDao();
-    ExperimentDao experimentDao=new ExperimentDao();
-    ExperimentRecordDao experimentRecordDao=new ExperimentRecordDao();
-    StudyDao studyDao=new StudyDao();
-    PublicationDAO publicationDAO=new PublicationDAO();
+
     public Protocol getProtocolById(long protocolId) throws Exception {
         String sql="select * from protocol where protocol_id=?";
         ProtocolQuery q= new ProtocolQuery(this.getDataSource(), sql);
@@ -129,131 +120,131 @@ public class ProtocolDao extends AbstractDAO {
         LongListQuery q= new LongListQuery(this.getDataSource(), sql);
         return  execute(q, protocolId);
     }
-     List<Editor> mapEditorsFromAssociatedObjectsList(List<Long> associatedObjectIds) throws Exception {
-        List<Editor> editors=new ArrayList<>();
-        for(long id:associatedObjectIds){
-            String objectType=managementDao.getObjectTypeById(id);
-            if(objectType.equalsIgnoreCase("editor")){
-                editors.addAll(editorDao.getEditorById(id));
-            }
-        }
-        return editors;
-    }
-     List<Model> mapModelsFromAssociatedObjectsList(List<Long> associatedObjectIds) throws Exception {
-        List<Model> models=new ArrayList<>();
-        for(long id:associatedObjectIds){
-            String objectType=managementDao.getObjectTypeById(id);
-            if(objectType.equalsIgnoreCase("model")){
-                models.add(modelDao.getModelById(id));
-            }
-        }
-        return models;
-    }
-     List<Guide> mapGuidesFromAssociatedObjectsList(List<Long> associatedObjectIds) throws Exception {
-        List<Guide> guides=new ArrayList<>();
-        for(long id:associatedObjectIds){
-            String objectType=managementDao.getObjectTypeById(id);
-            if(objectType.equalsIgnoreCase("guide")){
-                guides.addAll(guideDao.getGuideById(id));
-            }
-        }
-        return guides;
-    }
-     List<Vector> mapVectorsFromAssociatedObjectsList(List<Long> associatedObjectIds) throws Exception {
-        List<Vector> vectors=new ArrayList<>();
-        for(long id:associatedObjectIds){
-            String objectType=managementDao.getObjectTypeById(id);
-            if(objectType.equalsIgnoreCase("vector")){
-                vectors.addAll(vectorDao.getVectorById(id));
-            }
-        }
-        return vectors;
-    }
-     List<Delivery> mapDeliverySystemsFromAssociatedObjectsList(List<Long> associatedObjectIds) throws Exception {
-        List<Delivery> dsList=new ArrayList<>();
-        for(long id:associatedObjectIds){
-            String objectType=managementDao.getObjectTypeById(id);
-            if(objectType.equalsIgnoreCase("delivery system")){
-                dsList.addAll(deliveryDao.getDeliverySystemsById(id));
-            }
-        }
-        return dsList;
-    }
-    List<Experiment> mapExperimentsFromAssociatedObjectsList(List<Long> associatedObjectIds) throws Exception {
-        List<Experiment> experiments=new ArrayList<>();
-        for(long id:associatedObjectIds){
-            String objectType=managementDao.getObjectTypeById(id);
-            if(objectType.equalsIgnoreCase("experiment")){
-                experiments.add(experimentDao.getExperiment(id));
-            }
-        }
-        return experiments;
-    }
-    public List<Publication> mapAssociatedPublications(long protocolId) throws Exception {
-        return publicationDAO.getAssociatedPublications(protocolId);
-    }
-    public List<Publication> mapRelatedPublications(long protocolId) throws Exception {
-        return publicationDAO.getRelatedPublications(protocolId);
-    }
-
-    public ProtocolAssociation getProtocolAssociations(long protocolId) throws Exception {
-        ProtocolAssociation protocolAssociation=new ProtocolAssociation();
-        List<Long> associatedObjecIds=getProtocolAssociatedObjectIds(protocolId);
-        protocolAssociation.setAssociatedEditors(mapEditorsFromAssociatedObjectsList(associatedObjecIds));
-        protocolAssociation.setAssociatedDeliverySystems(mapDeliverySystemsFromAssociatedObjectsList(associatedObjecIds));
-        protocolAssociation.setAssociatedGuides(mapGuidesFromAssociatedObjectsList(associatedObjecIds));
-        protocolAssociation.setAssociatedModels(mapModelsFromAssociatedObjectsList(associatedObjecIds));
-        protocolAssociation.setAssociatedVectors(mapVectorsFromAssociatedObjectsList(associatedObjecIds));
-        protocolAssociation.setAssociatedExperiments(mapExperimentsFromAssociatedObjectsList(associatedObjecIds));
-        protocolAssociation.setAssociatedPublications(mapAssociatedPublications(protocolId));
-        protocolAssociation.setRelatedPublications(mapRelatedPublications(protocolId));
-        for(Editor editor:protocolAssociation.getAssociatedEditors()){
-            List<Study> objectStudies=studyDao.getStudiesByEditor(editor.getId());
-            addStudy(objectStudies, protocolAssociation);
-
-        }
-        for(Model object:protocolAssociation.getAssociatedModels()){
-            List<Study> objectStudies=studyDao.getStudiesByModel(object.getModelId());
-            addStudy(objectStudies, protocolAssociation);
-        }
-        for(Guide object:protocolAssociation.getAssociatedGuides()){
-            List<Study> objectStudies=studyDao.getStudiesByGuide(object.getGuide_id());
-            addStudy(objectStudies, protocolAssociation);
-        }
-        for(Vector object:protocolAssociation.getAssociatedVectors()){
-            List<Study> objectStudies=studyDao.getStudiesByVector(object.getVectorId());
-            addStudy(objectStudies, protocolAssociation);
-        }
-        for(Delivery object:protocolAssociation.getAssociatedDeliverySystems()){
-            List<Study> objectStudies=studyDao.getStudiesByDeliverySystem(object.getId());
-            addStudy(objectStudies, protocolAssociation);
-        }
-        for(Experiment object:protocolAssociation.getAssociatedExperiments()){
-            List<Study> objectStudies=studyDao.getStudyByExperimentId(object.getExperimentId());
-            addStudy(objectStudies, protocolAssociation);
-        }
-
-        return protocolAssociation;
-    }
-     void addStudy(List<Study> objectStudies, ProtocolAssociation protocolAssociation){
-        List<Study> studies=protocolAssociation.getAssociatedStudies();
-        if(studies!=null && studies.size()>0){
-            for(Study os:objectStudies){
-                boolean exists=false;
-                    for(Study study:studies){
-                        if (os.getStudyId() == study.getStudyId()) {
-                            exists = true;
-                            break;
-                        }
-                }
-                    if(!exists){
-                        studies.add(os);
-                    }
-            }
-
-        }else{
-            studies = new ArrayList<>(objectStudies);
-        }
-        protocolAssociation.setAssociatedStudies(studies);
-     }
+//     List<Editor> mapEditorsFromAssociatedObjectsList(List<Long> associatedObjectIds) throws Exception {
+//        List<Editor> editors=new ArrayList<>();
+//        for(long id:associatedObjectIds){
+//            String objectType=managementDao.getObjectTypeById(id);
+//            if(objectType.equalsIgnoreCase("editor")){
+//                editors.addAll(editorDao.getEditorById(id));
+//            }
+//        }
+//        return editors;
+//    }
+//     List<Model> mapModelsFromAssociatedObjectsList(List<Long> associatedObjectIds) throws Exception {
+//        List<Model> models=new ArrayList<>();
+//        for(long id:associatedObjectIds){
+//            String objectType=managementDao.getObjectTypeById(id);
+//            if(objectType.equalsIgnoreCase("model")){
+//                models.add(modelDao.getModelById(id));
+//            }
+//        }
+//        return models;
+//    }
+//     List<Guide> mapGuidesFromAssociatedObjectsList(List<Long> associatedObjectIds) throws Exception {
+//        List<Guide> guides=new ArrayList<>();
+//        for(long id:associatedObjectIds){
+//            String objectType=managementDao.getObjectTypeById(id);
+//            if(objectType.equalsIgnoreCase("guide")){
+//                guides.addAll(guideDao.getGuideById(id));
+//            }
+//        }
+//        return guides;
+//    }
+//     List<Vector> mapVectorsFromAssociatedObjectsList(List<Long> associatedObjectIds) throws Exception {
+//        List<Vector> vectors=new ArrayList<>();
+//        for(long id:associatedObjectIds){
+//            String objectType=managementDao.getObjectTypeById(id);
+//            if(objectType.equalsIgnoreCase("vector")){
+//                vectors.addAll(vectorDao.getVectorById(id));
+//            }
+//        }
+//        return vectors;
+//    }
+//     List<Delivery> mapDeliverySystemsFromAssociatedObjectsList(List<Long> associatedObjectIds) throws Exception {
+//        List<Delivery> dsList=new ArrayList<>();
+//        for(long id:associatedObjectIds){
+//            String objectType=managementDao.getObjectTypeById(id);
+//            if(objectType.equalsIgnoreCase("delivery system")){
+//                dsList.addAll(deliveryDao.getDeliverySystemsById(id));
+//            }
+//        }
+//        return dsList;
+//    }
+//    List<Experiment> mapExperimentsFromAssociatedObjectsList(List<Long> associatedObjectIds) throws Exception {
+//        List<Experiment> experiments=new ArrayList<>();
+//        for(long id:associatedObjectIds){
+//            String objectType=managementDao.getObjectTypeById(id);
+//            if(objectType.equalsIgnoreCase("experiment")){
+//                experiments.add(experimentDao.getExperiment(id));
+//            }
+//        }
+//        return experiments;
+//    }
+//    public List<Publication> mapAssociatedPublications(long protocolId) throws Exception {
+//        return publicationDAO.getAssociatedPublications(protocolId);
+//    }
+//    public List<Publication> mapRelatedPublications(long protocolId) throws Exception {
+//        return publicationDAO.getRelatedPublications(protocolId);
+//    }
+//
+//    public ProtocolAssociation getProtocolAssociations(long protocolId) throws Exception {
+//        ProtocolAssociation protocolAssociation=new ProtocolAssociation();
+//        List<Long> associatedObjecIds=getProtocolAssociatedObjectIds(protocolId);
+//        protocolAssociation.setAssociatedEditors(mapEditorsFromAssociatedObjectsList(associatedObjecIds));
+//        protocolAssociation.setAssociatedDeliverySystems(mapDeliverySystemsFromAssociatedObjectsList(associatedObjecIds));
+//        protocolAssociation.setAssociatedGuides(mapGuidesFromAssociatedObjectsList(associatedObjecIds));
+//        protocolAssociation.setAssociatedModels(mapModelsFromAssociatedObjectsList(associatedObjecIds));
+//        protocolAssociation.setAssociatedVectors(mapVectorsFromAssociatedObjectsList(associatedObjecIds));
+//        protocolAssociation.setAssociatedExperiments(mapExperimentsFromAssociatedObjectsList(associatedObjecIds));
+//        protocolAssociation.setAssociatedPublications(mapAssociatedPublications(protocolId));
+//        protocolAssociation.setRelatedPublications(mapRelatedPublications(protocolId));
+//        for(Editor editor:protocolAssociation.getAssociatedEditors()){
+//            List<Study> objectStudies=studyDao.getStudiesByEditor(editor.getId());
+//            addStudy(objectStudies, protocolAssociation);
+//
+//        }
+//        for(Model object:protocolAssociation.getAssociatedModels()){
+//            List<Study> objectStudies=studyDao.getStudiesByModel(object.getModelId());
+//            addStudy(objectStudies, protocolAssociation);
+//        }
+//        for(Guide object:protocolAssociation.getAssociatedGuides()){
+//            List<Study> objectStudies=studyDao.getStudiesByGuide(object.getGuide_id());
+//            addStudy(objectStudies, protocolAssociation);
+//        }
+//        for(Vector object:protocolAssociation.getAssociatedVectors()){
+//            List<Study> objectStudies=studyDao.getStudiesByVector(object.getVectorId());
+//            addStudy(objectStudies, protocolAssociation);
+//        }
+//        for(Delivery object:protocolAssociation.getAssociatedDeliverySystems()){
+//            List<Study> objectStudies=studyDao.getStudiesByDeliverySystem(object.getId());
+//            addStudy(objectStudies, protocolAssociation);
+//        }
+//        for(Experiment object:protocolAssociation.getAssociatedExperiments()){
+//            List<Study> objectStudies=studyDao.getStudyByExperimentId(object.getExperimentId());
+//            addStudy(objectStudies, protocolAssociation);
+//        }
+//
+//        return protocolAssociation;
+//    }
+//     void addStudy(List<Study> objectStudies, ProtocolAssociation protocolAssociation){
+//        List<Study> studies=protocolAssociation.getAssociatedStudies();
+//        if(studies!=null && studies.size()>0){
+//            for(Study os:objectStudies){
+//                boolean exists=false;
+//                    for(Study study:studies){
+//                        if (os.getStudyId() == study.getStudyId()) {
+//                            exists = true;
+//                            break;
+//                        }
+//                }
+//                    if(!exists){
+//                        studies.add(os);
+//                    }
+//            }
+//
+//        }else{
+//            studies = new ArrayList<>(objectStudies);
+//        }
+//        protocolAssociation.setAssociatedStudies(studies);
+//     }
 }
