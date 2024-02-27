@@ -42,8 +42,8 @@ public class Extractor {
         return sb.toString();
     }
     public String getInputFile(long pmid, String url) throws IOException {
-     //   String fileName = "data/pubmed/" + pmid + ".txt";
-       String fileName = "C:/data/pubmed/" + pmid + ".txt";
+        String fileName = "data/pubmed/" + pmid + ".txt";
+//       String fileName = "C:/data/pubmed/" + pmid + ".txt";
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
             byte dataBuffer[] = new byte[1024];
@@ -90,13 +90,13 @@ public class Extractor {
                 doc.getDocumentElement().normalize();
                 List<String> meshTerms=parseMeshTerms(doc);
                 reference.setMeshTerms(meshTerms);
-                System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+//                System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
                 NodeList nList = doc.getElementsByTagName("Article");
-                System.out.println("----------------------------");
+//                System.out.println("----------------------------");
 
                 for (int temp = 0; temp < nList.getLength(); temp++) {
                     Node nNode = nList.item(temp);
-                    System.out.println("\nCurrent Element :" + nNode.getNodeName());
+//                    System.out.println("\nCurrent Element :" + nNode.getNodeName());
 
                     if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element eElement = (Element) nNode;
@@ -142,15 +142,15 @@ public class Extractor {
                 .getElementsByTagName("Year")
                 .item(0)
                 .getTextContent();
-        System.out.println("PubDate Year : "
-                + year);
+//        System.out.println("PubDate Year : "
+//                + year);
         String month=eElement
                 .getElementsByTagName("Month")
                 .item(0)
                 .getTextContent();
 
-        System.out.println("PubDate Month: "
-                + month);
+//        System.out.println("PubDate Month: "
+//                + month);
         String day=eElement
                 .getElementsByTagName("Day")
                 .item(0)
@@ -189,8 +189,6 @@ public class Extractor {
                         .item(0)
                         .getTextContent();
                 if(lastName!=null && !lastName.equals("")) {
-                    System.out.println("LastName : "
-                            + lastName);
                     author.setLastName(lastName.trim());
                 }
                 String firstName=authorElement
@@ -198,8 +196,6 @@ public class Extractor {
                         .item(0)
                         .getTextContent();
                 if(firstName!=null && !firstName.equals("")) {
-                    System.out.println("First Name : "
-                            + firstName);
                     author.setFirstName(firstName.trim());
                 }
                 String initials=authorElement
@@ -207,8 +203,6 @@ public class Extractor {
                         .item(0)
                         .getTextContent();
                 if(initials!=null && !initials.equals("")) {
-                    System.out.println("Initials : "
-                            + initials);
                     author.setInitials(initials.trim());
                 }
                 authorsList.add(author);
