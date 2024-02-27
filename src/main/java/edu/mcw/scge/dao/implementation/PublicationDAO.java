@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PublicationDAO extends AbstractDAO {
     public List<Long> getAllPMIDs() throws Exception {
@@ -96,13 +97,13 @@ public class PublicationDAO extends AbstractDAO {
         update(sql, refKey,idType, identifier,pubIdKey);
     }
     public void insertXDB(int xdbKey,  String xdbName, String xdbURL) throws Exception {
-        String sql="insert into xdb_urls (xdb_key, xdb_name, " +
+        String sql="insert into xdb (xdb_key, xdb_name, " +
                 "xdb_url " +
                 ") values (?,?,?) ";
         update(sql, xdbKey, xdbName,xdbURL);
     }
     public String getXDBUrl(String xdbName) throws Exception {
-        String sql="select xdb_url from xdb_urls where xdb_name=?";
+        String sql="select xdb_url from xdb where xdb_name=?";
         StringListQuery query=new StringListQuery(this.getDataSource(),sql);
         List<String> urls=execute(query, xdbName);
         if(urls.size()>0) return urls.get(0);
@@ -189,8 +190,8 @@ public class PublicationDAO extends AbstractDAO {
 
         String sql = "INSERT INTO publications (REF_KEY, TITLE, " +
                 " VOLUME, ISSUE, PAGES, PUB_STATUS, PUB_DATE, NOTES, REFERENCE_TYPE, CITATION, " +
-                "ABSTRACT, PUBLISHER, PUBLISHER_CITY, URL_WEB_REFERENCE, DOI) values " +
-                "(?, ?,?,?,?,?,?,?,?,?, ?,?,?,?,?)";
+                "ABSTRACT, PUBLISHER, PUBLISHER_CITY, URL_WEB_REFERENCE, DOI, MESH_TERMS) values " +
+                "(?, ?,?,?,?,?,?,?,?,?, ?,?,?,?,?,?)";
 
 
 
@@ -202,7 +203,7 @@ public class PublicationDAO extends AbstractDAO {
         return update(sql, ref.getKey(), ref.getTitle(), ref.getVolume(), ref.getIssue(),
                 ref.getPages(), ref.getPubStatus(), ref.getPubDate(), ref.getNotes(), ref.getReferenceType(),
                 ref.getCitation(), ref.getRefAbstract(), ref.getPublisher(), ref.getPublisherCity(),
-                ref.getUrlWebReference(), ref.getDoi());
+                ref.getUrlWebReference(), ref.getDoi(), String.join(",", ref.getMeshTerms()));
     }
     /**
      * insert author data
@@ -377,5 +378,11 @@ public class PublicationDAO extends AbstractDAO {
                    insertPubAssociations( refKey,objectId,type);
             }
 
+    }
+    public static void main(String[] args) throws Exception {
+        System.out.println("HELLO");
+        PublicationDAO dao=new PublicationDAO();
+        dao.runPubmedProcesssor(38033325);
+        System.out.println("DONE");
     }
 }

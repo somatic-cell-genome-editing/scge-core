@@ -1,10 +1,37 @@
 package edu.mcw.scge.datamodel.publications;
 
 import java.util.Date;
+import java.util.List;
 
 public class Reference {
     private int key;
     private String title;
+    private String editors;
+    private String publication;
+    private String volume;
+    private String issue;
+    private String pages;
+    private String pubStatus;
+    private Date pubDate;
+    private String notes;
+    private String referenceType;
+    private String citation;
+    private String refAbstract;
+    private String publisher;
+    private String publisherCity;
+    private String urlWebReference;
+    private int speciesTypeKey;
+    private String doi;
+    private String pubmedId;
+    private List<String> meshTerms;
+
+    public List<String> getMeshTerms() {
+        return meshTerms;
+    }
+
+    public void setMeshTerms(List<String> meshTerms) {
+        this.meshTerms = meshTerms;
+    }
 
     public int getKey() {
         return key;
@@ -158,23 +185,6 @@ public class Reference {
         this.pubmedId = pubmedId;
     }
 
-    private String editors;
-    private String publication;
-    private String volume;
-    private String issue;
-    private String pages;
-    private String pubStatus;
-    private Date pubDate;
-    private String notes;
-    private String referenceType;
-    private String citation;
-    private String refAbstract;
-    private String publisher;
-    private String publisherCity;
-    private String urlWebReference;
-    private int speciesTypeKey;
-    private String doi;
-    private String pubmedId;
 
 
 }

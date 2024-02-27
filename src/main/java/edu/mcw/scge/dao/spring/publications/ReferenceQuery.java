@@ -7,6 +7,7 @@ import org.springframework.jdbc.object.MappingSqlQuery;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public class ReferenceQuery extends MappingSqlQuery {
     PublicationDAO publicationDAO=new PublicationDAO();
@@ -38,6 +39,16 @@ public class ReferenceQuery extends MappingSqlQuery {
         ref.setDoi(rs.getString("doi"));
         try {
             ref.setPubmedId(publicationDAO.getPubmedId(ref.getKey()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+
+            if(rs.getString("mesh_terms")!=null && !rs.getString("mesh_terms").equals("")){
+                String[] meshTerms=rs.getString("mesh_terms").split(",");
+                ref.setMeshTerms(Arrays.asList(meshTerms));
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

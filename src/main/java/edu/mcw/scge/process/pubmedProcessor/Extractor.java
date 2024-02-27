@@ -42,8 +42,8 @@ public class Extractor {
         return sb.toString();
     }
     public String getInputFile(long pmid, String url) throws IOException {
-        String fileName = "data/pubmed/" + pmid + ".txt";
-        //String fileName = "C:/data/pubmed/" + pmid + ".txt";
+     //   String fileName = "data/pubmed/" + pmid + ".txt";
+       String fileName = "C:/data/pubmed/" + pmid + ".txt";
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
             byte dataBuffer[] = new byte[1024];
@@ -86,11 +86,14 @@ public class Extractor {
                 DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
                 Document doc = dBuilder.parse(inputFile);
+                Reference reference = new Reference();
                 doc.getDocumentElement().normalize();
+                List<String> meshTerms=parseMeshTerms(doc);
+                reference.setMeshTerms(meshTerms);
                 System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
                 NodeList nList = doc.getElementsByTagName("Article");
                 System.out.println("----------------------------");
-                Reference reference = new Reference();
+
                 for (int temp = 0; temp < nList.getLength(); temp++) {
                     Node nNode = nList.item(temp);
                     System.out.println("\nCurrent Element :" + nNode.getNodeName());
@@ -112,6 +115,7 @@ public class Extractor {
                         //    reference.setPubDate(getPubDate(eElement));
                         refKey = processor.insertReference(reference);
                         processor.insertAuthor(parseAuthorList(eElement), refKey);
+
                         Map<String, String> articleIdMap = parseArticleIdList(doc);
                         if (articleIdMap.get("doi") != null)
                             reference.setDoi(articleIdMap.get("doi"));
@@ -119,6 +123,7 @@ public class Extractor {
 
                     }
                 }
+
             }
             else{
                 System.out.println("File not found...for PMID:"+pmid+"\tat location"+url );
@@ -237,5 +242,29 @@ public class Extractor {
         }
 
         return articleIdMap;
+    }
+    List<String> parseMeshTerms(Document document) {
+        List<String> meshTermsList = new ArrayList<String>();
+        NodeList meshNodeList= document.getElementsByTagName("MeshHeading");
+        for (int temp = 0; temp < meshNodeList.getLength(); temp++) {
+            Node nNode = meshNodeList.item(temp);
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                Element element = (Element) nNode;
+                String term=element
+                        .getElementsByTagName("DescriptorName")
+                        .item(0)
+                        .getTextContent();
+
+                if(term!=null && !term.equals("")) {
+                    meshTermsList.add(term);
+                }
+
+            }
+
+        }
+       return meshTermsList;
+
+
     }
 }
