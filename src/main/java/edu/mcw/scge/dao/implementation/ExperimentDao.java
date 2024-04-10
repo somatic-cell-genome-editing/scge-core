@@ -9,38 +9,52 @@ import java.util.List;
 
 public class ExperimentDao extends AbstractDAO {
 
+//    public List<String> getExperimentRecordTissueList(long experimentId) throws Exception {
+//        String sql="select distinct ot.term from experiment_record ex " +
+//                "inner join ont_terms ot on ex.tissue_id=ot.term_acc " +
+//                "where ex.experiment_id=? order by ot.term";
+//        return StringListQuery.execute(this, sql, experimentId);
+//    }
     public List<String> getExperimentRecordTissueList(long experimentId) throws Exception {
-        String sql="select distinct ot.term from experiment_record ex " +
-                "inner join ont_terms ot on ex.tissue_id=ot.term_acc " +
-                "where ex.experiment_id=? order by ot.term";
-
-        //StringListQuery q=new StringListQuery(this.getDataSource(), sql);
-        //return execute(q, experimentId);
+        String sql="select distinct(ot.term) from ont_terms ot where ot.term_acc in ( select tissue_id from experiment_record where experiment_id=?) order by ot.term";
         return StringListQuery.execute(this, sql, experimentId);
     }
+//    public List<String> getExperimentRecordTargetTissueList(long experimentId) throws Exception {
+//        String sql="select distinct ot.term from experiment_record ex " +
+//                "inner join ont_terms ot on ex.tissue_id=ot.term_acc " +
+//                "where ex.experiment_id=? and is_target_tissue=1 order by ot.term";
+//
+//        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+//        return execute(q, experimentId);
+//    }
     public List<String> getExperimentRecordTargetTissueList(long experimentId) throws Exception {
-        String sql="select distinct ot.term from experiment_record ex " +
-                "inner join ont_terms ot on ex.tissue_id=ot.term_acc " +
-                "where ex.experiment_id=? and is_target_tissue=1 order by ot.term";
-
-        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
-        return execute(q, experimentId);
+        String sql="select distinct(ot.term) from ont_terms ot where ot.term_acc in ( select tissue_id from experiment_record where experiment_id=? and is_target_tissue=1) order by ot.term";
+        return StringListQuery.execute(this, sql, experimentId);
     }
+//    public List<String> getExperimentRecordNonTargetTissueList(long experimentId) throws Exception {
+//        String sql="select distinct ot.term from experiment_record ex " +
+//                "inner join ont_terms ot on ex.tissue_id=ot.term_acc " +
+//                "where ex.experiment_id=? and is_target_tissue is null order by ot.term";
+//
+//        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+//        return execute(q, experimentId);
+//    }
     public List<String> getExperimentRecordNonTargetTissueList(long experimentId) throws Exception {
-        String sql="select distinct ot.term from experiment_record ex " +
-                "inner join ont_terms ot on ex.tissue_id=ot.term_acc " +
-                "where ex.experiment_id=? and is_target_tissue is null order by ot.term";
-
-        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
-        return execute(q, experimentId);
+        String sql="select distinct(ot.term) from ont_terms ot where ot.term_acc in ( select tissue_id from experiment_record where experiment_id=? and is_target_tissue is null) order by ot.term";
+        return StringListQuery.execute(this, sql, experimentId);
     }
-    public List<String> getExperimentRecordCellTypeList(long experimentId) throws Exception {
-        String sql="select distinct ot.term from experiment_record ex " +
-                "left outer join ont_terms ot on ex.cell_type=ot.term_acc " +
-                "where ex.experiment_id=? order by ot.term";
+//    public List<String> getExperimentRecordCellTypeList(long experimentId) throws Exception {
+//        String sql="select distinct ot.term from experiment_record ex " +
+//                "left outer join ont_terms ot on ex.cell_type=ot.term_acc " +
+//                "where ex.experiment_id=? order by ot.term";
+//
+//        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+//        return execute(q, experimentId);
+//    }
 
-        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
-        return execute(q, experimentId);
+    public List<String> getExperimentRecordCellTypeList(long experimentId) throws Exception {
+        String sql="select distinct(ot.term) from ont_terms ot where ot.term_acc in ( select cell_type from experiment_record where experiment_id=? and is_target_tissue is null) order by ot.term";
+        return StringListQuery.execute(this, sql, experimentId);
     }
 
     public List<String> getExperimentRecordConditionList(long experimentId) throws Exception {
@@ -52,10 +66,14 @@ public class ExperimentDao extends AbstractDAO {
     }
 
     public List<String> getExperimentRecordEditorList(long experimentId) throws Exception {
-        String sql="select distinct e.symbol from experiment_record ex " +
-                " inner join experiment x on x.experiment_id=ex.experiment_id " +
-                " inner join editor e on ex.editor_id = e.editor_id " +
-                " where ex.experiment_id=? order by e.symbol";
+//        String sql="select distinct e.symbol from experiment_record ex " +
+//                " inner join experiment x on x.experiment_id=ex.experiment_id " +
+//                " inner join editor e on ex.editor_id = e.editor_id " +
+//                " where ex.experiment_id=? order by e.symbol";
+
+        String sql="select distinct e.symbol from editor e where e.editor_id in (select editor_id from experiment_record where experiment_id=?) " +
+
+                " order by e.symbol";
 
         StringListQuery q=new StringListQuery(this.getDataSource(), sql);
         return execute(q, experimentId);
