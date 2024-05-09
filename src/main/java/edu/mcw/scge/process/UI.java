@@ -10,20 +10,23 @@ import java.util.regex.Pattern;
 public class UI {
 
     public static String correctInitiative(String initiative)  {
-        if (initiative.equals("Rodent Testing Center")) {
-            return "Animal Reporter and Testing Center Initiative";
-        }else if (initiative.equals("Large Animal Reporter")) {
-            return "Animal Reporter and Testing Center Initiative";
-        }else if (initiative.equals("Large Animal Testing Center")) {
-            return "Large Animal Testing Centers (LATC)";
-        }else if (initiative.equals("Cell & Tissue Platform")) {
-            return "Biological Effects Initiative";
-        }else if (initiative.equals("In Vivo Cell Tracking")) {
-            return "Biological Effects Initiative";
-        }else if (initiative.equals("Delivery Vehicle Initiative")) {
-            return "Delivery Systems Initiative";
-        }else if (initiative.equals("New Editors Initiative")) {
-            return "Genome Editors Initiative";
+        switch (initiative) {
+            case "Rodent Testing Center":
+                return "Animal Reporter and Testing Center Initiative";
+            case "Large Animal Reporter":
+                return "Animal Reporter and Testing Center Initiative";
+            case "Large Animal Testing Center":
+                return "Large Animal Testing Centers (LATC)";
+            case "Cell & Tissue Platform":
+                return "Biological Effects Initiative";
+            case "In Vivo Cell Tracking":
+                return "Biological Effects Initiative";
+            case "Biological Systems":
+                return "Biological Effects Initiative";
+            case "Delivery Vehicle Initiative":
+                return "Delivery Systems Initiative";
+            case "New Editors Initiative":
+                return "Genome Editors Initiative";
         }
 
         return initiative;
@@ -184,22 +187,22 @@ public class UI {
 
         //return String.format(number, "%.2f");
     }
-    public static String getLabel(String l){
-        if(l.equalsIgnoreCase("Cell & Tissue Platform"))
-            return "Biological Systems";
-        if(l.equalsIgnoreCase("New Editors Initiative"))
-            return  "Genome Editors";
-        if(l.equalsIgnoreCase("Large Animal Reporter"))
-            return "Large Animal Reporter (LAR)";
-        if(l.equalsIgnoreCase("Large Animal Testing Center"))
-            return  "Large Animal Testing Center (LATC)";
-        if(l.equalsIgnoreCase("Delivery Vehicle Initiative"))
-            return  "Delivery Systems Initiative";
-        if(l.equalsIgnoreCase("Rodent Testing Center"))
-            return "Small Animal Testing Center (SATC)";
-        if(l.equalsIgnoreCase("In Vivo Cell Tracking"))
-            return "In Vivo Cell Tracking";
-        return l;
-    }
+//    public static String getLabel(String l){
+//        if(l.equalsIgnoreCase("Cell & Tissue Platform"))
+//            return "Biological Systems";
+//        if(l.equalsIgnoreCase("New Editors Initiative"))
+//            return  "Genome Editors";
+//        if(l.equalsIgnoreCase("Large Animal Reporter"))
+//            return "Large Animal Reporter (LAR)";
+//        if(l.equalsIgnoreCase("Large Animal Testing Center"))
+//            return  "Large Animal Testing Center (LATC)";
+//        if(l.equalsIgnoreCase("Delivery Vehicle Initiative"))
+//            return  "Delivery Systems Initiative";
+//        if(l.equalsIgnoreCase("Rodent Testing Center"))
+//            return "Small Animal Testing Center (SATC)";
+//        if(l.equalsIgnoreCase("In Vivo Cell Tracking"))
+//            return "In Vivo Cell Tracking";
+//        return l;
+//    }
 
 }
