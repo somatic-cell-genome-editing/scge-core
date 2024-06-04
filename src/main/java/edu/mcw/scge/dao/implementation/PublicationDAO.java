@@ -372,7 +372,7 @@ public class PublicationDAO extends AbstractDAO {
     public void makeAssociation(long objectId, int refKey, String type) throws Exception {
 
             if(type!=null){
-                System.out.println("REFKEY:"+refKey+"\tTYPE:"+type);
+              //  System.out.println("REFKEY:"+refKey+"\tTYPE:"+type);
                 boolean existsAssociation= existsAssociation(refKey,objectId);
                 if(!existsAssociation)
                    insertPubAssociations( refKey,objectId,type);

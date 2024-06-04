@@ -79,6 +79,11 @@ public class GrantDao extends AbstractDAO {
         GrantQuery q=new GrantQuery(this.getDataSource(), sql);
         return execute(q, initiative);
     }
+    public List<String> getCOFProjectInitiatives(int grantId) throws Exception {
+        String sql="select initiative from cof_initiatives where grant_id=?";
+        StringListQuery q=new StringListQuery(this.getDataSource(), sql);
+        return execute(q, grantId);
+    }
     public List<Person> getGrantPi(int grantId) throws Exception {
         String sql="select * from person where person_id in (select person_id from person_info where group_id=? and role_key=?)";
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);

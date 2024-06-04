@@ -12,21 +12,18 @@ public class UI {
     public static String correctInitiative(String initiative)  {
         switch (initiative) {
             case "Rodent Testing Center":
-                return "Animal Reporter and Testing Center Initiative";
             case "Large Animal Reporter":
-                return "Animal Reporter and Testing Center Initiative";
+                return "Animal Reporter and Testing Center";
             case "Large Animal Testing Center":
                 return "Large Animal Testing Centers (LATC)";
             case "Cell & Tissue Platform":
-                return "Biological Effects Initiative";
             case "In Vivo Cell Tracking":
-                return "Biological Effects Initiative";
             case "Biological Systems":
-                return "Biological Effects Initiative";
-            case "Delivery Vehicle Initiative":
-                return "Delivery Systems Initiative";
-            case "New Editors Initiative":
-                return "Genome Editors Initiative";
+                return "Biological Effects";
+            case "Delivery Vehicle":
+                return "Delivery Systems";
+            case "New Editors":
+                return "Genome Editors";
         }
 
         return initiative;
