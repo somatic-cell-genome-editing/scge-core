@@ -33,10 +33,13 @@ dependencies {
     implementation group: 'org.springframework', name: 'spring-jdbc', version: '5.1.9.RELEASE'
     // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
     implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '3.9'
-// https://mvnrepository.com/artifact/log4j/log4j
-    implementation group: 'log4j', name: 'log4j', version: '1.2.17'
+
 // https://mvnrepository.com/artifact/commons-net/commons-net
     implementation group: 'commons-net', name: 'commons-net', version: '3.6'
+// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.24.3'
+// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.24.3'
 
     // https://mvnrepository.com/artifact/org.json/json
     implementation group: 'org.json', name: 'json', version: '20201115'

@@ -20,6 +20,13 @@ public class AntibodyDao extends AbstractDAO {
         AntibodyQuery q=new AntibodyQuery(this.getDataSource(), sql);
         return execute(q, antibodyId);
     }
+    public List<Antibody> getDistinctAntibodyByExperimentId(long experimentId) throws Exception{
+        String sql="s select * from antibody where antibody_id in (" +
+                "            select antibody_id from antibody_associations where experiment_record_id in  (" +
+                "            select experiment_record_id from experiment_record where experiment_id=?))";
+        AntibodyQuery q=new AntibodyQuery(this.getDataSource(), sql);
+        return execute(q, experimentId);
+    }
 
     public int insertAntibody(Antibody antibody) throws Exception{
 

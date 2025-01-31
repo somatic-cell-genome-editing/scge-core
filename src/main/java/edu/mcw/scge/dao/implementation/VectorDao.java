@@ -15,6 +15,14 @@ public class VectorDao extends AbstractDAO {
         VectorQuery q=new VectorQuery(this.getDataSource(), sql);
         return (List<Vector>)q.execute();
     }
+    public List<Vector> getDistinctVectorsByExperimentId(long experimentId) throws Exception {
+        String sql="   select * from vector where vector_id in (" +
+                "            select vector_id from vector_associations where experiment_record_id in  (" +
+                "            select experiment_record_id from experiment_record where experiment_id=?)) order by name";
+        VectorQuery q=new VectorQuery(this.getDataSource(), sql);
+        return execute(q, experimentId);
+    }
+
     public List<Vector> getVectorById(long id) throws Exception {
         String sql="select * from vector where vector_id=?";
         VectorQuery q=new VectorQuery(this.getDataSource(), sql);
