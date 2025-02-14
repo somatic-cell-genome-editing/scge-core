@@ -1,13 +1,11 @@
 package edu.mcw.scge.process;
 
 import edu.mcw.scge.dao.DataSourceFactory;
+import org.apache.logging.log4j.Logger;
 
-
-//import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.net.Socket;
-//import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -720,7 +718,7 @@ public class Utils {
     /**
      * print stack trace to the supplied log, as an error
      */
-    static public void printStackTrace(Exception e, org.apache.commons.logging.Log log) {
+    static public void printStackTrace(Exception e, Logger log) {
         // print stack trace to error stream
         ByteArrayOutputStream bs = new ByteArrayOutputStream();
         e.printStackTrace(new PrintStream(bs));
