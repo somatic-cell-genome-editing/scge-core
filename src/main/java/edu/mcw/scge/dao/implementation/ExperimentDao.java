@@ -377,7 +377,7 @@ public class ExperimentDao extends AbstractDAO {
 	public long insertExperiment(Experiment experiment) throws Exception{
 
         String sql = "insert into experiment (experiment_id,name,study_id, " +
-                "type,description) values (?,?,?,?,?)";
+                "type,description, last_modified_date, created_date) values (?,?,?,?,?,NOW(), NOW())";
 
         long experimentId = this.getNextKeyFromSequenceLong("exp_seq");
         
