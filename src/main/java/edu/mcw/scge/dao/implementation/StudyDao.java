@@ -273,6 +273,24 @@ public class StudyDao extends AbstractDAO {
         return execute(q, antibodyId);
     }
 
+    /**
+     *
+     * @param scgeId can be any scge_id except study_id, protocol_id and publication_id
+     * @return
+     * @throws Exception
+     */
+    public List<Study> getStudiesBySCGEId(long scgeId) throws Exception {
+        String sql="select * from study where study_id in (\n" +
+                "select study_id from experiment where experiment_id in (\n" +
+                "select experiment_id from experiment_record er left outer join guide_associations ga on ga.experiment_record_id=er.experiment_record_id\n" +
+                "left outer join vector_associations va on va.experiment_record_id=er.experiment_record_id\n" +
+                "left outer join antibody_associations aa on aa.experiment_record_id=er.experiment_record_id \n" +
+                " where \n" +
+                "editor_id =? or ds_id=? or experiment_id=? or\n" +
+                "model_id=? or ga.guide_id=? or va.vector_id=? or hrdonor_id=? or aa.antibody_id=?))\n";
+        StudyQuery query=new StudyQuery(this.getDataSource(), sql);
+        return execute(query, scgeId,scgeId,scgeId,scgeId,scgeId,scgeId,scgeId,scgeId);
+    }
 
     /**
      * inserts into temporary table study_tier_updates until the change is approved by PI

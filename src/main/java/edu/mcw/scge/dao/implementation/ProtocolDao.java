@@ -8,8 +8,10 @@ import edu.mcw.scge.datamodel.*;
 import edu.mcw.scge.datamodel.publications.Publication;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ProtocolDao extends AbstractDAO {
 
@@ -115,11 +117,21 @@ public class ProtocolDao extends AbstractDAO {
         List<Protocol> list = ProtocolQuery.execute(this,sql,protocol.getTitle(), protocol.getFilename() );
         return list.isEmpty() ? 0 : list.get(0).getId();
     }
-     List<Long> getProtocolAssociatedObjectIds(long protocolId) throws Exception {
+    public List<Long> getProtocolAssociatedObjectIds(long protocolId) throws Exception {
         String sql="select object_scge_id from  protocol_associations pa where pa.protocol_scge_id=?";
         LongListQuery q= new LongListQuery(this.getDataSource(), sql);
         return  execute(q, protocolId);
     }
+    public List<Protocol> getProtocolsBySCGEObjectIdsList(List<Long> scgeIds) throws Exception {
+
+        String sql = "select * from protocol p inner join protocol_associations pa on protocol_scge_id=protocol_id\n" +
+                "where object_scge_id in (" +
+                scgeIds.stream().map(i->""+i).collect(Collectors.joining(","))+
+                ")";
+        ProtocolQuery query=new ProtocolQuery(this.getDataSource(), sql);
+       return query.execute();
+    }
+
 //     List<Editor> mapEditorsFromAssociatedObjectsList(List<Long> associatedObjectIds) throws Exception {
 //        List<Editor> editors=new ArrayList<>();
 //        for(long id:associatedObjectIds){
