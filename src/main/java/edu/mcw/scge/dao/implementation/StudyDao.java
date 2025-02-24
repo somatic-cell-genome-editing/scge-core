@@ -262,6 +262,16 @@ public class StudyDao extends AbstractDAO {
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q, guideId);
     }
+    public List<Study> getStudiesByAntibody(long antibodyId) throws Exception{
+        String sql = "select distinct s.*, i.institution_name, p.name as submitterName \n" +
+                "                from study s inner join institution i on s.lab_id=i.institution_id \n" +
+                "                inner join person p on s.submitter_id=p.person_id \n" +
+                "                inner join antibody_associations assoc on assoc.antibody_id=?\n" +
+                "                inner join experiment_record ex on ex.experiment_record_id = assoc.experiment_record_id and ex.study_id=s.study_id \n" +
+                "   " ;
+        StudyQuery q=new StudyQuery(this.getDataSource(), sql);
+        return execute(q, antibodyId);
+    }
 
 
     /**
