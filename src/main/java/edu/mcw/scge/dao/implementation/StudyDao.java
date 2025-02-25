@@ -280,14 +280,12 @@ public class StudyDao extends AbstractDAO {
      * @throws Exception
      */
     public List<Study> getStudiesBySCGEId(long scgeId) throws Exception {
-        String sql="select * from study where study_id in (\n" +
-                "select study_id from experiment where experiment_id in (\n" +
-                "select experiment_id from experiment_record er left outer join guide_associations ga on ga.experiment_record_id=er.experiment_record_id\n" +
-                "left outer join vector_associations va on va.experiment_record_id=er.experiment_record_id\n" +
-                "left outer join antibody_associations aa on aa.experiment_record_id=er.experiment_record_id \n" +
-                " where \n" +
-                "editor_id =? or ds_id=? or experiment_id=? or\n" +
-                "model_id=? or ga.guide_id=? or va.vector_id=? or hrdonor_id=? or aa.antibody_id=?))\n";
+        String sql="select * from study s  inner join experiment e on s.study_id=e.study_id " +
+                "left outer join experiment_record er on er.experiment_id=e.experiment_id " +
+                "left outer join guide_associations ga on ga.experiment_record_id=er.experiment_record_id " +
+                " left outer join vector_associations va on va.experiment_record_id=er.experiment_record_id " +
+                " left outer join antibody_associations aa on aa.experiment_record_id=er.experiment_record_id " +
+                "where er.editor_id =? or er.ds_id=? or e.experiment_id=? or er.model_id=? or ga.guide_id=? or va.vector_id=? or er.hrdonor_id=? or aa.antibody_id=?";
         StudyQuery query=new StudyQuery(this.getDataSource(), sql);
         return execute(query, scgeId,scgeId,scgeId,scgeId,scgeId,scgeId,scgeId,scgeId);
     }
