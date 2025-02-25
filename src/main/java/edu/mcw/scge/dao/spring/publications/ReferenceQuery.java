@@ -52,6 +52,11 @@ public class ReferenceQuery extends MappingSqlQuery {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        try{
+            ref.setAssociatedSCGEId(rs.getLong("scge_id"));
+        }catch (Exception e){
+
+        }
         return ref;
     }
 

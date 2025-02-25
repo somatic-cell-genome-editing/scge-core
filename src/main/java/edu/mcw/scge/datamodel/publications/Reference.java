@@ -25,6 +25,16 @@ public class Reference {
     private String pubmedId;
     private List<String> meshTerms;
 
+    private long associatedSCGEId;
+
+    public long getAssociatedSCGEId() {
+        return associatedSCGEId;
+    }
+
+    public void setAssociatedSCGEId(long associatedSCGEId) {
+        this.associatedSCGEId = associatedSCGEId;
+    }
+
     public List<String> getMeshTerms() {
         return meshTerms;
     }
