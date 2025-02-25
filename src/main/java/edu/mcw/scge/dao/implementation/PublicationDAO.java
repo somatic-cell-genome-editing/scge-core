@@ -133,7 +133,6 @@ public class PublicationDAO extends AbstractDAO {
                 "   where scge_id in ( "+
                 scgeIds.stream().map(id->id+"").collect(Collectors.joining(",")) +
                 ")";
-        System.out.println("SQL:"+ sql);
         ReferenceQuery query=new ReferenceQuery(this.getDataSource(), sql);
         return  query.execute();
     }
