@@ -30,6 +30,9 @@ public class ExperimentQuery extends MappingSqlQuery<Experiment> {
         }catch (Exception ignored){
 
         }
+        try{
+            e.setTier(rs.getInt("tier"));
+        }catch (Exception ignored){}
 
         return e;
     }
