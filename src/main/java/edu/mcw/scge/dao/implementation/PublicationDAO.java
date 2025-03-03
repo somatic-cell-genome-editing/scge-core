@@ -14,10 +14,7 @@ import edu.mcw.scge.datamodel.publications.Reference;
 import edu.mcw.scge.process.pubmedProcessor.Extractor;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PublicationDAO extends AbstractDAO {
@@ -129,6 +126,15 @@ public class PublicationDAO extends AbstractDAO {
                 "   left outer join pub_associations pa on p.ref_key=pa.ref_key\n" +
                 "   where scge_id=? ";
        return  executeRefQuery(query, scgeId);
+    }
+    public List<Reference> getReferencesBySCGEIdList(Set<Long> scgeIds) throws Exception {
+        String sql = " select * from publications p \n" +
+                "   left outer join pub_associations pa on p.ref_key=pa.ref_key\n" +
+                "   where scge_id in ( "+
+                scgeIds.stream().map(id->id+"").collect(Collectors.joining(",")) +
+                ")";
+        ReferenceQuery query=new ReferenceQuery(this.getDataSource(), sql);
+        return  query.execute();
     }
     public List<Reference> getReferences() throws Exception {
         String query = " select * from publications";
@@ -318,18 +324,18 @@ public class PublicationDAO extends AbstractDAO {
     }
     public List<Publication> getPublications(long scge_id) throws Exception {
         List<Reference> references = getPublicationsBySCGEId(scge_id);
-        List<Publication> publications=new ArrayList<>();
-        for(Reference ref:references){
-            Publication publication=new Publication();
-            publication.setReference(ref);
-            publication.setAuthorList(getAuthorsByRefKey(ref.getKey()));
-            publication.setArticleIds(getArticleIdsByRefKey(ref.getKey()));
-            publications.add(publication);
-        }
-        return publications;
+        return getPublications(references);
+    }
+    public List<Publication> getPublicationsByScgeIdList(List<Long> scgeIds) throws Exception {
+        List<Reference> references = getReferencesBySCGEIdList(new HashSet<>(scgeIds));
+        return getPublications(references);
     }
     public List<Publication> getAllPublications() throws Exception {
         List<Reference> references = getReferences();
+        return getPublications(references);
+    }
+
+    private List<Publication> getPublications(List<Reference> references) throws Exception {
         List<Publication> publications=new ArrayList<>();
         for(Reference ref:references){
             Publication publication=new Publication();
@@ -340,29 +346,14 @@ public class PublicationDAO extends AbstractDAO {
         }
         return publications;
     }
+
     public List<Publication> getAssociatedPublications(long scge_id) throws Exception {
         List<Reference> references = getAssociatedPublicationsBySCGEId(scge_id);
-        List<Publication> publications=new ArrayList<>();
-        for(Reference ref:references){
-            Publication publication=new Publication();
-            publication.setReference(ref);
-            publication.setAuthorList(getAuthorsByRefKey(ref.getKey()));
-            publication.setArticleIds(getArticleIdsByRefKey(ref.getKey()));
-            publications.add(publication);
-        }
-        return publications;
+        return getPublications(references);
     }
     public List<Publication> getRelatedPublications(long scge_id) throws Exception {
         List<Reference> references = getRelatedPublicationsBySCGEId(scge_id);
-        List<Publication> publications=new ArrayList<>();
-        for(Reference ref:references){
-            Publication publication=new Publication();
-            publication.setReference(ref);
-            publication.setAuthorList(getAuthorsByRefKey(ref.getKey()));
-            publication.setArticleIds(getArticleIdsByRefKey(ref.getKey()));
-            publications.add(publication);
-        }
-        return publications;
+        return getPublications(references);
     }
     public List<Long> getPublicationAssoicatedSCGEIds(int refKey) throws Exception {
         String sql="select scge_id from pub_associations where ref_key=?";

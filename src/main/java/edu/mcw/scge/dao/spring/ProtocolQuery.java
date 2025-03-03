@@ -24,6 +24,9 @@ public class ProtocolQuery extends MappingSqlQuery<Protocol> {
         p.setFilename(rs.getString("filename"));
         p.setXref(rs.getString("xref"));
         p.setKeywords(rs.getString("keywords"));
+        try {
+            p.setAssociatedObjectId(rs.getLong("object_scge_id"));
+        }catch (Exception e){}
         return p;
     }
 

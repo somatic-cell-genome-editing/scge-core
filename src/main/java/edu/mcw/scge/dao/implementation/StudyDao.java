@@ -262,7 +262,33 @@ public class StudyDao extends AbstractDAO {
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q, guideId);
     }
+    public List<Study> getStudiesByAntibody(long antibodyId) throws Exception{
+        String sql = "select distinct s.*, i.institution_name, p.name as submitterName \n" +
+                "                from study s inner join institution i on s.lab_id=i.institution_id \n" +
+                "                inner join person p on s.submitter_id=p.person_id \n" +
+                "                inner join antibody_associations assoc on assoc.antibody_id=?\n" +
+                "                inner join experiment_record ex on ex.experiment_record_id = assoc.experiment_record_id and ex.study_id=s.study_id \n" +
+                "   " ;
+        StudyQuery q=new StudyQuery(this.getDataSource(), sql);
+        return execute(q, antibodyId);
+    }
 
+    /**
+     *
+     * @param scgeId can be any scge_id except study_id, protocol_id and publication_id
+     * @return
+     * @throws Exception
+     */
+    public List<Study> getStudiesBySCGEId(long scgeId) throws Exception {
+        String sql="select * from study s  inner join experiment e on s.study_id=e.study_id " +
+                "left outer join experiment_record er on er.experiment_id=e.experiment_id " +
+                "left outer join guide_associations ga on ga.experiment_record_id=er.experiment_record_id " +
+                " left outer join vector_associations va on va.experiment_record_id=er.experiment_record_id " +
+                " left outer join antibody_associations aa on aa.experiment_record_id=er.experiment_record_id " +
+                "where er.editor_id =? or er.ds_id=? or e.experiment_id=? or er.model_id=? or ga.guide_id=? or va.vector_id=? or er.hrdonor_id=? or aa.antibody_id=?";
+        StudyQuery query=new StudyQuery(this.getDataSource(), sql);
+        return execute(query, scgeId,scgeId,scgeId,scgeId,scgeId,scgeId,scgeId,scgeId);
+    }
 
     /**
      * inserts into temporary table study_tier_updates until the change is approved by PI

@@ -12,6 +12,16 @@ public class Experiment {
     private String description;
     private Date lastModifiedDate;
 
+    private int tier;
+
+    public int getTier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
+    }
+
     public Date getLastModifiedDate() {
         return lastModifiedDate;
     }

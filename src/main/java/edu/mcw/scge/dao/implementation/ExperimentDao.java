@@ -179,12 +179,17 @@ public class ExperimentDao extends AbstractDAO {
         ExperimentQuery q=new ExperimentQuery(this.getDataSource(), sql);
         return execute(q, groupId);
     }
-    public List<Experiment> getExperimentsByObjectId(int studyId, long objectId, String object) throws Exception {
+    public List<Experiment> getExperimentsByObjectId(long objectId) throws Exception {
 
-        String sql="select * from experiment where study_id=?";
+        String sql="select distinct(e.*),s.tier from study s  inner join experiment e on s.study_id=e.study_id \n" +
+                "                left outer join experiment_record er on er.experiment_id=e.experiment_id \n" +
+                "                left outer join guide_associations ga on ga.experiment_record_id=er.experiment_record_id \n" +
+                "                 left outer join vector_associations va on va.experiment_record_id=er.experiment_record_id \n" +
+                "                 left outer join antibody_associations aa on aa.experiment_record_id=er.experiment_record_id \n" +
+                "                where er.editor_id =? or er.ds_id=? or e.experiment_id=? or er.model_id=? or ga.guide_id=? or va.vector_id=? or er.hrdonor_id=? or aa.antibody_id=? or s.group_id=?";
 
         ExperimentQuery q=new ExperimentQuery(this.getDataSource(), sql);
-        return execute(q, studyId);
+        return execute(q, objectId,objectId,objectId,objectId,objectId,objectId,objectId,objectId, objectId);
     }
     public List<Experiment> getExperimentsByStudy(int studyId, int personId) throws Exception {
         String sql="select * from experiment e  " +

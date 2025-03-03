@@ -14,6 +14,16 @@ public class Protocol {
     private String keywords;
     private MultipartFile file;
 
+    private long associatedObjectId;
+
+    public long getAssociatedObjectId() {
+        return associatedObjectId;
+    }
+
+    public void setAssociatedObjectId(long associatedObjectId) {
+        this.associatedObjectId = associatedObjectId;
+    }
+
     public int getTier() {
         return tier;
     }

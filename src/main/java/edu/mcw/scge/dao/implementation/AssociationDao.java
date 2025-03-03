@@ -98,31 +98,7 @@ public class AssociationDao {
         association.setAssociatedExperiments(mapExperimentsFromAssociatedObjectsList(associatedObjecIds));
         association.setAssociatedPublications(mapAssociatedPublications(protocolId));
         association.setRelatedPublications(mapRelatedPublications(protocolId));
-//        for(Editor editor: association.getAssociatedEditors()){
-//            List<Study> objectStudies=studyDao.getStudiesByEditor(editor.getId());
-//            addStudy(objectStudies, association);
-//
-//        }
-//        for(Model object: association.getAssociatedModels()){
-//            List<Study> objectStudies=studyDao.getStudiesByModel(object.getModelId());
-//            addStudy(objectStudies, association);
-//        }
-//        for(Guide object: association.getAssociatedGuides()){
-//            List<Study> objectStudies=studyDao.getStudiesByGuide(object.getGuide_id());
-//            addStudy(objectStudies, association);
-//        }
-//        for(Vector object: association.getAssociatedVectors()){
-//            List<Study> objectStudies=studyDao.getStudiesByVector(object.getVectorId());
-//            addStudy(objectStudies, association);
-//        }
-//        for(Delivery object: association.getAssociatedDeliverySystems()){
-//            List<Study> objectStudies=studyDao.getStudiesByDeliverySystem(object.getId());
-//            addStudy(objectStudies, association);
-//        }
-//        for(Experiment object: association.getAssociatedExperiments()){
-//            List<Study> objectStudies=studyDao.getStudyByExperimentId(object.getExperimentId());
-//            addStudy(objectStudies, association);
-//        }
+
 
         return association;
     }
