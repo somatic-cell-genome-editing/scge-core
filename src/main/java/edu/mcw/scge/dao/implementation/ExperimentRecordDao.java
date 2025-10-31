@@ -12,38 +12,6 @@ import java.util.stream.Collectors;
 
 public class ExperimentRecordDao extends AbstractDAO {
 
-   /* public List<ExperimentRecord> getExperimentRecords() throws Exception {
-        String sql="select x.experiment_id,e.subtype, g.guide,g.detection_method, m.name, t.target_site,t.locus_symbol, t.specificity_ratio " +
-                "from experiment x, experiment_record r, " +
-                "editor e, " +
-                "guide g, " +
-                "model m, " +
-                "target t "+
-                " where x.experiment_id = r.experiment_id and e.editor_id=x.editor_id " +
-                " and x.guide_id=g.guide_id " +
-                " and x.target_id=r.target_id " +
-                " and x.model_id=m.model_id";
-        ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
-        return execute(q);
-    }
-    */
-   /* public List<ExperimentRecord> getExperimentRecordsByLabId(int labId) throws Exception {
-
-      String sql="select * from study s join experiment x on (s.study_id=x.study_id) " +
-              "left join experiment_record r on (r.experiment_id=x.experiment_id) " +
-              "left join editor e on (e.editor_id= x.editor_id) " +
-              "left join delivery_system d on (d.ds_id= x.ds_id) " +
-              "left join application_method app on (app.application_method_id= x.application_method_id) " +
-
-              "left join guide g on (g.guide_id=x.guide_id) " +
-              "left join target t on (t.target_id=r.target_id) " +
-              "left join model m on (m.model_id =x.model_id) " +
-              "where s.lab_id=?";
-        ExperimentRecordQuery q=new ExperimentRecordQuery(this.getDataSource(), sql);
-        return execute(q, labId);
-    }
-    */
-
     public List<ExperimentRecord> getExperimentRecordsByStudyId(int studyId) throws Exception {
         String sql="select s.study, r.*, app.*, e.symbol, d.ds_type, m.display_name as modelName,h.lab_id as hrdonorName, x.type from study s join experiment x on (s.study_id=x.study_id) \n" +
                 "inner join experiment_record r on (r.experiment_id=x.experiment_id) \n" +
@@ -89,7 +57,7 @@ public class ExperimentRecordDao extends AbstractDAO {
 
     public long getExpRecordId(ExperimentRecord r) throws Exception {
         String sql = "SELECT MAX(experiment_record_id) FROM experiment_record WHERE name=? AND study_id=? AND editor_id=? AND ds_id=? "+
-                "AND model_id=? AND application_method_id=? AND experiment_id=?"+
+                "AND model_id=? AND application_method_id=? AND experiment_id=? "+
                 // handle NULLs or blanks in columns 'sex','tissue_id','cell_type'
                 "AND COALESCE(sex,'') = COALESCE(?,'') "+
                 "AND COALESCE(tissue_id,'') = COALESCE(?,'') "+
