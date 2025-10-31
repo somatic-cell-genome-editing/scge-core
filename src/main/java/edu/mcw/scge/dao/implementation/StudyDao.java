@@ -150,17 +150,26 @@ public class StudyDao extends AbstractDAO {
         return execute(query, study.getGroupId());
     }
     public List<Study> getSharedTier2Studies(int personId) throws Exception{
-        String sql="select s.*, i.institution_name, p.name as submitterName " +
-               // "pi.person_id as piId, pi.name as piName" +
-              //  ", pi.first_name as piFirstName , pi.last_name as piLastName "+
-                " from study s, " +
-                " institution i, person p,  study_associations sa, person_info pinfo" +
-                " where s.lab_id=i.institution_id and s.submitter_id=p.person_id  and s.study_id=sa.study_id and (pinfo.group_id=s.group_id or pinfo.group_id=sa.group_id) and pinfo.person_id=?" +
-                " order by s.tier desc, s.submission_date desc";
+        String sql= """
+                select s.*,  i.institution_name from study s, institution i
+                where i.institution_id=s.lab_id
+                and s.study_id in (select distinct(study_id) from study_associations where group_id in (select distinct(group_id) from person_info where person_id=?))
+                order by s.tier desc, s.submission_date desc                                                              
+                                
+                """;
         StudyQuery q=new StudyQuery(this.getDataSource(), sql);
         return execute(q,personId);
     }
 
+//    public boolean canElevateTierOfSharedStudy(Study study) throws Exception {
+//        String sql="select can_elevate_tier from study_associations where study_id=?";
+//        IntListQuery query=new IntListQuery(this.getDataSource(), sql);
+//        List<Integer> access=execute(query, study.getStudyId());
+//        if(access.size()>0 && access.contains(1)){
+//            return true;
+//        }
+//        return false;
+//    }
 
 
     public List<Study> getStudiesByInitiative(String initiativeName) throws Exception{
