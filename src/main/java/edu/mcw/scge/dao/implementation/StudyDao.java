@@ -172,6 +172,7 @@ public class StudyDao extends AbstractDAO {
 //    }
 
 
+
     public List<Study> getStudiesByInitiative(String initiativeName) throws Exception{
         String sql = "select s.*, i.institution_name, p.name as submitterName"+
                 " from study s, institution i, person p where s.lab_id=i.institution_id and s.submitter_id=p.person_id and s.group_id in (select group_id from scge_grants where grant_initiative = ?) order by s.tier desc, s.submission_date desc";
@@ -215,6 +216,15 @@ public class StudyDao extends AbstractDAO {
                 "and p.person_id=?";
       //  CountQuery q= new CountQuery(this.getDataSource(), sql);
 
+        return getCount(sql,studyId, personId)>0;
+    }
+    public boolean verifySharedStudyAccessByPesonId(int studyId, int personId) throws Exception {
+        String sql= """
+                select count(*) from study s where study_id in (
+                select distinct(study_id) from study_associations sa
+                where study_id=?
+                and group_id in (select distinct(group_id) from person_info where person_id=?))
+                """;
         return getCount(sql,studyId, personId)>0;
     }
 
