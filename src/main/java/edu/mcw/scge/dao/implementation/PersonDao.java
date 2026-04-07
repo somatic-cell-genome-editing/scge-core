@@ -88,9 +88,14 @@ public class PersonDao extends AbstractDAO {
         return execute(query,id);
     }
     public List<Person> getPersonByLastName(String lastName) throws Exception{
-        String sql="select * from person where name like '%"+lastName+"%'  " ;
+        String sql="select * from person where name like ? " ;
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
-        return execute(query);
+        return execute(query, "%" + lastName + "%");
+    }
+    public List<Person> getPersonByFirstAndLastName(String firstName, String lastName) throws Exception{
+        String sql="select * from person where first_name like ? and last_name like ?" ;
+        PersonQuery query=new PersonQuery(this.getDataSource(), sql);
+        return execute(query, "%" + firstName + "%","%" + lastName + "%");
     }
     public String getPersonStatus(String subject) throws Exception{
         String sql="select status from person where google_id=?";
@@ -362,9 +367,9 @@ public class PersonDao extends AbstractDAO {
         return members;
     }
     public List<Person> getPersonByName(String name) throws Exception{
-        String sql="select * from person where name_lc=? " ;
+        String sql="select * from person where name_lc like ? " ;
         PersonQuery query=new PersonQuery(this.getDataSource(), sql);
-        return execute(query,name);
+        return execute(query,name+"%");
     }
 
     public boolean exists(Person p) throws Exception {
@@ -486,19 +491,91 @@ public class PersonDao extends AbstractDAO {
         }
         return splitMap;
     }
+    public void disablePerson(){
+
+    }
     public static void main(String[] args) throws Exception {
         PersonDao personDao=new PersonDao();
-        List<Person> personList=personDao.getAllActiveMembers();
-       for(Person person:personList){
-            String personFullName=person.getName();
-            Map<String, String> nameMap=personDao.getFirstAndLastName(personFullName);
-            String firstName=nameMap.get("firstName");
-            String lastName=nameMap.get("lastName");
-            System.out.println("FULLNAME:"+ personFullName+"\tFIRST:"+ nameMap.get("firstName") +"\tLAST:"+ nameMap.get("lastName"));
-            person.setFirstName(firstName);
-            person.setLastName(lastName);
-            personDao.update(person);
-      }
-       System.out.println("DONE!!");
+        String action=args[0];
+        switch (action.trim().toLowerCase()){
+            case "add-first-and-last-name":
+                List<Person> personList=personDao.getAllActiveMembers();
+                for(Person person:personList){
+                    String personFullName=person.getName();
+                    Map<String, String> nameMap=personDao.getFirstAndLastName(personFullName);
+                    String firstName=nameMap.get("firstName");
+                    String lastName=nameMap.get("lastName");
+                    System.out.println("FULLNAME:"+ personFullName+"\tFIRST:"+ nameMap.get("firstName") +"\tLAST:"+ nameMap.get("lastName"));
+                    person.setFirstName(firstName);
+                    person.setLastName(lastName);
+                    personDao.update(person);
+                }
+                break;
+
+            case "enable-person":
+                String filePath = args[1];
+                FileInputStream fis = new FileInputStream(new File(filePath));
+                XSSFWorkbook workbook = new XSSFWorkbook(fis);
+                XSSFSheet sheet = workbook.getSheetAt(0);
+                Iterator<Row> rowIterator = sheet.iterator();
+                // skip header row
+                if (rowIterator.hasNext()) {
+                    Row headerRow = rowIterator.next();
+                    System.out.println("Header: ");
+                    Iterator<Cell> headerCells = headerRow.cellIterator();
+                    while (headerCells.hasNext()) {
+                        Cell cell = headerCells.next();
+                        System.out.print(cell.getStringCellValue() + "\t");
+                    }
+                    System.out.println();
+                }
+                int count=0;
+                while (rowIterator.hasNext()) {
+                    Row row = rowIterator.next();
+                    try {
+                        Cell nameCell = row.getCell(0);
+                        if (nameCell == null) continue;
+                        String personName = nameCell.getStringCellValue().trim();
+                        if (personName.isEmpty()) continue;
+
+                        Map<String, String> nameMap = personDao.getFirstAndLastName(personName);
+                        String firstName = nameMap.get("firstName");
+                        String lastName = nameMap.get("lastName");
+
+                        System.out.println("Processing: " + personName + " (First: " + firstName + ", Last: " + lastName + ")");
+
+                        // look up person by name
+                        List<Person> persons = personDao.getPersonByName(personName.toLowerCase().trim());
+                        if (persons == null || persons.size() == 0) {
+                            // try by last name
+                            persons = personDao.getPersonByFirstAndLastName(firstName,lastName);
+                            System.err.println("*** Missed by name:"+ personName);
+                        }
+
+                        if (persons != null && persons.size() > 0) {
+                            for (Person person : persons) {
+                                person.setStatus("ACTIVE");
+                                person.setFirstName(firstName);
+                                person.setLastName(lastName);
+                              personDao.update(person);
+                                count++;
+                                System.out.println(count +". Enabled: " + person.getName() + " (ID: " + person.getId() + ")");
+                            }
+                        } else {
+                            System.out.println("Person not found: " + personName);
+                        }
+                    } catch (Exception e) {
+                        System.err.println("Error processing row: " + row.getRowNum());
+                        e.printStackTrace();
+                    }
+                }
+                workbook.close();
+                fis.close();
+                break;
+            default:
+
+        }
+
+        System.out.println("DONE!!");
     }
 }
